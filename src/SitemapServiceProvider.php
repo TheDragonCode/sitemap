@@ -11,8 +11,9 @@
 
 namespace Helldar\Sitemap;
 
+use Illuminate\Support\ServiceProvider as ServiceProvider;
 
-class SitemapServiceProvider
+class SitemapServiceProvider extends ServiceProvider
 {
     /**
      * Perform post-registration booting of services.
@@ -22,12 +23,11 @@ class SitemapServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/path/to/config/courier.php' => config_path('courier.php'),
+            __DIR__ . '/../config/sitemap.php' => config_path('sitemap.php'),
         ]);
 
-        $this->loadMigrationsFrom(__DIR__ . '/path/to/migrations');
-
-        $this->loadViewsFrom(__DIR__ . '/path/to/views', 'courier');
+        $this->loadViewsFrom(__DIR__ . '/../views', 'sitemap');
+        $this->loadRoutesFrom(__DIR__ . '/routes.php');
     }
 
     /**
@@ -37,6 +37,8 @@ class SitemapServiceProvider
      */
     public function register()
     {
-
+        $this->app['sitemap'] = $this->app->share(function ($app) {
+            return new Sitemap();
+        });
     }
 }
