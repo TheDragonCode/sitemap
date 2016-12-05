@@ -57,7 +57,7 @@ See at `config/sitemap.php`:
     `frequency`         - This value indicates how frequently the content at a particular URL is likely to change.
     `last_modification` - The time the URL was last modified. This information allows crawlers to avoid redrawing documents that haven't changed.
 
-    `items` :
+    `items` [
         [
             'model' => User::class,  // Eloquent Model.
             'route' => 'user::show', // Route for generate URL.
@@ -67,3 +67,4 @@ See at `config/sitemap.php`:
             ],
             'priority' => 0.8,       // Sets the priority links
         ],
+    ]
