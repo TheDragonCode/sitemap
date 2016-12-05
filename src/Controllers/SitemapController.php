@@ -64,7 +64,7 @@ class SitemapController
      *
      * @var array
      */
-    protected static $items = [];
+    protected static $items = array();
 
     /**
      * Create a new Sitemap instance.
@@ -74,18 +74,19 @@ class SitemapController
      */
     public function __construct()
     {
-        static::$cache             = config('sitemap.cache', 0);
-        static::$age               = config('sitemap.age', 180);
-        static::$age_column        = config('sitemap.age_column', 'updated_at');
-        static::$frequency         = config('sitemap.frequency', 'daily');
+        static::$cache = config('sitemap.cache', 0);
+        static::$age = config('sitemap.age', 180);
+        static::$age_column = config('sitemap.age_column', 'updated_at');
+        static::$frequency = config('sitemap.frequency', 'daily');
         static::$last_modification = config('sitemap.last_modification', true);
-        static::$items             = config('sitemap.items', []);
+        static::$items = config('sitemap.items', array());
     }
 
     /**
      * Generate sitemap.
      *
      * @author  Andrey Helldar <helldar@ai-rus.com>
+     *
      * @version 2016-12-05
      *
      * @return mixed
@@ -97,7 +98,7 @@ class SitemapController
 
             if (file_exists($path)) {
                 $updated = Carbon::createFromTimestamp(filemtime($path));
-                $diff    = Carbon::now()->diffInMinutes($updated);
+                $diff = Carbon::now()->diffInMinutes($updated);
 
                 if (abs($diff) > abs(static::$cache)) {
                     unlink($path);
@@ -130,13 +131,14 @@ class SitemapController
      * Get data;
      *
      * @author  Andrey Helldar <helldar@ai-rus.com>
+     *
      * @version 2016-12-05
      *
      * @return array
      */
     private static function get()
     {
-        $result = [];
+        $result = array();
 
         foreach (static::$items as $item) {
             $result = array_merge($result, static::items($item));
@@ -149,6 +151,7 @@ class SitemapController
      * Get items from database.
      *
      * @author  Andrey Helldar <helldar@ai-rus.com>
+     *
      * @version 2016-12-05
      *
      * @param $item
@@ -157,9 +160,9 @@ class SitemapController
      */
     private static function items($item)
     {
-        $days    = abs(static::$age) * -1;
+        $days = abs(static::$age) * -1;
         $records = ($item['model'])::where(static::$age_column, '>', Carbon::now()->addDays($days))->get();
-        $result  = [];
+        $result = array();
 
         if ($records->count()) {
             foreach ($records as $record) {
@@ -174,6 +177,7 @@ class SitemapController
      * Make item.
      *
      * @author  Andrey Helldar <helldar@ai-rus.com>
+     *
      * @version 2016-12-05
      *
      * @param $item
@@ -183,7 +187,7 @@ class SitemapController
      */
     private static function make($item, $record)
     {
-        $route_keys = [];
+        $route_keys = array();
 
         foreach ($item['keys'] as $key => $value) {
             $route_keys[$key] = $record->{$value};
