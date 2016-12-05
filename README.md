@@ -1,6 +1,17 @@
-# Sitemap
+# Sitemap for Laravel 5.3+
 
 A simple sitemap generator for PHP Framework.
+
+[![StyleCI](https://styleci.io/repos/75637284/shield)](https://styleci.io/repos/45746985)
+[![Build Status](https://travis-ci.org/andrey-helldar/sitemap.svg?branch=master)](https://travis-ci.org/andrey-helldar/sitemap)
+[![Total Downloads](https://poser.pugx.org/andrey-helldar/sitemap/downloads)](https://packagist.org/packages/andrey-helldar/sitemap)
+[![Latest Stable Version](https://poser.pugx.org/andrey-helldar/sitemap/v/stable)](https://packagist.org/packages/andrey-helldar/sitemap)
+[![Latest Unstable Version](https://poser.pugx.org/andrey-helldar/sitemap/v/unstable)](https://packagist.org/packages/andrey-helldar/sitemap)
+[![PHP-Eye](https://php-eye.com/badge/andrey-helldar/sitemap/tested.svg?style=flat)](https://php-eye.com/package/andrey-helldar/sitemap)
+
+
+[![Dependency Status](https://www.versioneye.com/php/andrey-helldar:sitemap/dev-master/badge.svg)](https://www.versioneye.com/php/andrey-helldar:sitemap/dev-master)
+[![License](https://poser.pugx.org/andrey-helldar/sitemap/license)](https://packagist.org/packages/andrey-helldar/sitemap)
 
 
 ## Installation
@@ -47,6 +58,7 @@ You can now getting sitemap.xml:
 http://mysite.dev/sitemap.xml
 ```
 
+
 ## Configuration
 
 See at `config/sitemap.php`:
@@ -68,3 +80,12 @@ See at `config/sitemap.php`:
             'priority' => 0.8,       // Sets the priority links
         ],
     ]
+
+
+## Support Library
+
+You can donate via [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=94B8LCPAPJ5VG), Yandex Money (410012608840929), WebMoney (Z124862854284)
+
+## Copyright and License
+
+Sitemap was written by Andrey Helldar for the Laravel Framework 5.3 or later, and is released under the MIT License. See the LICENSE file for details.
