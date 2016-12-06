@@ -10,7 +10,7 @@ A simple sitemap generator for PHP Framework.
 [![PHP-Eye](https://php-eye.com/badge/andrey-helldar/sitemap/tested.svg?style=flat)](https://php-eye.com/package/andrey-helldar/sitemap)
 
 
-[![Dependency Status](https://www.versioneye.com/php/andrey-helldar:sitemap/dev-master/badge.svg)](https://www.versioneye.com/php/andrey-helldar:sitemap/dev-master)
+[![Dependency Status](https://www.versioneye.com/php/andrey-helldar:sitemap/dev-master/badge?style=flat-square)](https://www.versioneye.com/php/andrey-helldar:sitemap/dev-master)
 [![License](https://poser.pugx.org/andrey-helldar/sitemap/license)](https://packagist.org/packages/andrey-helldar/sitemap)
 
 
