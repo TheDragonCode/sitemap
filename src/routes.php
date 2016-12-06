@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 
-\Illuminate\Support\Facades\Route::group([
+\Illuminate\Support\Facades\Route::group(array(
     'namespace' => 'Helldar\Sitemap\Controllers',
-], function () {
-    \Illuminate\Support\Facades\Route::get('sitemap.xml', [
-        'as'         => 'sitemap',
-        'middleware' => ['web'],
-        'uses'       => 'SitemapController@generate',
-    ]);
+), function () {
+    \Illuminate\Support\Facades\Route::get('sitemap.xml', array(
+        'as' => 'sitemap',
+        'middleware' => array('web'),
+        'uses' => 'SitemapController@generate',
+    ));
 });
