@@ -1,6 +1,6 @@
-<p align="center">
 # Sitemap for Laravel 5.3+
 
+<p align="center">
 A simple sitemap generator for PHP Framework.
 </p>
 
