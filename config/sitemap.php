@@ -16,7 +16,7 @@ return array(
     'cache' => 0,
 
     /*
-     * Age data in days, over which references will not be included in the sitemap.
+     * Age data in minutes, over which references will not be included in the sitemap.
      * Default: 180 days.
      */
     'age' => 180,

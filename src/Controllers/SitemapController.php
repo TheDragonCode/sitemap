@@ -29,7 +29,7 @@ class SitemapController
     protected static $cache = 0;
 
     /**
-     * Age data in days, over which references will not be included in the sitemap.
+     * Age data in minutes, over which references will not be included in the sitemap.
      * Default: 180 days.
      *
      * @var int
@@ -160,8 +160,8 @@ class SitemapController
      */
     private static function items($item)
     {
-        $days = abs(static::$age) * -1;
-        $records = ($item['model'])::where(static::$age_column, '>', Carbon::now()->addDays($days))->get();
+        $minutes = abs(static::$age) * -1;
+        $records = ($item['model'])::where(static::$age_column, '>', Carbon::now()->addMinutes($minutes))->get();
         $result = array();
 
         if ($records->count()) {
