@@ -3,13 +3,12 @@
 A simple sitemap generator for PHP Framework.
 
 [![StyleCI](https://styleci.io/repos/75637284/shield)](https://styleci.io/repos/45746985)
-[![Build Status](https://travis-ci.org/andrey-helldar/sitemap.svg?branch=master)](https://travis-ci.org/andrey-helldar/sitemap)
-[![Total Downloads](https://poser.pugx.org/andrey-helldar/sitemap/downloads)](https://packagist.org/packages/andrey-helldar/sitemap)
-[![Latest Stable Version](https://poser.pugx.org/andrey-helldar/sitemap/v/stable)](https://packagist.org/packages/andrey-helldar/sitemap)
-[![Latest Unstable Version](https://poser.pugx.org/andrey-helldar/sitemap/v/unstable)](https://packagist.org/packages/andrey-helldar/sitemap)
+[![Build Status](https://travis-ci.org/andrey-helldar/sitemap.svg?branch=master?style=flat-square)](https://travis-ci.org/andrey-helldar/sitemap)
+[![Total Downloads](https://img.shields.io/packagist/dt/andrey-helldar/sitemap.svg?style=flat-square)](https://github.com/andrey-helldar/sitemap)
+[![Latest Version](https://img.shields.io/github/release/andrey-helldar/sitemap.svg?style=flat-square)](https://github.com/andrey-helldar/sitemap)
+[![Quality Score](https://img.shields.io/scrutinizer/g/andrey-helldar/sitemap.svg?style=flat-square)](https://github.com/andrey-helldar/sitemap)
+
 [![PHP-Eye](https://php-eye.com/badge/andrey-helldar/sitemap/tested.svg?style=flat)](https://php-eye.com/package/andrey-helldar/sitemap)
-
-
 [![Dependency Status](https://www.versioneye.com/php/andrey-helldar:sitemap/dev-master/badge?style=flat-square)](https://www.versioneye.com/php/andrey-helldar:sitemap/dev-master)
 [![License](https://poser.pugx.org/andrey-helldar/sitemap/license)](https://packagist.org/packages/andrey-helldar/sitemap)
 
