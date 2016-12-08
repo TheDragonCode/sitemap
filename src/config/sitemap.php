@@ -22,7 +22,7 @@ return array(
 
     /*
      * Age data in minutes, over which references will not be included in the sitemap.
-     * Default: 180 days.
+     * Default: 180 minutes.
      */
     'age' => 180,
 
