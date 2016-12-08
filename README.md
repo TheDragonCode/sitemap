@@ -71,6 +71,7 @@ http://mysite.dev/sitemap.xml
 
 See at `config/sitemap.php`:
 
+    `filename`          - The file name to save. Default, `sitemap.xml`.
     `cache`             - Caching time in minutes. Set `0` to disable cache. Default: 0.
     `age`               - Age data in minutes, over which references will not be included in the sitemap. Default: 180 days.
     `age_column`        - For some column search. Default: updated_at.
