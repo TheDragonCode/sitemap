@@ -88,6 +88,53 @@ See at `config/sitemap.php`:
 If you have any questions in the installation and use of the package, you can always [watch the video guide](https://youtu.be/1WaBqg7sW-s).
 
 
+## Using
+
+There are two options for using the package:
+
+### Option 1
+
+Site maps generated on the basis of these "simple" models in the configuration file:
+
+```php
+echo \Helldar\Sitemap\Factory::generate();
+```
+
+or
+
+### Option 2
+
+Transfer the finished array package to generate a site map with more complex URL:
+
+```php
+$sitemap = new \Helldar\Sitemap\Factory('myfile.xml');
+$sitemap->set($loc, $lastmod, $priority);
+echo $sitemap->get();
+```
+
+If you create a class as a parameter to pass the file name, the file will be saved with the specified name at the end of all the compiled files (`Factory('myfile.xml')`).
+
+Example:
+```php
+function index()
+{
+    $faker   = Factory::create();
+    $sitemap = new \Helldar\Sitemap\Factory('myfile.xml');
+
+    for ($i = 0; $i < 10; $i++) {
+        $loc      = url($faker->unique()->slug);
+        $lastmod  = Carbon::now()->timestamp;
+        $priority = 0.9;
+
+        $sitemap->set($loc, $lastmod, $priority);
+    }
+
+    return $sitemap->get();
+}
+// Return all users from database and save to file `/public/myfile.xml`.
+```
+
+
 ## Support Library
 
 You can donate via [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=94B8LCPAPJ5VG), Yandex Money (410012608840929), WebMoney (Z124862854284)
