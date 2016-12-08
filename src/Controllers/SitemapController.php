@@ -74,6 +74,7 @@ class SitemapController
      */
     public function __construct()
     {
+        static::$filename = config('sitemap.filename', 'sitemap.xml');
         static::$cache = config('sitemap.cache', 0);
         static::$age = config('sitemap.age', 180);
         static::$age_column = config('sitemap.age_column', 'updated_at');
