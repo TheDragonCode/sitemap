@@ -97,7 +97,7 @@ class SitemapController
      * @author  Andrey Helldar <helldar@ai-rus.com>
      * @version 2016-12-08
      */
-    public static function header()
+    private static function header()
     {
         header('Content-Type: application/xml');
     }
@@ -164,7 +164,7 @@ class SitemapController
      *
      * @return mixed
      */
-    public static function compile($items_overflow = null)
+    protected static function compile($items_overflow = null)
     {
         static::header();
         $items = !empty($items_overflow) ? $items_overflow : static::merge();
