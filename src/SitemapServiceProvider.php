@@ -25,8 +25,6 @@ class SitemapServiceProvider extends ServiceProvider
         $this->publishes(array(
             __DIR__.'/config/sitemap.php' => config_path('sitemap.php'),
         ));
-
-        $this->loadRoutesFrom(__DIR__.'/routes.php');
     }
 
     /**
