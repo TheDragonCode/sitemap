@@ -1,5 +1,11 @@
 # Changelog
 
+## Dev
+
+    Added parameter to the method of generation cards by model.
+    Adjusting the maximum age parameter records to be added to the sitemap.
+
+
 ## 1.0.3
 
     Changed the location of some resources.
