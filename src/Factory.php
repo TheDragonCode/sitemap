@@ -12,19 +12,19 @@ namespace Helldar\Sitemap;
 
 use Carbon\Carbon;
 use Helldar\Sitemap\Controllers\SitemapController;
-use Helldar\Sitemap\Controllers\XmlController;
 
 class Factory extends SitemapController
 {
     /**
      * @var array
      */
-    protected $items_overflow = [];
+    protected $items_overflow = array();
 
     /**
      * Adding points to sitemap.
      *
      * @author  Andrey Helldar <helldar@ai-rus.com>
+     *
      * @version 2016-12-08
      *
      * @param string $loc      The correct URL address.
@@ -37,10 +37,10 @@ class Factory extends SitemapController
             return;
         }
 
-        $item = [];
+        $item = array();
 
-        $item['loc']      = trim($loc);
-        $item['priority'] = !empty($priority) ? (float)$priority : static::$default_priority;
+        $item['loc'] = trim($loc);
+        $item['priority'] = !empty($priority) ? (float) $priority : static::$default_priority;
 
         if (!empty($lastmod)) {
             $item['lastmod'] = Carbon::createFromTimestamp($lastmod)->format('Y-m-d');
@@ -57,6 +57,7 @@ class Factory extends SitemapController
      * Getting the compiled data.
      *
      * @author  Andrey Helldar <helldar@ai-rus.com>
+     *
      * @version 2016-12-08
      *
      * @return mixed

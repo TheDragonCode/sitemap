@@ -10,7 +10,6 @@
 
 namespace Helldar\Sitemap\Controllers;
 
-
 class XmlController
 {
     /**
@@ -21,11 +20,11 @@ class XmlController
     /**
      * @var array
      */
-    protected static $template_xmlns = [
+    protected static $template_xmlns = array(
         'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
         'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"',
         'xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"',
-    ];
+    );
 
     /**
      * @var string
@@ -39,6 +38,7 @@ class XmlController
 
     /**
      * @author  Andrey Helldar <helldar@ai-rus.com>
+     *
      * @version 2016-12-08
      *
      * @param $items
@@ -55,6 +55,7 @@ class XmlController
 
     /**
      * @author  Andrey Helldar <helldar@ai-rus.com>
+     *
      * @version 2016-12-08
      *
      * @param $items
@@ -63,7 +64,7 @@ class XmlController
      */
     private static function compile($items)
     {
-        $result = [];
+        $result = array();
 
         foreach ($items as $item) {
             $line = '';
@@ -82,6 +83,7 @@ class XmlController
      * Compile item line.
      *
      * @author  Andrey Helldar <helldar@ai-rus.com>
+     *
      * @version 2016-12-08
      *
      * @param $key
@@ -91,6 +93,6 @@ class XmlController
      */
     private static function replaceItem($key, $value)
     {
-        return str_replace(['{0}', '{1}'], [$key, $value], static::$template_item);
+        return str_replace(array('{0}', '{1}'), array($key, $value), static::$template_item);
     }
 }
