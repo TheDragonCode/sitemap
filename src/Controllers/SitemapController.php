@@ -64,7 +64,7 @@ class SitemapController
      *
      * @var array
      */
-    protected static $items = array();
+    protected static $items = [];
 
     /**
      * Create a new Sitemap instance.
@@ -74,13 +74,13 @@ class SitemapController
      */
     public function __construct()
     {
-        static::$filename = config('sitemap.filename', 'sitemap.xml');
-        static::$cache = config('sitemap.cache', 0);
-        static::$age = config('sitemap.age', 180);
-        static::$age_column = config('sitemap.age_column', 'updated_at');
-        static::$frequency = config('sitemap.frequency', 'daily');
+        static::$filename          = config('sitemap.filename', 'sitemap.xml');
+        static::$cache             = config('sitemap.cache', 0);
+        static::$age               = config('sitemap.age', 180);
+        static::$age_column        = config('sitemap.age_column', 'updated_at');
+        static::$frequency         = config('sitemap.frequency', 'daily');
         static::$last_modification = config('sitemap.last_modification', true);
-        static::$items = config('sitemap.items', array());
+        static::$items             = config('sitemap.items', []);
     }
 
     /**
@@ -99,7 +99,7 @@ class SitemapController
 
             if (file_exists($path)) {
                 $updated = Carbon::createFromTimestamp(filemtime($path));
-                $diff = Carbon::now()->diffInMinutes($updated);
+                $diff    = Carbon::now()->diffInMinutes($updated);
 
                 if (abs($diff) > abs(static::$cache)) {
                     unlink($path);
@@ -121,6 +121,14 @@ class SitemapController
         return $items;
     }
 
+    /**
+     * The compilation of the data into XML.
+     *
+     * @author  Andrey Helldar <helldar@ai-rus.com>
+     * @version 2016-12-05
+     *
+     * @return mixed
+     */
     private static function compile()
     {
         $items = static::get();
@@ -139,7 +147,7 @@ class SitemapController
      */
     private static function get()
     {
-        $result = array();
+        $result = [];
 
         foreach (static::$items as $item) {
             $result = array_merge($result, static::items($item));
@@ -163,7 +171,7 @@ class SitemapController
     {
         $minutes = abs(static::$age) * -1;
         $records = ($item['model'])::where(static::$age_column, '>', Carbon::now()->addMinutes($minutes))->get();
-        $result = array();
+        $result  = [];
 
         if ($records->count()) {
             foreach ($records as $record) {
@@ -188,7 +196,7 @@ class SitemapController
      */
     private static function make($item, $record)
     {
-        $route_keys = array();
+        $route_keys = [];
 
         foreach ($item['keys'] as $key => $value) {
             $route_keys[$key] = $record->{$value};

@@ -48,13 +48,13 @@ return array(
      */
     'items' => array(
         /*
-         * `model` Model for data retrieval.
-         * `route` Name of route for return URL.
-         * `keys`  `Key for route` => `Column in database`
-         *         Example:
-         *            Route::get('user/{category}/{id}', ...)->name('user::show');
-         *         return:
-         *            http://mysite.com/user/10/2 for `category_id` = 10 and `user_id` = 2
+         * `model`    Model for data retrieval.
+         * `route`    Name of route for return URL.
+         * `keys`     `Key for route` => `Column in database`
+         *            Example:
+         *              Route::get('user/{category}/{id}', ...)->name('user::show');
+         *            return:
+         *              http://mysite.com/user/10/2 for `category_id` = 10 and `user_id` = 2
          * `priority` Priority for save sitemap. Default: 0.8
          */
         array(
