@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 return array(
-    /**
+    /*
      * The file name to save.
      */
     'filename' => 'sitemap.xml',
