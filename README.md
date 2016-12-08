@@ -7,7 +7,7 @@ A simple sitemap generator for PHP Framework.
 
 <p align="center">
 <a href="https://travis-ci.org/andrey-helldar/sitemap"><img src="https://travis-ci.org/andrey-helldar/sitemap.svg?branch=master&style=flat-square" alt="Build Status" /></a>
-<a href="https://github.com/andrey-helldar/sitemap"><img src="https://img.shields.io/packagist/dt/andrey-helldar/sitemap.svg?style=flat-square" alt="Total Downloads" /></a>
+<a href="https://packagist.org/packages/andrey-helldar/sitemap"><img src="https://img.shields.io/packagist/dt/andrey-helldar/sitemap.svg?style=flat-square" alt="Total Downloads" /></a>
 <a href="https://github.com/andrey-helldar/sitemap"><img src="https://poser.pugx.org/andrey-helldar/sitemap/v/stable" alt="Latest Stable Version" /></a>
 <a href="https://github.com/andrey-helldar/sitemap"><img src="https://poser.pugx.org/andrey-helldar/sitemap/v/unstable" alt="Latest Unstable Version" /></a>
 <a href="https://github.com/andrey-helldar/sitemap"><img src="https://poser.pugx.org/andrey-helldar/sitemap/license" alt="License" /></a>
@@ -85,7 +85,7 @@ See at `config/sitemap.php`:
     ]
 
 
-If you have any questions in the installation and use of the package, you can always [watch the video guide](https://youtu.be/1WaBqg7sW-s).
+If you have any questions in the installation and use of the package, you can always [watch the video guide for version 1.0.2](https://youtu.be/1WaBqg7sW-s).
 
 
 ## Using
