@@ -97,7 +97,7 @@ There are two options for using the package:
 Site maps generated on the basis of these "simple" models in the configuration file:
 
 ```php
-echo \Helldar\Sitemap\Factory::generate();
+echo \Helldar\Sitemap\Factory::generate('myfile.xml');
 ```
 
 or

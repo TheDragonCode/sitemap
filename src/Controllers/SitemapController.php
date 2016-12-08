@@ -111,13 +111,18 @@ class SitemapController
      * Generate sitemap.
      *
      * @author  Andrey Helldar <helldar@ai-rus.com>
-     *
      * @version 2016-12-05
+     *
+     * @param string|null $filename
      *
      * @return mixed
      */
-    public static function generate()
+    public static function generate($filename = null)
     {
+        if (!empty($filename)) {
+            static::$filename = $filename;
+        }
+
         if (static::$cache) {
             $path = public_path(static::$filename);
 
