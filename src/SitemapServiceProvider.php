@@ -26,7 +26,6 @@ class SitemapServiceProvider extends ServiceProvider
             __DIR__.'/config/sitemap.php' => config_path('sitemap.php'),
         ));
 
-        $this->loadViewsFrom(__DIR__.'/views', 'sitemap');
         $this->loadRoutesFrom(__DIR__.'/routes.php');
     }
 
@@ -38,7 +37,7 @@ class SitemapServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app['sitemap'] = $this->app->share(function ($app) {
-            return new Sitemap();
+            return new Factory();
         });
     }
 }

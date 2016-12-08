@@ -58,7 +58,7 @@ return array(
          * `priority` Priority for save sitemap. Default: 0.8
          */
         array(
-            'model' => User::class,
+            'model' => \App\User::class,
             'route' => 'user::show',
             'keys' => array(
                 'category' => 'category_id',

@@ -60,21 +60,55 @@ class SitemapController
     protected static $last_modification = true;
 
     /**
-     * Models for searching data.
+     * Default priority for all links.
+     *
+     * @var float
+     */
+    protected static $default_priority = 0.8;
+
+    /**
+     * Model for searching data.
      *
      * @var array
      */
     protected static $items = [];
 
     /**
+     * @var string
+     */
+    protected static $compiled_data = '';
+
+    /**
      * Create a new Sitemap instance.
      *
      * Please see the testing aids section (specifically static::setTestNow())
      * for more on the possibility of this constructor returning a test instance.
+     *
+     * @param null|string $filename
      */
-    public function __construct()
+    public function __construct($filename = null)
     {
-        static::$filename          = config('sitemap.filename', 'sitemap.xml');
+        static::create($filename);
+    }
+
+    /**
+     * Set document type in Header.
+     *
+     * @author  Andrey Helldar <helldar@ai-rus.com>
+     * @version 2016-12-08
+     */
+    public static function header()
+    {
+        header('Content-Type: application/xml');
+    }
+
+    /**
+     * @author  Andrey Helldar <helldar@ai-rus.com>
+     * @version 2016-12-08
+     */
+    private static function create($filename)
+    {
+        static::$filename          = isset($filename) ? $filename : config('sitemap.filename', 'sitemap.xml');
         static::$cache             = config('sitemap.cache', 0);
         static::$age               = config('sitemap.age', 180);
         static::$age_column        = config('sitemap.age_column', 'updated_at');
@@ -102,23 +136,22 @@ class SitemapController
                 $diff    = Carbon::now()->diffInMinutes($updated);
 
                 if (abs($diff) > abs(static::$cache)) {
-                    unlink($path);
-                    $items = static::compile();
-                    file_put_contents($path, $items);
+                    static::$compiled_data = static::compile();
+                    static::save();
                 } else {
-                    $items = file_get_contents($path);
+                    static::$compiled_data = file_get_contents($path);
                 }
             } else {
-                $items = static::compile();
-                file_put_contents($path, $items);
+                static::$compiled_data = static::compile();
+                static::save();
             }
         }
 
-        if (empty($items)) {
-            $items = static::compile();
+        if (empty(static::$compiled_data)) {
+            static::$compiled_data = static::compile();
         }
 
-        return $items;
+        return static::$compiled_data;
     }
 
     /**
@@ -127,17 +160,24 @@ class SitemapController
      * @author  Andrey Helldar <helldar@ai-rus.com>
      * @version 2016-12-05
      *
+     * @param array $items_overflow
+     *
      * @return mixed
      */
-    private static function compile()
+    public static function compile($items_overflow = null)
     {
-        $items = static::get();
+        static::header();
+        $items = !empty($items_overflow) ? $items_overflow : static::merge();
 
-        return view('sitemap::skeleton')->with(compact('items'));
+        static::$compiled_data = XmlController::create($items);
+
+        static::save();
+
+        return static::$compiled_data;
     }
 
     /**
-     * Get data;
+     * Combining the data in one array.
      *
      * @author  Andrey Helldar <helldar@ai-rus.com>
      *
@@ -145,7 +185,7 @@ class SitemapController
      *
      * @return array
      */
-    private static function get()
+    private static function merge()
     {
         $result = [];
 
@@ -217,5 +257,22 @@ class SitemapController
         }
 
         return collect($result);
+    }
+
+    /**
+     * Save compiled data into file.
+     *
+     * @author  Andrey Helldar <helldar@ai-rus.com>
+     * @version 2016-12-08
+     */
+    public static function save()
+    {
+        $path = public_path(static::$filename);
+
+        if (file_exists($path)) {
+            unlink($path);
+        }
+
+        file_put_contents($path, static::$compiled_data);
     }
 }

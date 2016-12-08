@@ -47,12 +47,6 @@ Helldar\Sitemap\SitemapServiceProvider::class,
 ```
 
 
-To install this package on only development systems, add the --dev flag to your composer command:
-```
-composer require --dev andrey-helldar/sitemap
-```
-
-
 You can also publish the config file to change implementations (ie. interface to specific class):
 
 ```
