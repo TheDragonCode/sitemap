@@ -111,6 +111,7 @@ class SitemapController
      * Generate sitemap.
      *
      * @author  Andrey Helldar <helldar@ai-rus.com>
+     *
      * @version 2016-12-05
      *
      * @param string|null $filename
