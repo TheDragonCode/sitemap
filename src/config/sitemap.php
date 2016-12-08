@@ -8,6 +8,11 @@
  * file that was distributed with this source code.
  */
 return array(
+    /**
+     * The file name to save.
+     */
+    'filename' => 'sitemap.xml',
+
     /*
      * Caching time in minutes.
      * Set `0` to disable cache.

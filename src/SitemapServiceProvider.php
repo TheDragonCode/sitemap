@@ -23,10 +23,10 @@ class SitemapServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes(array(
-            __DIR__.'/../config/sitemap.php' => config_path('sitemap.php'),
+            __DIR__.'/config/sitemap.php' => config_path('sitemap.php'),
         ));
 
-        $this->loadViewsFrom(__DIR__.'/../views', 'sitemap');
+        $this->loadViewsFrom(__DIR__.'/views', 'sitemap');
         $this->loadRoutesFrom(__DIR__.'/routes.php');
     }
 
