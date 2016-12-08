@@ -29,7 +29,7 @@ class SitemapController
     protected static $cache = 0;
 
     /**
-     * Age data in minutes, over which references will not be included in the sitemap.
+     * Age data in days, over which references will not be included in the sitemap.
      * Default: 180 days.
      *
      * @var int
@@ -71,7 +71,7 @@ class SitemapController
      *
      * @var array
      */
-    protected static $items = array();
+    protected static $items = [];
 
     /**
      * @var string
@@ -92,31 +92,19 @@ class SitemapController
     }
 
     /**
-     * Set document type in Header.
-     *
-     * @author  Andrey Helldar <helldar@ai-rus.com>
-     *
-     * @version 2016-12-08
-     */
-    private static function header()
-    {
-        header('Content-Type: application/xml');
-    }
-
-    /**
      * @author  Andrey Helldar <helldar@ai-rus.com>
      *
      * @version 2016-12-08
      */
     private static function create($filename)
     {
-        static::$filename = isset($filename) ? $filename : config('sitemap.filename', 'sitemap.xml');
-        static::$cache = config('sitemap.cache', 0);
-        static::$age = config('sitemap.age', 180);
-        static::$age_column = config('sitemap.age_column', 'updated_at');
-        static::$frequency = config('sitemap.frequency', 'daily');
+        static::$filename          = isset($filename) ? $filename : config('sitemap.filename', 'sitemap.xml');
+        static::$cache             = config('sitemap.cache', 0);
+        static::$age               = config('sitemap.age', 180);
+        static::$age_column        = config('sitemap.age_column', 'updated_at');
+        static::$frequency         = config('sitemap.frequency', 'daily');
         static::$last_modification = config('sitemap.last_modification', true);
-        static::$items = config('sitemap.items', array());
+        static::$items             = config('sitemap.items', []);
     }
 
     /**
@@ -135,7 +123,7 @@ class SitemapController
 
             if (file_exists($path)) {
                 $updated = Carbon::createFromTimestamp(filemtime($path));
-                $diff = Carbon::now()->diffInMinutes($updated);
+                $diff    = Carbon::now()->diffInMinutes($updated);
 
                 if (abs($diff) > abs(static::$cache)) {
                     static::$compiled_data = static::compile();
@@ -180,6 +168,18 @@ class SitemapController
     }
 
     /**
+     * Set document type in Header.
+     *
+     * @author  Andrey Helldar <helldar@ai-rus.com>
+     *
+     * @version 2016-12-08
+     */
+    private static function header()
+    {
+        header('Content-Type: application/xml');
+    }
+
+    /**
      * Combining the data in one array.
      *
      * @author  Andrey Helldar <helldar@ai-rus.com>
@@ -190,7 +190,7 @@ class SitemapController
      */
     private static function merge()
     {
-        $result = array();
+        $result = [];
 
         foreach (static::$items as $item) {
             $result = array_merge($result, static::items($item));
@@ -212,9 +212,9 @@ class SitemapController
      */
     private static function items($item)
     {
-        $minutes = abs(static::$age) * -1;
-        $records = ($item['model'])::where(static::$age_column, '>', Carbon::now()->addMinutes($minutes))->get();
-        $result = array();
+        $days    = abs(static::$age) * -1;
+        $records = ($item['model'])::where(static::$age_column, '>', Carbon::now()->addDays($days))->get();
+        $result  = [];
 
         if ($records->count()) {
             foreach ($records as $record) {
@@ -239,7 +239,7 @@ class SitemapController
      */
     private static function make($item, $record)
     {
-        $route_keys = array();
+        $route_keys = [];
 
         foreach ($item['keys'] as $key => $value) {
             $route_keys[$key] = $record->{$value};
