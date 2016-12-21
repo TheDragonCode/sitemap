@@ -143,7 +143,7 @@ php artisan sitemap:clear
 
 or configure the scheduler:
 
-Add command to `schedule` method:
+Add command to `schedule` method in `app/Console/Kernel.php`:
 ```php
 $schedule->command('sitemap:clear')->daily();
 ```
