@@ -18,7 +18,7 @@ class Factory extends SitemapController
     /**
      * @var array
      */
-    protected $items_overflow = array();
+    protected $items_overflow = [];
 
     /**
      * Adding points to sitemap.
@@ -33,14 +33,14 @@ class Factory extends SitemapController
      */
     public function set($loc, $lastmod, $priority)
     {
-        if (empty($loc)) {
+        if (empty($loc) || !static::check_migration()) {
             return;
         }
 
-        $item = array();
+        $item = [];
 
-        $item['loc'] = trim($loc);
-        $item['priority'] = !empty($priority) ? (float) $priority : static::$default_priority;
+        $item['loc']      = trim($loc);
+        $item['priority'] = !empty($priority) ? (float)$priority : static::$default_priority;
 
         if (!empty($lastmod)) {
             $item['lastmod'] = Carbon::createFromTimestamp($lastmod)->format('Y-m-d');
@@ -51,6 +51,23 @@ class Factory extends SitemapController
         }
 
         $this->items_overflow[] = collect($item);
+    }
+
+    /**
+     * Check table in database.
+     *
+     * @author  Andrey Helldar <helldar@ai-rus.com>
+     * @version 2016-12-21
+     *
+     * @return bool
+     */
+    private function check_migration()
+    {
+        if (!\Schema::hasTable('sitemaps')) {
+            die("Database table `sitemaps` not found.");
+        }
+
+        return true;
     }
 
     /**
