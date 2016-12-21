@@ -67,6 +67,7 @@ See at `config/sitemap.php`:
 
     `filename`          - The file name to save. Default, `sitemap.xml`.
     `cache`             - Caching time in minutes. Set `0` to disable cache. Default: 0.
+    `clear_old`         - Clear old links in database table. Default: false. 
     `age`               - Age data in minutes, over which references will not be included in the sitemap. Default: 180 days.
     `age_column`        - For some column search. Default: updated_at.
     `frequency`         - This value indicates how frequently the content at a particular URL is likely to change.
@@ -133,6 +134,23 @@ function index()
 }
 // Return all users from database and save to file `/public/myfile.xml`.
 ```
+
+#### Console command
+
+To delete old records database, use the following command:
+```bash
+php artisan sitemap:clear
+```
+
+or configure the scheduler:
+
+Add command to `schedule` method:
+```php
+$schedule->command('sitemap:clear)->daily();
+```
+
+Of course, there are a variety of schedules you may assign to your task:
+[Schedule Frequency Options in Laravel](https://laravel.com/docs/5.3/scheduling#schedule-frequency-options)
 
 
 ## Support Library

@@ -20,6 +20,12 @@ return array(
      */
     'cache' => 0,
 
+    /**
+     * Clear old links in database table.
+     * Default, `false`.
+     */
+    'clear_old' => false,
+
     /*
      * Age data in days, over which references will not be included in the sitemap.
      * Default: 180 days.

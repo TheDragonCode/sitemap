@@ -11,6 +11,7 @@
 
 namespace Helldar\Sitemap;
 
+use Helldar\Sitemap\Console\SitemapCommand;
 use Illuminate\Support\ServiceProvider as ServiceProvider;
 
 class SitemapServiceProvider extends ServiceProvider
@@ -29,6 +30,12 @@ class SitemapServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/migrations/' => database_path('migrations'),
         ], 'migrations');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                SitemapCommand::class,
+            ]);
+        }
     }
 
     /**

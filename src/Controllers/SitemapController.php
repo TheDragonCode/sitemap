@@ -309,4 +309,19 @@ class SitemapController
             ]));
         }
     }
+
+    /**
+     * Delete old records from the database.
+     *
+     * @author  Andrey Helldar <helldar@ai-rus.com>
+     * @version 2016-12-21
+     *
+     */
+    public static function clearDb()
+    {
+        if (config('sitemap.clear_old', false)) {
+            $time = Carbon::now()->addDays(config('sitemap.age', 180));
+            \DB::table(static::$table_name)->where(config('sitemap.age_column', 'updated_at'), '<=', $time)->delete();
+        }
+    }
 }
