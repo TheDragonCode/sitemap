@@ -15,16 +15,16 @@ class XmlController
     /**
      * @var string
      */
-    protected static $template = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset %s>%s\n</urlset>";
+    protected static $template = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n%s\n<urlset %s>%s\n</urlset>";
 
     /**
      * @var array
      */
-    protected static $template_xmlns = array(
+    protected static $template_xmlns = [
         'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
         'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"',
         'xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"',
-    );
+    ];
 
     /**
      * @var string
@@ -35,6 +35,11 @@ class XmlController
      * @var string
      */
     protected static $template_item = "\n\t<{0}>{1}</{0}>";
+
+    /**
+     * @var string
+     */
+    private static $comment = "<!--\n\tCreated with andrey-helldar/sitemap\n\tai-rus.com\n-->";
 
     /**
      * @author  Andrey Helldar <helldar@ai-rus.com>
@@ -50,7 +55,7 @@ class XmlController
         $items = static::compile($items);
         $xmlns = implode(' ', static::$template_xmlns);
 
-        return sprintf(static::$template, $xmlns, $items);
+        return sprintf(static::$template, static::$comment, $xmlns, $items);
     }
 
     /**
@@ -64,7 +69,7 @@ class XmlController
      */
     private static function compile($items)
     {
-        $result = array();
+        $result = [];
 
         foreach ($items as $item) {
             $line = '';
@@ -93,6 +98,6 @@ class XmlController
      */
     private static function replaceItem($key, $value)
     {
-        return str_replace(array('{0}', '{1}'), array($key, $value), static::$template_item);
+        return str_replace(['{0}', '{1}'], [$key, $value], static::$template_item);
     }
 }
