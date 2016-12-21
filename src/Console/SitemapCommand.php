@@ -46,18 +46,19 @@ class SitemapCommand extends Command
      * Execute console command.
      *
      * @author  Andrey Helldar <helldar@ai-rus.com>
+     *
      * @version 2016-12-21
      */
     public function handle()
     {
         if (!\Schema::hasTable($this->table_name)) {
-            $this->error('Table `' . $this->table_name . '` not found!');
+            $this->error('Table `'.$this->table_name.'` not found!');
 
             return;
         }
 
         SitemapController::clearDb();
 
-        $this->warn('Table `' . $this->table_name . '` cleaned successfully!');
+        $this->warn('Table `'.$this->table_name.'` cleaned successfully!');
     }
 }
