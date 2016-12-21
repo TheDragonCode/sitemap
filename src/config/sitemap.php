@@ -34,6 +34,7 @@ return array(
 
     /*
      * This value indicates how frequently the content at a particular URL is likely to change.
+     * Default, `daily`.
      */
     'frequency' => 'daily',
 
