@@ -1,9 +1,8 @@
 # Sitemap for Laravel 5.3+
 
-<p align="center">
 A simple sitemap generator for PHP Framework.
-</p>
 
+![Sitemap for Laravel 5.3+](https://cloud.githubusercontent.com/assets/10347617/21392885/52a475f4-c7d5-11e6-925d-a527bc0c1027.jpg)
 
 <p align="center">
 <a href="https://travis-ci.org/andrey-helldar/sitemap"><img src="https://travis-ci.org/andrey-helldar/sitemap.svg?branch=master&style=flat-square" alt="Build Status" /></a>
