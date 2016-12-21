@@ -16,11 +16,6 @@ use Helldar\Sitemap\Controllers\SitemapController;
 class Factory extends SitemapController
 {
     /**
-     * @var array
-     */
-    protected $items_overflow = [];
-
-    /**
      * Adding points to sitemap.
      *
      * @author  Andrey Helldar <helldar@ai-rus.com>
@@ -39,18 +34,16 @@ class Factory extends SitemapController
 
         $item = [];
 
-        $item['loc']      = trim($loc);
-        $item['priority'] = !empty($priority) ? (float)$priority : static::$default_priority;
+        $item['updated_at'] = Carbon::now();
+        $item['loc']        = trim($loc);
+        $item['priority']   = !empty($priority) ? (float)$priority : static::$default_priority;
 
         if (!empty($lastmod)) {
+            $lastmod         = gettype($lastmod) === 'integer' ? $lastmod : strtotime($lastmod);
             $item['lastmod'] = Carbon::createFromTimestamp($lastmod)->format('Y-m-d');
         }
 
-        if (parent::$frequency) {
-            $result['changefreq'] = parent::$frequency;
-        }
-
-        $this->items_overflow[] = collect($item);
+        parent::insertDb($item);
     }
 
     /**
@@ -63,8 +56,8 @@ class Factory extends SitemapController
      */
     private function check_migration()
     {
-        if (!\Schema::hasTable('sitemaps')) {
-            die("Database table `sitemaps` not found.");
+        if (!\Schema::hasTable(parent::$table_name)) {
+            die("Database table `" . parent::$table_name . "` not found.");
         }
 
         return true;
@@ -81,6 +74,9 @@ class Factory extends SitemapController
      */
     public function get()
     {
-        return parent::compile($this->items_overflow);
+        $where = Carbon::now()->addDays(-1 * abs((int)config('sitemap.age', 180)));
+        $items = \DB::table(parent::$table_name)->where(config('sitemap.age_column', 'updated_at'), '>', $where)->get();
+
+        return parent::compile($items);
     }
 }

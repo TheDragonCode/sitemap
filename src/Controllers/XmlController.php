@@ -10,6 +10,8 @@
 
 namespace Helldar\Sitemap\Controllers;
 
+use Carbon\Carbon;
+
 class XmlController
 {
     /**
@@ -72,9 +74,10 @@ class XmlController
         $result = [];
 
         foreach ($items as $item) {
+            $item = static::checkType($item);
             $line = '';
 
-            foreach ($item->all() as $key => $value) {
+            foreach ($item as $key => $value) {
                 $line .= static::replaceItem($key, $value);
             }
 
@@ -82,6 +85,55 @@ class XmlController
         }
 
         return implode('', $result);
+    }
+
+    /**
+     * Check type of item.
+     *
+     * @author  Andrey Helldar <helldar@ai-rus.com>
+     * @version 2016-12-21
+     *
+     * @param $item
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    private static function checkType($item)
+    {
+        if (gettype($item) == 'object') {
+            unset($item->created_at);
+            unset($item->updated_at);
+
+            if (isset($item->lastmod)) {
+                $item->lastmod = static::fixLastmod($item->lastmod);
+            }
+
+            return collect($item);
+        }
+
+        if (isset($item->lastmod)) {
+            $item->lastmod = static::fixLastmod($item->lastmod);
+        }
+
+        return $item;
+    }
+
+    /**
+     * Fix lastmod value.
+     *
+     * @author  Andrey Helldar <helldar@ai-rus.com>
+     * @version 2016-12-21
+     *
+     * @param $lastmod
+     *
+     * @return string
+     */
+    private static function fixLastmod($lastmod)
+    {
+        if (stripos((string)$lastmod, ' ') !== false) {
+            return Carbon::parse($lastmod)->format('Y-m-d');
+        }
+
+        return $lastmod;
     }
 
     /**

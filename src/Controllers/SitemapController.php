@@ -17,6 +17,11 @@ class SitemapController
     /**
      * @var string
      */
+    protected static $table_name = 'sitemaps';
+
+    /**
+     * @var string
+     */
     protected static $filename = 'sitemap.xml';
 
     /**
@@ -71,7 +76,7 @@ class SitemapController
      *
      * @var array
      */
-    protected static $items = array();
+    protected static $items = [];
 
     /**
      * @var string
@@ -98,13 +103,13 @@ class SitemapController
      */
     private static function create($filename)
     {
-        static::$filename = isset($filename) ? $filename : config('sitemap.filename', 'sitemap.xml');
-        static::$cache = config('sitemap.cache', 0);
-        static::$age = config('sitemap.age', 180);
-        static::$age_column = config('sitemap.age_column', 'updated_at');
-        static::$frequency = config('sitemap.frequency', 'daily');
+        static::$filename          = isset($filename) ? $filename : config('sitemap.filename', 'sitemap.xml');
+        static::$cache             = config('sitemap.cache', 0);
+        static::$age               = config('sitemap.age', 180);
+        static::$age_column        = config('sitemap.age_column', 'updated_at');
+        static::$frequency         = config('sitemap.frequency', 'daily');
         static::$last_modification = config('sitemap.last_modification', true);
-        static::$items = config('sitemap.items', array());
+        static::$items             = config('sitemap.items', []);
     }
 
     /**
@@ -129,7 +134,7 @@ class SitemapController
 
             if (file_exists($path)) {
                 $updated = Carbon::createFromTimestamp(filemtime($path));
-                $diff = Carbon::now()->diffInMinutes($updated);
+                $diff    = Carbon::now()->diffInMinutes($updated);
 
                 if (abs($diff) > abs(static::$cache)) {
                     static::$compiled_data = static::compile();
@@ -196,7 +201,7 @@ class SitemapController
      */
     private static function merge()
     {
-        $result = array();
+        $result = [];
 
         foreach (static::$items as $item) {
             $result = array_merge($result, static::items($item));
@@ -218,9 +223,9 @@ class SitemapController
      */
     private static function items($item)
     {
-        $days = abs(static::$age) * -1;
+        $days    = abs(static::$age) * -1;
         $records = ($item['model'])::where(static::$age_column, '>', Carbon::now()->addDays($days))->get();
-        $result = array();
+        $result  = [];
 
         if ($records->count()) {
             foreach ($records as $record) {
@@ -245,7 +250,7 @@ class SitemapController
      */
     private static function make($item, $record)
     {
-        $route_keys = array();
+        $route_keys = [];
 
         foreach ($item['keys'] as $key => $value) {
             $route_keys[$key] = $record->{$value};
@@ -284,5 +289,24 @@ class SitemapController
         }
 
         file_put_contents($path, static::$compiled_data);
+    }
+
+    /**
+     * Insert or update record in database.
+     *
+     * @author  Andrey Helldar <helldar@ai-rus.com>
+     * @version 2016-12-21
+     *
+     * @param $item
+     */
+    public static function insertDb($item)
+    {
+        if (\DB::table(static::$table_name)->whereLoc($item['loc'])->count()) {
+            \DB::table(static::$table_name)->whereLoc($item['loc'])->update($item);
+        } else {
+            \DB::table(static::$table_name)->insert(array_merge($item, [
+                'created_at' => Carbon::now(),
+            ]));
+        }
     }
 }
