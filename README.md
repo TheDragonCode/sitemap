@@ -146,7 +146,7 @@ or configure the scheduler:
 
 Add command to `schedule` method:
 ```php
-$schedule->command('sitemap:clear)->daily();
+$schedule->command('sitemap:clear')->daily();
 ```
 
 Of course, there are a variety of schedules you may assign to your task:
