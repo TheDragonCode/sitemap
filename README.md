@@ -92,7 +92,7 @@ If you have any questions in the installation and use of the package, you can al
 
 There are two options for using the package:
 
-### Option 1
+### 1. Simple
 
 Site maps generated on the basis of these "simple" models in the configuration file:
 
@@ -102,7 +102,7 @@ echo \Helldar\Sitemap\Factory::generate('myfile.xml');
 
 or
 
-### Option 2
+### 2. Manual
 
 Transfer the finished array package to generate a site map with more complex URL:
 
