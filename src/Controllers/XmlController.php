@@ -22,11 +22,11 @@ class XmlController
     /**
      * @var array
      */
-    protected static $template_xmlns = [
+    protected static $template_xmlns = array(
         'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
         'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"',
         'xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"',
-    ];
+    );
 
     /**
      * @var string
@@ -71,7 +71,7 @@ class XmlController
      */
     private static function compile($items)
     {
-        $result = [];
+        $result = array();
 
         foreach ($items as $item) {
             $item = static::checkType($item);
@@ -91,6 +91,7 @@ class XmlController
      * Check type of item.
      *
      * @author  Andrey Helldar <helldar@ai-rus.com>
+     *
      * @version 2016-12-21
      *
      * @param $item
@@ -121,6 +122,7 @@ class XmlController
      * Fix lastmod value.
      *
      * @author  Andrey Helldar <helldar@ai-rus.com>
+     *
      * @version 2016-12-21
      *
      * @param $lastmod
@@ -129,7 +131,7 @@ class XmlController
      */
     private static function fixLastmod($lastmod)
     {
-        if (stripos((string)$lastmod, ' ') !== false) {
+        if (stripos((string) $lastmod, ' ') !== false) {
             return Carbon::parse($lastmod)->format('Y-m-d');
         }
 
@@ -150,6 +152,6 @@ class XmlController
      */
     private static function replaceItem($key, $value)
     {
-        return str_replace(['{0}', '{1}'], [$key, $value], static::$template_item);
+        return str_replace(array('{0}', '{1}'), array($key, $value), static::$template_item);
     }
 }

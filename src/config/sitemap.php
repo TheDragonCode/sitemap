@@ -20,7 +20,7 @@ return array(
      */
     'cache' => 0,
 
-    /**
+    /*
      * Clear old links in database table.
      * Default, `false`.
      */
