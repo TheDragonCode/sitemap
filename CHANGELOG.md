@@ -1,9 +1,12 @@
 # Changelog
 
-## Dev
+## 1.0.4
 
     Added parameter to the method of generation cards by model.
     Adjusting the maximum age parameter records to be added to the sitemap.
+    Added migration to store references to the database.
+    When manually adding links, they are stored in a database table.
+    Added console command to clean the database of old records.
 
 
 ## 1.0.3
