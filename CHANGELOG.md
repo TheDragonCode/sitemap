@@ -3,6 +3,7 @@
 ## Dev
 
     Add Upgrade Guide.
+    Fix issue #7: Data too long for column 'loc'
     
 
 ## 1.0.4
