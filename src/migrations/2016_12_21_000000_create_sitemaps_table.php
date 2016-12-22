@@ -23,7 +23,7 @@ class CreateSitemapsTable extends Migration
     public function up()
     {
         Schema::create($this->table_name, function (Blueprint $table) {
-            $table->string('loc')->unique();
+            $table->string('loc', 512)->unique();
             $table->double('priority')->default(0.8);
             $table->timestamp('lastmod')->nullable();
             $table->timestamps();
