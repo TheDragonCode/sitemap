@@ -76,7 +76,7 @@ class SitemapController
      *
      * @var array
      */
-    protected static $items = [];
+    protected static $items = array();
 
     /**
      * @var string
@@ -103,13 +103,13 @@ class SitemapController
      */
     private static function create($filename)
     {
-        static::$filename          = isset($filename) ? $filename : config('sitemap.filename', 'sitemap.xml');
-        static::$cache             = config('sitemap.cache', 0);
-        static::$age               = config('sitemap.age', 180);
-        static::$age_column        = config('sitemap.age_column', 'updated_at');
-        static::$frequency         = config('sitemap.frequency', 'daily');
+        static::$filename = isset($filename) ? $filename : config('sitemap.filename', 'sitemap.xml');
+        static::$cache = config('sitemap.cache', 0);
+        static::$age = config('sitemap.age', 180);
+        static::$age_column = config('sitemap.age_column', 'updated_at');
+        static::$frequency = config('sitemap.frequency', 'daily');
         static::$last_modification = config('sitemap.last_modification', true);
-        static::$items             = config('sitemap.items', []);
+        static::$items = config('sitemap.items', array());
     }
 
     /**
@@ -134,7 +134,7 @@ class SitemapController
 
             if (file_exists($path)) {
                 $updated = Carbon::createFromTimestamp(filemtime($path));
-                $diff    = Carbon::now()->diffInMinutes($updated);
+                $diff = Carbon::now()->diffInMinutes($updated);
 
                 if (abs($diff) > abs(static::$cache)) {
                     static::$compiled_data = static::compile();
@@ -201,7 +201,7 @@ class SitemapController
      */
     private static function merge()
     {
-        $result = [];
+        $result = array();
 
         foreach (static::$items as $item) {
             $result = array_merge($result, static::items($item));
@@ -223,9 +223,9 @@ class SitemapController
      */
     private static function items($item)
     {
-        $days    = abs(static::$age) * -1;
+        $days = abs(static::$age) * -1;
         $records = ($item['model'])::where(static::$age_column, '>', Carbon::now()->addDays($days))->get();
-        $result  = [];
+        $result = array();
 
         if ($records->count()) {
             foreach ($records as $record) {
@@ -250,7 +250,7 @@ class SitemapController
      */
     private static function make($item, $record)
     {
-        $route_keys = [];
+        $route_keys = array();
 
         foreach ($item['keys'] as $key => $value) {
             $route_keys[$key] = $record->{$value};
@@ -305,9 +305,9 @@ class SitemapController
         if (\DB::table(static::$table_name)->whereLoc($item['loc'])->count()) {
             \DB::table(static::$table_name)->whereLoc($item['loc'])->update($item);
         } else {
-            \DB::table(static::$table_name)->insert(array_merge($item, [
+            \DB::table(static::$table_name)->insert(array_merge($item, array(
                 'created_at' => Carbon::now(),
-            ]));
+            )));
         }
     }
 
