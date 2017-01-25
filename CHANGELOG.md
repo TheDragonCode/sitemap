@@ -1,9 +1,10 @@
-# Release Notes for 1.x
+# Release Notes for Laravel Sitemap
 
-## [Unreleased]
+## 2.0.0
 
 ### Added
 - Add Upgrade Guide.
+- Laravel 5.4 supported.
 
 ### Fixed
 - Data too long for column 'loc' [#7](https://github.com/andrey-helldar/sitemap/issues/7)
