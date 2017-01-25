@@ -23,30 +23,16 @@ class SitemapServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes(array(
-            __DIR__.'/config/sitemap.php' => config_path('sitemap.php'),
-        ));
+        $this->publishes([
+            __DIR__ . '/config/sitemap.php' => config_path('sitemap.php'),
+        ]);
 
-        $this->publishes(array(
-            __DIR__.'/migrations/' => database_path('migrations'),
-        ), 'migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/migrations/');
 
         if ($this->app->runningInConsole()) {
-            $this->commands(array(
+            $this->commands([
                 SitemapCommand::class,
-            ));
+            ]);
         }
-    }
-
-    /**
-     * Register bindings in the container.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->app['sitemap'] = $this->app->share(function ($app) {
-            return new Factory();
-        });
     }
 }
