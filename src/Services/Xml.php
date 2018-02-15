@@ -27,7 +27,7 @@ class Xml
         $this->root->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
         $this->root->setAttribute('xsi:schemaLocation', 'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd');
 
-        $this->doc->formatOutput = (bool)config('sitemap.formatOutput', true);
+        $this->doc->formatOutput = (bool) config('sitemap.formatOutput', true);
     }
 
     /**
@@ -37,7 +37,7 @@ class Xml
      */
     public static function init()
     {
-        return (new self());
+        return new self();
     }
 
     /**
