@@ -2,7 +2,7 @@
 
 A simple sitemap generator for PHP Framework.
 
-![Sitemap for Laravel 5.4+](https://cloud.githubusercontent.com/assets/10347617/21897788/f2227b3a-d92d-11e6-90ec-02239bb4f427.jpg)
+![Sitemap for Laravel 5.4+](https://user-images.githubusercontent.com/10347617/36281384-866335d6-12ae-11e8-92ec-c29bc879c213.png)
 
 <p align="center">
 <a href="https://travis-ci.org/andrey-helldar/sitemap"><img src="https://travis-ci.org/andrey-helldar/sitemap.svg?branch=master&style=flat-square" alt="Build Status" /></a>
