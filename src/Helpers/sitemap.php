@@ -6,6 +6,6 @@ if (!function_exists('sitemap')) {
      */
     function sitemap()
     {
-        return (new \Helldar\Sitemap\Services\Sitemap());
+        return new \Helldar\Sitemap\Services\Sitemap();
     }
 }

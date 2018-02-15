@@ -19,7 +19,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/config/sitemap.php' => config_path('sitemap.php'),
+            __DIR__.'/config/sitemap.php' => config_path('sitemap.php'),
         ]);
     }
 
@@ -28,6 +28,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/config/sitemap.php', 'sitemap');
+        $this->mergeConfigFrom(__DIR__.'/config/sitemap.php', 'sitemap');
     }
 }
