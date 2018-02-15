@@ -1,6 +1,2 @@
-.idea
-*.iml
-.php_cs.cache
-vendor
-composer.phar
-tests/
+.idea/
+vendor/

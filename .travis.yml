@@ -1,49 +1,23 @@
 language: php
-
-cache:
-  directories:
-    - $HOME/.composer/cache
-
-php:
-  - 5.6
-  - 7.0
-  - 7.1
-  - hhvm
-
-env:
-  global:
-    - setup=basic
-    - coverage=false
-
+dist: trusty
 sudo: false
-
-before_install:
-  - if [[ $TRAVIS_PHP_VERSION != 7.1 && $TRAVIS_PHP_VERSION != 'hhvm' && $coverage = 'false' ]]; then phpenv config-rm xdebug.ini; fi
-
-install:
-  - if [[ $setup = 'basic' ]]; then travis_retry composer install --prefer-dist --no-interaction --no-suggest; fi
-  - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable; fi
-  - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable --prefer-lowest; fi
-
-script: vendor/bin/phpunit --verbose --coverage-text --coverage-clover=coverage.xml
-
-after_success:
-  - if [[ $coverage = 'true' ]]; then bash <(curl -s https://codecov.io/bash); fi
 
 matrix:
   include:
-    - php: 5.6
-      env: setup=lowest
-    - php: 5.6
-      env: setup=stable
     - php: 7.0
-      env: setup=lowest
-    - php: 7.0
-      env: setup=stable
+      env: LARAVEL_VERSION=5.6.*
     - php: 7.1
-      env: setup=lowest
-    - php: 7.1
-      env: setup=stable
-  allow_failures:
-    - php: hhvm
-  fast_finish: true
+      env: LARAVEL_VERSION=5.6.*
+    - php: 7.2
+      env: LARAVEL_VERSION=5.6.*
+
+install:
+  - travis_retry composer install --no-suggest --prefer-dist -n -o
+
+script:
+  - if [ "$TRAVIS_PHP_VERSION" != "7.0" ]; then vendor/bin/phpunit; fi
+  - if [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; fi
+
+after_script:
+  - if [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+  - if [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml; fi
