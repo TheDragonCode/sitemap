@@ -45,10 +45,10 @@ return [
     /*
      * Priority for links.
      *
-     * Default, 0.8.
+     * Default, 0.5.
      */
 
-    'priority' => 0.8,
+    'priority' => 0.5,
 
     /*
      * List of parameters for generating URL, where:
@@ -74,7 +74,7 @@ return [
         //    ],
         //    'lastmod'          => 'updated_at',
         //    'frequency'        => 'daily',
-        //    'priority'         => 0.8,
+        //    'priority'         => 0.5,
         //],
     ],
 ];

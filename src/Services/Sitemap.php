@@ -83,7 +83,7 @@ class Sitemap
         $parameters = $this->modelsConfig($name, 'route_parameters', ['*']);
         $updated = $this->modelsConfig($name, 'lastmod', false, false);
         $changefreq = $this->modelsConfig($name, 'frequency', 'daily');
-        $priority = $this->modelsConfig($name, 'priority', 0.8);
+        $priority = $this->modelsConfig($name, 'priority', 0.5);
 
         $items = $this->getItems($builder, $updated);
 
