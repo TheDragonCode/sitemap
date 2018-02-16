@@ -24,8 +24,6 @@ class Xml
         $this->root = $this->doc->createElement('urlset');
 
         $this->root->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
-        $this->root->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
-        $this->root->setAttribute('xsi:schemaLocation', 'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd');
 
         $this->doc->formatOutput = (bool) config('sitemap.formatOutput', true);
     }
