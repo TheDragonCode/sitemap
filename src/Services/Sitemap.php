@@ -90,7 +90,7 @@ class Sitemap
         foreach ($items as $item) {
             $params = $this->routeParameters($item, $parameters);
             $lastmod = $this->lastmod($item, $updated);
-            $loc = route($route, $params, true);
+            $loc = e(route($route, $params, true));
 
             $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
         }
