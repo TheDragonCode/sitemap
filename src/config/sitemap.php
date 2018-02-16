@@ -2,15 +2,22 @@
 
 return [
     /*
-     * The filename to save.
+     * The path to the file.
+     *
+     * Default, 'sitemap.xml'.
      */
 
-    'filename' => 'sitemap.xml',
+    'filename' => public_path('sitemap.xml'),
+
+    /*
+     * Nicely formats output with indentation and extra space.
+     */
 
     'formatOutput' => true,
 
     /*
-     * Age data in days, over which references will not be included in the sitemap.
+     * The number of days that the entry will go to the site map.
+     * To disable it, enter 0.
      *
      * Default: 180 days.
      */
@@ -18,7 +25,7 @@ return [
     'age' => 180,
 
     /*
-     * For some column search.
+     * The name of the column that contains the timestamp.
      *
      * Default: updated_at.
      */
@@ -41,23 +48,31 @@ return [
 
     'priority' => 0.8,
 
-    'route_parameters' => ['*'],
+    /*
+     * List of parameters for generating URL, where:
+     *  - key is the name of the parameter in the routing.
+     *  - value is the name of the column in the collection.
+     */
+
+    'route_parameters' => [
+        //
+    ],
 
     /*
      * Models for searching data.
      */
 
     'models' => [
-        \App\User::class => [
-            'route' => 'route.name',
-            'route_parameters' => [
-                'slug' => 'table_field_for_slug',
-                'foo' => 'table_field_for_foo',
-                'bar' => 'table_field_for_bar',
-            ],
-            'lastmod' => 'updated_at',
-            'frequency' => 'daily',
-            'priority' => 0.8,
-        ],
+        //\App\User::class => [
+        //    'route'            => 'route.name',
+        //    'route_parameters' => [
+        //        'slug' => 'table_field_for_slug',
+        //        'foo'  => 'table_field_for_foo',
+        //        'bar'  => 'table_field_for_bar',
+        //    ],
+        //    'lastmod'          => 'updated_at',
+        //    'frequency'        => 'daily',
+        //    'priority'         => 0.8,
+        //],
     ],
 ];

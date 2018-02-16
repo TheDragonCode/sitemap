@@ -67,7 +67,7 @@ class Sitemap
      */
     public function save()
     {
-        $path = public_path(config('sitemap.filename', 'sitemap.xml'));
+        $path = config('sitemap.filename', public_path('sitemap.xml'));
 
         return file_put_contents($path, $this->get());
     }
