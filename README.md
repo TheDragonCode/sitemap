@@ -79,7 +79,7 @@ As the key of the array, you must use the model name for which the rules will be
  * **route_parameters** - the parameters to be passed to the URL generation method, where:
     * the key is the parameter name for the routing;
     * the value is the name of the column in the database to substitute the value.
- * **lastmod** - is the name of the column containing the record date. In case of absence, the current date is used.
+ * **lastmod** - is the name of the column containing the record date. In case of absence, the current date is used. If the model does not need to take into account the time field, set the parameter `lastmod` to `false`.
  * **frequency** - is the value of the refresh rate of the content. This is necessary for some search robots.
  * **priority** - is the priority of the reference for model records.
 
