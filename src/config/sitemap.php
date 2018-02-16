@@ -1,77 +1,78 @@
 <?php
-/*
- * This file is part of the Sitemap package.
- *
- * (c) Andrey Helldar <helldar@ai-rus.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-return array(
+
+return [
     /*
-     * The file name to save.
+     * The path to the file.
+     *
+     * Default, 'sitemap.xml'.
      */
-    'filename' => 'sitemap.xml',
+
+    'filename' => public_path('sitemap.xml'),
 
     /*
-     * Caching time in minutes.
-     * Set `0` to disable cache.
-     * Default: 0.
+     * Nicely formats output with indentation and extra space.
      */
-    'cache' => 0,
+
+    'formatOutput' => true,
 
     /*
-     * Clear old links in database table.
-     * Default, `false`.
-     */
-    'clear_old' => false,
-
-    /*
-     * Age data in days, over which references will not be included in the sitemap.
+     * The number of days that the entry will go to the site map.
+     * To disable it, enter 0.
+     *
      * Default: 180 days.
      */
+
     'age' => 180,
 
     /*
-     * For some column search.
+     * The name of the column that contains the timestamp.
+     *
      * Default: updated_at.
      */
-    'age_column' => 'updated_at',
+
+    'lastmod' => 'updated_at',
 
     /*
      * This value indicates how frequently the content at a particular URL is likely to change.
+     *
      * Default, `daily`.
      */
+
     'frequency' => 'daily',
 
     /*
-     * The time the URL was last modified.
-     * This information allows crawlers to avoid redrawing documents that haven't changed.
+     * Priority for links.
+     *
+     * Default, 0.8.
      */
-    'last_modification' => true,
+
+    'priority' => 0.8,
+
+    /*
+     * List of parameters for generating URL, where:
+     *  - key is the name of the parameter in the routing.
+     *  - value is the name of the column in the collection.
+     */
+
+    'route_parameters' => [
+        //
+    ],
 
     /*
      * Models for searching data.
      */
-    'items' => array(
-        /*
-         * `model`    Model for data retrieval.
-         * `route`    Name of route for return URL.
-         * `keys`     `Key for route` => `Column in database`
-         *            Example:
-         *              Route::get('user/{category}/{id}', ...)->name('user::show');
-         *            return:
-         *              http://mysite.com/user/10/2 for `category_id` = 10 and `user_id` = 2
-         * `priority` Priority for save sitemap. Default: 0.8
-         */
-        array(
-            'model' => \App\User::class,
-            'route' => 'user::show',
-            'keys' => array(
-                'category' => 'category_id',
-                'id' => 'user_id',
-            ),
-            'priority' => 0.8,
-        ),
-    ),
-);
+
+    'models' => [
+        //\App\User::class => [
+        //    'route'            => 'route.name',
+        //    'route_parameters' => [
+        //        'slug' => 'table_field_for_slug',
+        //        'foo'  => 'table_field_for_foo',
+        //        'bar'  => 'table_field_for_bar',
+        //    ],
+        //    'lastmod'          => 'updated_at',
+        //    'frequency'        => 'daily',
+        //    'priority'         => 0.8,
+        //],
+    ],
+];
