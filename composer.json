@@ -28,11 +28,6 @@
             "src/Helpers/sitemap.php"
         ]
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Helldar\\Sitemap\\Tests\\": "tests/"
-        }
-    },
     "config": {
         "preferred-install": "dist"
     },
