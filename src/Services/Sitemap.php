@@ -32,7 +32,7 @@ class Sitemap
      */
     public function models(Builder ...$models_builders)
     {
-        $this->models = (array)$models_builders;
+        $this->models = (array) $models_builders;
 
         return $this;
     }
@@ -79,18 +79,18 @@ class Sitemap
     {
         $name = get_class($builder->getModel());
 
-        $route      = $this->modelsConfig($name, 'route', 'index');
+        $route = $this->modelsConfig($name, 'route', 'index');
         $parameters = $this->modelsConfig($name, 'route_parameters', ['*']);
-        $updated    = $this->modelsConfig($name, 'lastmod', false, false);
+        $updated = $this->modelsConfig($name, 'lastmod', false, false);
         $changefreq = $this->modelsConfig($name, 'frequency', 'daily');
-        $priority   = $this->modelsConfig($name, 'priority', 0.8);
+        $priority = $this->modelsConfig($name, 'priority', 0.8);
 
         $items = $this->getItems($builder, $updated);
 
         foreach ($items as $item) {
             $parameters = $this->routeParameters($item, $parameters);
-            $lastmod    = $this->lastmod($item, $updated);
-            $loc        = route($route, $parameters, true);
+            $lastmod = $this->lastmod($item, $updated);
+            $loc = route($route, $parameters, true);
 
             $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
         }
@@ -162,7 +162,7 @@ class Sitemap
     {
         if ($age = config('sitemap.age', 180) && $date_field) {
             $date = Carbon::now()
-                ->addDays(-1 * abs((int)$age));
+                ->addDays(-1 * abs((int) $age));
 
             return $builder
                 ->where($date_field, '>', $date)
