@@ -20,11 +20,6 @@ A simple sitemap generator for PHP Framework.
 </p>
 
 
-## ATTENTION
-
-Laravel Sitemap version 3 is under construction and is located in the [3.0-dev](https://github.com/andrey-helldar/sitemap/tree/3.0-dev) branch.
-
-
 ## Installation
 
 To get the latest version of Laravel Sitemap, simply require the project using [Composer](https://getcomposer.org):
