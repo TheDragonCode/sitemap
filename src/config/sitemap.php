@@ -34,7 +34,7 @@ return [
 
     /*
      * This value indicates how frequently the content at a particular URL is likely to change.
-     * 
+     *
      * Available values: always, hourly, daily, weekly, monthly, yearly, never.
      *
      * Default, `daily`.
