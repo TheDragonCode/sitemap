@@ -88,9 +88,9 @@ class Sitemap
         $items = $this->getItems($builder, $updated);
 
         foreach ($items as $item) {
-            $parameters = $this->routeParameters($item, $parameters);
+            $params = $this->routeParameters($item, $parameters);
             $lastmod = $this->lastmod($item, $updated);
-            $loc = route($route, $parameters, true);
+            $loc = route($route, $params, true);
 
             $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
         }
@@ -124,7 +124,7 @@ class Sitemap
     private function routeParameters($item, $fields = [])
     {
         foreach ($fields as $key => &$value) {
-            $value = $item->{$key};
+            $value = $item->{$value};
         }
 
         return $fields;
