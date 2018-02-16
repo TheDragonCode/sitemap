@@ -88,6 +88,8 @@ If any of the model values are undefined, a global value will be used.
 
 ## Using
 
+### Show
+
 To display the content on the screen, use the `show()` method:
 
 ```php
@@ -99,6 +101,23 @@ return sitemap()
          ->models($query1, $query2, $query3)
          ->show();
 ```
+
+To return the content of the page, add any route:
+```php
+app('route')->get('sitemap', function() {
+    $query1 = \App\Catalog::query()->where('id', '>', '1000');
+    $query2 = \App\News::query()->where('category_id', 10);
+    $query3 = \App\Pages::query();
+
+    return sitemap()
+             ->models($query1, $query2, $query3)
+             ->show();
+});
+```
+
+And go to your URL. Example: `http://mysite.dev/sitemap`.
+
+### Save
 
 To save the contents to a file, use the `save()` method:
 
