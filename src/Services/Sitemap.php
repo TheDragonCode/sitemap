@@ -82,10 +82,11 @@ class Sitemap
         $route      = $this->config($name, 'route', 'index');
         $parameters = $this->config($name, 'route_parameters', ['*']);
         $updated    = $this->config($name, 'lastmod', false, false);
+        $age        = $this->config($name, 'age', 180);
         $changefreq = $this->config($name, 'frequency', 'daily');
         $priority   = $this->config($name, 'priority', 0.5);
 
-        $items = $this->getItems($builder, $updated);
+        $items = $this->getItems($builder, $updated, $age);
 
         foreach ($items as $item) {
             $params  = $this->routeParameters($item, $parameters);
@@ -154,13 +155,14 @@ class Sitemap
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param string|bool                           $date_field
+     * @param bool                                  $date_field
+     * @param int                                   $age
      *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    private function getItems(Builder $builder, $date_field = false)
+    private function getItems(Builder $builder, $date_field = false, $age = 180)
     {
-        if ($age = config('sitemap.age', 180) && $date_field) {
+        if ((int) $age && $date_field) {
             $date = Carbon::now()
                 ->addDays(-1 * abs((int) $age));
 

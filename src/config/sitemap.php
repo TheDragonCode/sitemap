@@ -72,6 +72,7 @@ return [
         //        'foo'  => 'table_field_for_foo',
         //        'bar'  => 'table_field_for_bar',
         //    ],
+        //    'age'              => 180,
         //    'lastmod'          => 'updated_at',
         //    'frequency'        => 'daily',
         //    'priority'         => 0.5,
