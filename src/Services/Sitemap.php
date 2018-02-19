@@ -79,18 +79,18 @@ class Sitemap
     {
         $name = get_class($builder->getModel());
 
-        $route = $this->modelsConfig($name, 'route', 'index');
+        $route      = $this->modelsConfig($name, 'route', 'index');
         $parameters = $this->modelsConfig($name, 'route_parameters', ['*']);
-        $updated = $this->modelsConfig($name, 'lastmod', false, false);
+        $updated    = $this->modelsConfig($name, 'lastmod', false, false);
         $changefreq = $this->modelsConfig($name, 'frequency', 'daily');
-        $priority = $this->modelsConfig($name, 'priority', 0.5);
+        $priority   = $this->modelsConfig($name, 'priority', 0.5);
 
         $items = $this->getItems($builder, $updated);
 
         foreach ($items as $item) {
-            $params = $this->routeParameters($item, $parameters);
+            $params  = $this->routeParameters($item, $parameters);
             $lastmod = $this->lastmod($item, $updated);
-            $loc = e(route($route, $params, true));
+            $loc     = $this->e(route($route, $params, true));
 
             $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
         }
@@ -170,5 +170,17 @@ class Sitemap
         }
 
         return $builder->get();
+    }
+
+    /**
+     * Escape HTML special characters in a string.
+     *
+     * @param $value
+     *
+     * @return string
+     */
+    private function e($value)
+    {
+        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
     }
 }
