@@ -79,11 +79,11 @@ class Sitemap
     {
         $name = get_class($builder->getModel());
 
-        $route      = $this->modelsConfig($name, 'route', 'index');
-        $parameters = $this->modelsConfig($name, 'route_parameters', ['*']);
-        $updated    = $this->modelsConfig($name, 'lastmod', false, false);
-        $changefreq = $this->modelsConfig($name, 'frequency', 'daily');
-        $priority   = $this->modelsConfig($name, 'priority', 0.5);
+        $route      = $this->config($name, 'route', 'index');
+        $parameters = $this->config($name, 'route_parameters', ['*']);
+        $updated    = $this->config($name, 'lastmod', false, false);
+        $changefreq = $this->config($name, 'frequency', 'daily');
+        $priority   = $this->config($name, 'priority', 0.5);
 
         $items = $this->getItems($builder, $updated);
 
@@ -104,7 +104,7 @@ class Sitemap
      *
      * @return mixed
      */
-    private function modelsConfig($model_name, $key, $default = null, $ignore_empty = true)
+    private function config($model_name, $key, $default = null, $ignore_empty = true)
     {
         $value = config("sitemap.models.{$model_name}.{$key}", null);
 
