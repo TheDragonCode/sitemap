@@ -2,7 +2,7 @@
 
 if (!function_exists('sitemap')) {
     /**
-     * @return mixed
+     * @return \Helldar\Sitemap\Services\Sitemap
      */
     function sitemap()
     {
