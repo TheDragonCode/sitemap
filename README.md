@@ -132,6 +132,22 @@ return sitemap()
          ->save();
 ```
 
+If you want to save multiple files, pass the path to the file as a parameter to the `save()` method:
+
+```php
+$query1 = \App\Catalog::query()->where('id', '>', '1000');
+$query2 = \App\News::query()->where('category_id', 10);
+$query3 = \App\Pages::query();
+
+return sitemap()
+         ->models($query1, $query2, $query3)
+         ->save(public_path('sitemap-1.xml'));
+
+return sitemap()
+         ->models($query1, $query2, $query3)
+         ->save(storage_path('app/private/sitemap-2.xml'));
+```
+
 
 ## Support Package
 
