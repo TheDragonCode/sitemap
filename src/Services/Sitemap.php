@@ -85,7 +85,7 @@ class Sitemap
 
         $route = $this->config($name, 'route', 'index');
         $parameters = $this->config($name, 'route_parameters', ['*']);
-        $updated = $this->config($name, 'lastmod', false, false);
+        $updated = $this->config($name, 'lastmod', false);
         $age = $this->config($name, 'age', 180);
         $changefreq = $this->config($name, 'frequency', 'daily');
         $priority = $this->config($name, 'priority', 0.5);
