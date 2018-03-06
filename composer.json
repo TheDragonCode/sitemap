@@ -3,7 +3,7 @@
     "description": "A simple sitemap generator for PHP Framework.",
     "type": "library",
     "license": "MIT",
-    "homepage": "http://ai-rus.com",
+    "homepage": "https://github.com/andrey-helldar/sitemap",
     "keywords": ["sitemap", "generator"],
     "support": {
         "issues": "https://github.com/andrey-helldar/sitemap/issues",
