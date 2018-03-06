@@ -96,53 +96,53 @@ You can also transfer an array of items created manually:
 $items = [];
 
 for($i = 0; $i < 5; $i++) {
-	$item = sitemap()->makeItem()
-		->changefreq('weekly')
-		->lastmod(Carbon\Carbon::now())
-		->loc("http://mysite.local/page/" . $i)
-		->get();
+    $item = sitemap()->makeItem()
+        ->changefreq('weekly')
+        ->lastmod(Carbon\Carbon::now())
+        ->loc("http://mysite.local/page/" . $i)
+        ->get();
 
-	array_push($items, $item);
+    array_push($items, $item);
 }
 
 return sitemap()
-     	->manual($items)
-     	->show();
+         ->manual($items)
+         ->show();
 ```
 
 Returned:
 ```xml
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-	<url>
-		<changefreq>weekly</changefreq>
-		<lastmod>2018-03-06T12:30:17+03:00</lastmod>
-		<loc>http://mysite.local/page/0</loc>
-		<priority>0.5</priority>
-	</url>
-	<url>
-		<changefreq>weekly</changefreq>
-		<lastmod>2018-03-06T12:38:24+03:00</lastmod>
-		<loc>http://mysite.local/page/1</loc>
-		<priority>0.5</priority>
-	</url>
-	<url>
-		<changefreq>weekly</changefreq>
-		<lastmod>2018-03-06T12:30:17+03:00</lastmod>
-		<loc>http://mysite.local/page/2</loc>
-		<priority>0.5</priority>
-	</url>
-	<url>
-		<changefreq>weekly</changefreq>
-		<lastmod>2018-03-06T12:38:44+03:00</lastmod>
-		<loc>http://mysite.local/page/3</loc>
-		<priority>0.5</priority>
-	</url>
-	<url>
-		<changefreq>weekly</changefreq>
-		<lastmod>2018-03-06T12:30:19+03:00</lastmod>
-		<loc>http://mysite.local/page/4</loc>
-		<priority>0.5</priority>
-	</url>
+    <url>
+        <changefreq>weekly</changefreq>
+        <lastmod>2018-03-06T12:30:17+03:00</lastmod>
+        <loc>http://mysite.local/page/0</loc>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <changefreq>weekly</changefreq>
+        <lastmod>2018-03-06T12:38:24+03:00</lastmod>
+        <loc>http://mysite.local/page/1</loc>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <changefreq>weekly</changefreq>
+        <lastmod>2018-03-06T12:30:17+03:00</lastmod>
+        <loc>http://mysite.local/page/2</loc>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <changefreq>weekly</changefreq>
+        <lastmod>2018-03-06T12:38:44+03:00</lastmod>
+        <loc>http://mysite.local/page/3</loc>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <changefreq>weekly</changefreq>
+        <lastmod>2018-03-06T12:30:19+03:00</lastmod>
+        <loc>http://mysite.local/page/4</loc>
+        <priority>0.5</priority>
+    </url>
 </urlset>
 ```
 
@@ -153,9 +153,9 @@ $query2 = \App\News::query()->where('category_id', 10);
 $query3 = \App\Pages::query();
 
 return sitemap()
-     	->models($query1, $query2, $query3)
-     	->manual($items)
-     	->show();
+         ->models($query1, $query2, $query3)
+         ->manual($items)
+         ->show();
 ```
 
 ### Show
