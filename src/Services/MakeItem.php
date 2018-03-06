@@ -43,8 +43,7 @@ class MakeItem
     {
         if (is_numeric($value)) {
             $value = Carbon::createFromTimestamp($value);
-        }
-        else {
+        } else {
             $value = $value ? Carbon::parse($value) : Carbon::now();
         }
 
