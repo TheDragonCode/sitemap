@@ -127,9 +127,9 @@ $query1 = \App\Catalog::query()->where('id', '>', '1000');
 $query2 = \App\News::query()->where('category_id', 10);
 $query3 = \App\Pages::query();
 
-return sitemap()
-         ->models($query1, $query2, $query3)
-         ->save();
+sitemap()
+     ->models($query1, $query2, $query3)
+     ->save();
 ```
 
 If you want to save multiple files, pass the path to the file as a parameter to the `save()` method:
@@ -139,13 +139,80 @@ $query1 = \App\Catalog::query()->where('id', '>', '1000');
 $query2 = \App\News::query()->where('category_id', 10);
 $query3 = \App\Pages::query();
 
-return sitemap()
-         ->models($query1, $query2, $query3)
-         ->save(public_path('sitemap-1.xml'));
+sitemap()
+     ->models($query1, $query2, $query3)
+     ->save(public_path('sitemap-1.xml'));
+
+sitemap()
+     ->models($query1, $query2, $query3)
+     ->save(storage_path('app/private/sitemap-2.xml'));
+```
+
+You can also transfer an array of items created manually:
+```php
+$items = [];
+
+for($i = 0; $i < 5; $i++) {
+	$item = sitemap()->makeItem()
+		->changefreq('weekly')
+		->lastmod(Carbon\Carbon::now())
+		->loc("http://mysite.local/page/" . $i)
+		->get();
+
+	array_push($items, $item);
+}
 
 return sitemap()
-         ->models($query1, $query2, $query3)
-         ->save(storage_path('app/private/sitemap-2.xml'));
+     	->manual($items)
+     	->show();
+```
+
+Returned:
+```xml
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	<url>
+		<changefreq>weekly</changefreq>
+		<lastmod>2018-03-06T12:30:17+03:00</lastmod>
+		<loc>http://mysite.local/page/0</loc>
+		<priority>0.5</priority>
+	</url>
+	<url>
+		<changefreq>weekly</changefreq>
+		<lastmod>2018-03-06T12:38:24+03:00</lastmod>
+		<loc>http://mysite.local/page/1</loc>
+		<priority>0.5</priority>
+	</url>
+	<url>
+		<changefreq>weekly</changefreq>
+		<lastmod>2018-03-06T12:30:17+03:00</lastmod>
+		<loc>http://mysite.local/page/2</loc>
+		<priority>0.5</priority>
+	</url>
+	<url>
+		<changefreq>weekly</changefreq>
+		<lastmod>2018-03-06T12:38:44+03:00</lastmod>
+		<loc>http://mysite.local/page/3</loc>
+		<priority>0.5</priority>
+	</url>
+	<url>
+		<changefreq>weekly</changefreq>
+		<lastmod>2018-03-06T12:30:19+03:00</lastmod>
+		<loc>http://mysite.local/page/4</loc>
+		<priority>0.5</priority>
+	</url>
+</urlset>
+```
+
+Also you can combine the data from the models with the transferred manually:
+```php
+$query1 = \App\Catalog::query()->where('id', '>', '1000');
+$query2 = \App\News::query()->where('category_id', 10);
+$query3 = \App\Pages::query();
+
+return sitemap()
+     	->models($query1, $query2, $query3)
+     	->manual($items)
+     	->show();
 ```
 
 
