@@ -116,19 +116,19 @@ class Sitemap
     {
         $name = get_class($builder->getModel());
 
-        $route      = $this->config($name, 'route', 'index');
+        $route = $this->config($name, 'route', 'index');
         $parameters = $this->config($name, 'route_parameters', ['*']);
-        $updated    = $this->config($name, 'lastmod', false);
-        $age        = $this->config($name, 'age', 180);
+        $updated = $this->config($name, 'lastmod', false);
+        $age = $this->config($name, 'age', 180);
         $changefreq = $this->config($name, 'frequency', 'daily');
-        $priority   = $this->config($name, 'priority', 0.5);
+        $priority = $this->config($name, 'priority', 0.5);
 
         $items = $this->getItems($builder, $updated, $age);
 
         foreach ($items as $item) {
-            $params  = $this->routeParameters($item, $parameters);
+            $params = $this->routeParameters($item, $parameters);
             $lastmod = $this->lastmod($item, $updated);
-            $loc     = $this->e(route($route, $params, true));
+            $loc = $this->e(route($route, $params, true));
 
             $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
         }
@@ -141,10 +141,10 @@ class Sitemap
     {
         $item = new Collection($item);
 
-        $loc        = $this->e($item->get('loc', config('app.url')));
-        $lastmod    = Carbon::parse($item->get('lastmod', Carbon::now()))->toAtomString();
+        $loc = $this->e($item->get('loc', config('app.url')));
+        $lastmod = Carbon::parse($item->get('lastmod', Carbon::now()))->toAtomString();
         $changefreq = $item->get('changefreq', config('sitemap.frequency', 'daily'));
-        $priority   = (float) $item->get('priority', config('sitemap.priority', 0.5));
+        $priority = (float) $item->get('priority', config('sitemap.priority', 0.5));
 
         $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
     }
