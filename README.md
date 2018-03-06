@@ -89,64 +89,7 @@ If any of the model values are undefined, a global value will be used.
 
 ## Using
 
-### Show
-
-To display the content on the screen, use the `show()` method:
-
-```php
-$query1 = \App\Catalog::query()->where('id', '>', '1000');
-$query2 = \App\News::query()->where('category_id', 10);
-$query3 = \App\Pages::query();
-
-return sitemap()
-         ->models($query1, $query2, $query3)
-         ->show();
-```
-
-To return the content of the page, add any route:
-```php
-app('route')->get('sitemap', function() {
-    $query1 = \App\Catalog::query()->where('id', '>', '1000');
-    $query2 = \App\News::query()->where('category_id', 10);
-    $query3 = \App\Pages::query();
-
-    return sitemap()
-             ->models($query1, $query2, $query3)
-             ->show();
-});
-```
-
-And go to your URL. Example: `http://mysite.dev/sitemap`.
-
-### Save
-
-To save the contents to a file, use the `save()` method:
-
-```php
-$query1 = \App\Catalog::query()->where('id', '>', '1000');
-$query2 = \App\News::query()->where('category_id', 10);
-$query3 = \App\Pages::query();
-
-sitemap()
-     ->models($query1, $query2, $query3)
-     ->save();
-```
-
-If you want to save multiple files, pass the path to the file as a parameter to the `save()` method:
-
-```php
-$query1 = \App\Catalog::query()->where('id', '>', '1000');
-$query2 = \App\News::query()->where('category_id', 10);
-$query3 = \App\Pages::query();
-
-sitemap()
-     ->models($query1, $query2, $query3)
-     ->save(public_path('sitemap-1.xml'));
-
-sitemap()
-     ->models($query1, $query2, $query3)
-     ->save(storage_path('app/private/sitemap-2.xml'));
-```
+### Manual
 
 You can also transfer an array of items created manually:
 ```php
@@ -213,6 +156,65 @@ return sitemap()
      	->models($query1, $query2, $query3)
      	->manual($items)
      	->show();
+```
+
+### Show
+
+To display the content on the screen, use the `show()` method:
+
+```php
+$query1 = \App\Catalog::query()->where('id', '>', '1000');
+$query2 = \App\News::query()->where('category_id', 10);
+$query3 = \App\Pages::query();
+
+return sitemap()
+         ->models($query1, $query2, $query3)
+         ->show();
+```
+
+To return the content of the page, add any route:
+```php
+app('route')->get('sitemap', function() {
+    $query1 = \App\Catalog::query()->where('id', '>', '1000');
+    $query2 = \App\News::query()->where('category_id', 10);
+    $query3 = \App\Pages::query();
+
+    return sitemap()
+             ->models($query1, $query2, $query3)
+             ->show();
+});
+```
+
+And go to your URL. Example: `http://mysite.dev/sitemap`.
+
+### Save
+
+To save the contents to a file, use the `save()` method:
+
+```php
+$query1 = \App\Catalog::query()->where('id', '>', '1000');
+$query2 = \App\News::query()->where('category_id', 10);
+$query3 = \App\Pages::query();
+
+sitemap()
+     ->models($query1, $query2, $query3)
+     ->save();
+```
+
+If you want to save multiple files, pass the path to the file as a parameter to the `save()` method:
+
+```php
+$query1 = \App\Catalog::query()->where('id', '>', '1000');
+$query2 = \App\News::query()->where('category_id', 10);
+$query3 = \App\Pages::query();
+
+sitemap()
+     ->models($query1, $query2, $query3)
+     ->save(public_path('sitemap-1.xml'));
+
+sitemap()
+     ->models($query1, $query2, $query3)
+     ->save(storage_path('app/private/sitemap-2.xml'));
 ```
 
 
