@@ -102,7 +102,7 @@ class Sitemap
      */
     public function save($path = null)
     {
-        if (!is_null($path)) {
+        if (!$path) {
             $path = config('sitemap.filename', public_path('sitemap.xml'));
         }
 
