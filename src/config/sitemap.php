@@ -69,17 +69,17 @@ return [
 
     'models' => [
         //\App\User::class => [
-        //    'route'            => 'route.name',
+        //    'route' => 'route.name',
         //    'route_parameters' => [
         //        'slug' => 'table_field_for_slug',
         //        'foo'  => 'table_field_for_foo',
         //        'bar'  => 'table_field_for_bar',
         //        'baz',
         //    ],
-        //    'age'              => 180,
-        //    'lastmod'          => 'updated_at',
-        //    'frequency'        => 'daily',
-        //    'priority'         => 0.5,
+        //    'age'       => 180,
+        //    'lastmod'   => 'updated_at',
+        //    'frequency' => 'daily',
+        //    'priority'  => 0.5,
         //],
     ],
 ];
