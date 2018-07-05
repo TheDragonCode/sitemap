@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/andrey-helldar/sitemap",
-    "keywords": ["sitemap", "generator", "laravel"],
+    "keywords": ["sitemap", "generator", "laravel", "simple", "separated files"],
     "support": {
         "issues": "https://github.com/andrey-helldar/sitemap/issues",
         "source": "https://github.com/andrey-helldar/sitemap"
@@ -16,12 +16,13 @@
         }
     ],
     "require": {
-        "php": ">=5.6.4",
+        "php": ">=5.6.9",
         "illuminate/database": "^5.4",
-        "nesbot/carbon": "^1.22",
-        "symfony/http-kernel": "^3.4|^4.0",
+        "illuminate/support": "^5.4",
         "illuminate/validation": "^5.4",
-        "illuminate/support": "^5.4"
+        "nesbot/carbon": "^1.22",
+        "symfony/http-foundation": "^3.4|^4.0",
+        "symfony/http-kernel": "^3.4|^4.0"
     },
     "autoload": {
         "psr-4": {
