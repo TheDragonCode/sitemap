@@ -2,6 +2,8 @@
 
 namespace Helldar\Sitemap;
 
+use Helldar\Sitemap\Services\Sitemap;
+
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     /**
@@ -9,7 +11,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      *
      * @var bool
      */
-    protected $defer = false;
+    protected $defer = true;
 
     /**
      * Bootstrap the application events.
@@ -29,5 +31,17 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/config/sitemap.php', 'sitemap');
+
+        $this->app->singleton('sitemap', Sitemap::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return ['sitemap'];
     }
 }
