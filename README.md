@@ -292,10 +292,10 @@ Files will be created:
 /public/other-file-name-2.xml
 /public/other-file-name-3.xml
 
-/app/private/other-file-name.xml
-/app/private/other-file-name-1.xml
-/app/private/other-file-name-2.xml
-/app/private/other-file-name-3.xml
+/storage/app/private/other-file-name.xml
+/storage/app/private/other-file-name-1.xml
+/storage/app/private/other-file-name-2.xml
+/storage/app/private/other-file-name-3.xml
 
 ```
 
