@@ -82,6 +82,12 @@ If any of the model values are undefined, a global value will be used.
 
 ## Using
 
+### Attention
+
+The `models()` method was replaced by the `builders()`.
+For some time, the old `models()` method will still be available for use.
+
+
 ### Manual
 
 You can also transfer an array of items created manually:
@@ -139,14 +145,14 @@ Returned:
 </urlset>
 ```
 
-Also you can combine the data from the models with the transferred manually:
+Also you can combine the data from the models builders with the transferred manually:
 ```php
 $query1 = \App\Catalog::query()->where('id', '>', '1000');
 $query2 = \App\News::query()->where('category_id', 10);
 $query3 = \App\Pages::query();
 
 return sitemap()
-         ->models($query1, $query2, $query3)
+         ->builders($query1, $query2, $query3)
          ->manual($items)
          ->show();
 ```
@@ -161,7 +167,7 @@ $query2 = \App\News::query()->where('category_id', 10);
 $query3 = \App\Pages::query();
 
 return sitemap()
-         ->models($query1, $query2, $query3)
+         ->builders($query1, $query2, $query3)
          ->show();
 ```
 
@@ -173,7 +179,7 @@ app('route')->get('sitemap', function() {
     $query3 = \App\Pages::query();
 
     return sitemap()
-             ->models($query1, $query2, $query3)
+             ->builders($query1, $query2, $query3)
              ->show();
 });
 ```
@@ -190,7 +196,7 @@ $query2 = \App\News::query()->where('category_id', 10);
 $query3 = \App\Pages::query();
 
 sitemap()
-     ->models($query1, $query2, $query3)
+     ->builders($query1, $query2, $query3)
      ->save();
 ```
 
@@ -202,11 +208,11 @@ $query2 = \App\News::query()->where('category_id', 10);
 $query3 = \App\Pages::query();
 
 sitemap()
-     ->models($query1, $query2, $query3)
+     ->builders($query1, $query2, $query3)
      ->save(public_path('sitemap-1.xml'));
 
 sitemap()
-     ->models($query1, $query2, $query3)
+     ->builders($query1, $query2, $query3)
      ->save(storage_path('app/private/sitemap-2.xml'));
 ```
 
