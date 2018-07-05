@@ -26,7 +26,7 @@ Instead, you may of course manually update your require block and run `composer 
 ```json
 {
     "require": {
-        "andrey-helldar/sitemap": "~3.0"
+        "andrey-helldar/sitemap": "~3.1"
     }
 }
 ```
