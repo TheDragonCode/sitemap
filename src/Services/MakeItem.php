@@ -59,7 +59,7 @@ class MakeItem
      */
     public function loc($value)
     {
-        $this->setElement('loc', $value);
+        $this->setElement('loc', trim($value));
 
         return $this;
     }
