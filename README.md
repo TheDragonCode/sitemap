@@ -159,7 +159,7 @@ $query3 = \App\Pages::query();
 
 return sitemap()
          ->builders($query1, $query2, $query3)
-         ->manual($items)
+         ->manual($items1, $items2, $items3)
          ->show();
 ```
 
