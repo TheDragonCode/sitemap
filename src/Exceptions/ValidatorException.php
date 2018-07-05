@@ -16,7 +16,7 @@ class ValidatorException extends HttpException
     public function __construct($message = null, \Exception $previous = null, $code = 0)
     {
         $message = $message ?: 'Validation error of data sent manually';
-        $code    = $code ?: 400;
+        $code = $code ?: 400;
 
         parent::__construct($code, $message, $previous, [], $code);
     }
