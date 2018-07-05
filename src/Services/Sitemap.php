@@ -14,7 +14,7 @@ class Sitemap
     /**
      * @var array
      */
-    private $models = [];
+    private $builders = [];
 
     /**
      * @var array
@@ -45,11 +45,25 @@ class Sitemap
     /**
      * @param \Illuminate\Database\Eloquent\Builder ...$models_builders
      *
+     * @deprecated
+     *
      * @return $this
      */
     public function models(Builder ...$models_builders)
     {
-        $this->models = (array) $models_builders;
+        $this->builders = (array) $models_builders;
+
+        return $this;
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder ...$builders
+     *
+     * @return $this
+     */
+    public function builders(Builder ...$builders)
+    {
+        $this->builders = (array) $builders;
 
         return $this;
     }
@@ -64,22 +78,6 @@ class Sitemap
         $this->manual = (new Manual($items))->get();
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    private function get()
-    {
-        foreach ($this->models as $model) {
-            $this->processBuilder($model);
-        }
-
-        foreach ($this->manual as $item) {
-            $this->processManual($item);
-        }
-
-        return $this->xml->get();
     }
 
     /**
@@ -110,25 +108,41 @@ class Sitemap
     }
 
     /**
+     * @return string
+     */
+    private function get()
+    {
+        foreach ($this->builders as $model) {
+            $this->processBuilder($model);
+        }
+
+        foreach ($this->manual as $item) {
+            $this->processManual($item);
+        }
+
+        return $this->xml->get();
+    }
+
+    /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
      */
     private function processBuilder(Builder $builder)
     {
         $name = get_class($builder->getModel());
 
-        $route = $this->config($name, 'route', 'index');
+        $route      = $this->config($name, 'route', 'index');
         $parameters = $this->config($name, 'route_parameters', ['*']);
-        $updated = $this->config($name, 'lastmod', false);
-        $age = $this->config($name, 'age', 180);
+        $updated    = $this->config($name, 'lastmod', false);
+        $age        = $this->config($name, 'age', 180);
         $changefreq = $this->config($name, 'frequency', 'daily');
-        $priority = $this->config($name, 'priority', 0.5);
+        $priority   = $this->config($name, 'priority', 0.5);
 
         $items = $this->getItems($builder, $updated, $age);
 
         foreach ($items as $item) {
-            $params = $this->routeParameters($item, $parameters);
+            $params  = $this->routeParameters($item, $parameters);
             $lastmod = $this->lastmod($item, $updated);
-            $loc = $this->e(route($route, $params, true));
+            $loc     = $this->e(route($route, $params, true));
 
             $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
         }
@@ -141,10 +155,10 @@ class Sitemap
     {
         $item = new Collection($item);
 
-        $loc = $this->e($item->get('loc', config('app.url')));
-        $lastmod = Carbon::parse($item->get('lastmod', Carbon::now()))->toAtomString();
+        $loc        = $this->e($item->get('loc', config('app.url')));
+        $lastmod    = Carbon::parse($item->get('lastmod', Carbon::now()))->toAtomString();
         $changefreq = $item->get('changefreq', config('sitemap.frequency', 'daily'));
-        $priority = (float) $item->get('priority', config('sitemap.priority', 0.5));
+        $priority   = (float) $item->get('priority', config('sitemap.priority', 0.5));
 
         $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
     }
@@ -152,8 +166,8 @@ class Sitemap
     /**
      * @param string $model_name
      * @param string $key
-     * @param mixed  $default
-     * @param bool   $ignore_empty
+     * @param mixed $default
+     * @param bool $ignore_empty
      *
      * @return mixed
      */
@@ -192,8 +206,8 @@ class Sitemap
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param bool                                  $date_field
-     * @param int                                   $age
+     * @param bool $date_field
+     * @param int $age
      *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
