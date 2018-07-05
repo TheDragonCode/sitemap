@@ -92,16 +92,28 @@ For some time, the old `models()` method will still be available for use.
 
 You can also transfer an array of items created manually:
 ```php
-$items = [];
+$items_a = [];
+$items_b = [];
 
-for($i = 0; $i < 5; $i++) {
+for($i = 0; $i < 3; $i++) {
     $item = sitemap()->makeItem()
         ->changefreq('weekly')
         ->lastmod(Carbon\Carbon::now())
         ->loc("http://mysite.local/page/" . $i)
         ->get();
 
-    array_push($items, $item);
+    array_push($items_a, $item);
+}
+
+
+for($i = 0; $i < 3; $i++) {
+    $item = sitemap()->makeItem()
+        ->changefreq('weekly')
+        ->lastmod(Carbon\Carbon::now())
+        ->loc("http://mysite.local/offers/" . $i)
+        ->get();
+
+    array_push($items_b, $item);
 }
 
 return sitemap()
@@ -138,14 +150,20 @@ Returned:
     </url>
     <url>
         <changefreq>weekly</changefreq>
-        <lastmod>2018-03-06T12:38:44+03:00</lastmod>
-        <loc>http://mysite.local/page/3</loc>
+        <lastmod>2018-03-06T12:30:17+03:00</lastmod>
+        <loc>http://mysite.local/offers/0</loc>
         <priority>0.5</priority>
     </url>
     <url>
         <changefreq>weekly</changefreq>
-        <lastmod>2018-03-06T12:30:19+03:00</lastmod>
-        <loc>http://mysite.local/page/4</loc>
+        <lastmod>2018-03-06T12:38:24+03:00</lastmod>
+        <loc>http://mysite.local/offers/1</loc>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <changefreq>weekly</changefreq>
+        <lastmod>2018-03-06T12:30:17+03:00</lastmod>
+        <loc>http://mysite.local/offers/2</loc>
         <priority>0.5</priority>
     </url>
 </urlset>
@@ -245,10 +263,10 @@ In this case, the name of the file will be the default name from the settings: `
 Each model builder will be processed and saved in a separate file, and the shared file will contain references to it:
 
 ```
-/public/sitemap.xml
-/public/sitemap-1.xml
-/public/sitemap-2.xml
-/public/sitemap-3.xml
+/public/sitemap.xml   // general file
+/public/sitemap-1.xml // generated file for the $query1 collection
+/public/sitemap-2.xml // generated file for the $query2 collection
+/public/sitemap-3.xml // generated file for the $query3 collection
 ```
 
 ```xml
@@ -276,26 +294,42 @@ $query1 = \App\Catalog::query()->where('id', '>', '1000');
 $query2 = \App\News::query()->where('category_id', 10);
 $query3 = \App\Pages::query();
 
+$manual_items = [];
+
+for($i = 0; $i < 3; $i++) {
+    $item = sitemap()->makeItem()
+        ->changefreq('weekly')
+        ->lastmod(Carbon\Carbon::now())
+        ->loc("http://mysite.local/page/" . $i)
+        ->get();
+
+    array_push($manual_items, $item);
+}
+
 sitemap()
      ->builders($query1, $query2, $query3)
+     ->manual($manual_items)
      ->save(public_path('other-file-name.xml'));
 
 sitemap()
      ->builders($query1, $query2, $query3)
+     ->manual($manual_items)
      ->save(storage_path('app/private/other-file-name.xml'));
 ```
 
 Files will be created:
 ```
-/public/other-file-name.xml
-/public/other-file-name-1.xml
-/public/other-file-name-2.xml
-/public/other-file-name-3.xml
+/public/other-file-name.xml   // general file
+/public/other-file-name-1.xml // generated file for the $query1 collection
+/public/other-file-name-2.xml // generated file for the $query2 collection
+/public/other-file-name-3.xml // generated file for the $query3 collection
+/public/other-file-name-4.xml // generated file for the $manual_items collection
 
-/storage/app/private/other-file-name.xml
-/storage/app/private/other-file-name-1.xml
-/storage/app/private/other-file-name-2.xml
-/storage/app/private/other-file-name-3.xml
+/storage/app/private/other-file-name.xml   // general file
+/storage/app/private/other-file-name-1.xml // generated file for the $query1 collection
+/storage/app/private/other-file-name-2.xml // generated file for the $query2 collection
+/storage/app/private/other-file-name-3.xml // generated file for the $query3 collection
+/storage/app/private/other-file-name-4.xml // generated file for the $manual_items collection
 
 ```
 
