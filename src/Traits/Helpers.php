@@ -18,7 +18,7 @@ trait Helpers
 
     /**
      * @param \Illuminate\Support\Collection $item
-     * @param array                          $fields
+     * @param array $fields
      *
      * @return array
      */
@@ -27,7 +27,7 @@ trait Helpers
         $result = [];
 
         foreach ($fields as $key => $value) {
-            $key = is_numeric($key) ? $value : $key;
+            $key   = is_numeric($key) ? $value : $key;
             $value = $item->{$value};
 
             $result[$key] = $value;

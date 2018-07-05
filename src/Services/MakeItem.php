@@ -24,10 +24,7 @@ class MakeItem
     public function changefreq($value = 'daily')
     {
         $value = $this->lower(trim($value));
-
-        if (!in_array($value, self::FREQ)) {
-            $value = 'daily';
-        }
+        $value = !in_array($value, self::FREQ) ? 'daily' : $value;
 
         $this->setElement('changefreq', $value);
 

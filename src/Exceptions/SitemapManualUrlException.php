@@ -9,14 +9,14 @@ class SitemapManualUrlException extends HttpException
     /**
      * SitemapManualUrlException constructor.
      *
-     * @param null            $message
+     * @param null $message
      * @param \Exception|null $previous
-     * @param int             $code
+     * @param int $code
      */
     public function __construct($message = null, \Exception $previous = null, $code = 0)
     {
         $message = $message ?: 'Error handling the list of URLs to generate a sitemap.';
-        $code = $code ?: 400;
+        $code    = $code ?: 400;
 
         parent::__construct($code, $message, $previous, [], $code);
     }
