@@ -330,8 +330,28 @@ Files will be created:
 /storage/app/private/other-file-name-2.xml // generated file for the $query2 collection
 /storage/app/private/other-file-name-3.xml // generated file for the $query3 collection
 /storage/app/private/other-file-name-4.xml // generated file for the $manual_items collection
-
 ```
+
+## SEO
+
+Sitemap is extremely useful when indexing a site by search bots. If you use a sitemap splitting into several files, you only need to add a link to the main file in the `robots.txt` file.
+
+For example, you created several files:
+```text
+/sitemaps/promo.xml
+/sitemaps/promo-1.xml
+/sitemaps/promo-2.xml
+/sitemaps/promo-3.xml
+```
+
+In the `robots.txt` file, you only need to specify a link to the main file:
+```text
+Sitemap: http://example.com/sitemaps/promo.xml
+```
+
+All the rest of the search bots will do for you.
+
+Enjoy!
 
 
 ## Copyright and License
