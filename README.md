@@ -43,7 +43,7 @@ You can also publish the config file to change implementations (ie. interface to
 php artisan vendor:publish --provider="Helldar\Sitemap\ServiceProvider"
 ```
 
-Now you can use a `sitemap()` helper or `app('sitemap)` method.
+Now you can use a `sitemap()` helper or `app('sitemap')` method.
 
 
 ## Configuration
