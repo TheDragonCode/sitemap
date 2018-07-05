@@ -16,7 +16,7 @@ A simple sitemap generator for PHP Framework.
 
 1. The `models()` method was replaced by the `builders()`.
 For some time, the old `models()` method will still be available for use.
-2. To improve the mechanism for saving files, we switched to the use of the facade Storage. Update your [config/sitemap.php](config/sitemap.php#L5-L11) file.
+2. To improve the mechanism for saving files, we switched to the use of the facade Storage. Update your [config/sitemap.php](src/config/sitemap.php#L5-L11) file.
 
 
 ## Installation
