@@ -151,6 +151,8 @@ class Sitemap
         $filename = Str::slug(pathinfo($path, PATHINFO_FILENAME));
         $extension = Str::lower(pathinfo($path, PATHINFO_EXTENSION));
 
+        $this->makeDirectory($directory);
+
         $this->processManyItems('builders', $this->builders, $directory, $filename, $extension, __LINE__);
         $this->processManyItems('manual', $this->manuals, $directory, $filename, $extension, __LINE__);
 
@@ -321,5 +323,17 @@ class Sitemap
         }
 
         return $builder->get();
+    }
+
+    /**
+     * Check the existence of the directory and create it in the absence.
+     *
+     * @param string $path
+     */
+    private function makeDirectory($path)
+    {
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
     }
 }
