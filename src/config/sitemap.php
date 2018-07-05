@@ -10,6 +10,14 @@ return [
     'filename' => public_path('sitemap.xml'),
 
     /*
+     * Saving site maps to separated files with a shared file that contains links to others.
+     *
+     * Default, false.
+     */
+
+    'separate_files' => false,
+
+    /*
      * Nicely formats output with indentation and extra space.
      */
 

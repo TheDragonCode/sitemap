@@ -3,9 +3,12 @@
 namespace Helldar\Sitemap\Services;
 
 use Carbon\Carbon;
+use Helldar\Sitemap\Exceptions\MethodNotExists;
 use Helldar\Sitemap\Traits\Helpers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\Response;
 
 class Sitemap
 {
@@ -19,7 +22,12 @@ class Sitemap
     /**
      * @var array
      */
-    private $manual = [];
+    private $manuals = [];
+
+    /**
+     * @var \Illuminate\Support\Collection
+     */
+    private $sitemaps;
 
     /**
      * @var \Helldar\Sitemap\Services\Xml
@@ -27,11 +35,18 @@ class Sitemap
     private $xml;
 
     /**
+     * @var int
+     */
+    private $index;
+
+    /**
      * Sitemap constructor.
      */
     public function __construct()
     {
-        $this->xml = Xml::init();
+        $this->xml      = Xml::init();
+        $this->sitemaps = Collection::make();
+        $this->index    = 1;
     }
 
     /**
@@ -39,13 +54,13 @@ class Sitemap
      */
     public function makeItem()
     {
-        return new MakeItem();
+        return new MakeItem;
     }
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder ...$models_builders
      *
-     * @deprecated
+     * @deprecated Use a `builders` method instead.
      *
      * @return $this
      */
@@ -57,6 +72,8 @@ class Sitemap
     }
 
     /**
+     * Builders of your models.
+     *
      * @param \Illuminate\Database\Eloquent\Builder ...$builders
      *
      * @return $this
@@ -75,7 +92,7 @@ class Sitemap
      */
     public function manual($items)
     {
-        $this->manual = (new Manual($items))->get();
+        $this->manuals = (new Manual($items))->get();
 
         return $this;
     }
@@ -83,28 +100,103 @@ class Sitemap
     /**
      * Return response with XML data.
      *
-     * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function show()
     {
-        return response($this->get(), 200)
-            ->header('Content-Type', 'application/xml');
+        return Response::create((string) $this->get(), 200, [
+            'Content-Type' => 'application/xml',
+        ]);
     }
 
     /**
-     * Save data to file.
+     * Save data to files.
      *
      * @param null|string $path
+     * @param bool $only_one
      *
      * @return bool|int
      */
-    public function save($path = null)
+    public function save($path = null, $only_one = false)
     {
-        if (!$path) {
-            $path = config('sitemap.filename', public_path('sitemap.xml'));
+        $path = $path ?: config('sitemap.filename', public_path('sitemap.xml'));
+
+        if (!$only_one && config('sitemap.separate_files', false)) {
+            return (int) $this->saveMany($path);
         }
 
-        return file_put_contents($path, $this->get());
+        return (int) $this->saveOne($path);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return bool
+     */
+    private function saveOne($path)
+    {
+        return (bool) file_put_contents($path, $this->get());
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return bool
+     */
+    private function saveMany($path)
+    {
+        $xml = Xml::init('sitemapindex');
+
+        $directory = Str::finish(pathinfo($path, PATHINFO_DIRNAME), '/');
+        $filename  = Str::slug(pathinfo($path, PATHINFO_FILENAME));
+        $extension = Str::lower(pathinfo($path, PATHINFO_EXTENSION));
+
+        $this->processManyItems('builders', $this->builders, $directory, $filename, $extension, __LINE__);
+        $this->processManyItems('manual', $this->manuals, $directory, $filename, $extension, __LINE__);
+
+        foreach ($this->sitemaps as $sitemap) {
+            $xml->addItem($sitemap, 'sitemap');
+        }
+
+        return (bool) file_put_contents($path, $xml->get());
+    }
+
+    /**
+     * @param string $method
+     * @param array $items
+     * @param string $directory
+     * @param string $filename
+     * @param string $extension
+     */
+    private function processManyItems($method, $items, $directory, $filename, $extension, $line = null)
+    {
+        foreach ($items as $item) {
+            $file     = sprintf('%s-%s.%s', $filename, $this->index, $extension);
+            $realpath = $directory . $file;
+
+            $loc = Str::after($directory, public_path());
+            $loc = url(Str::finish($loc, '/') . $file);
+
+            if (!method_exists($this, $method)) {
+                $line    = $line ?: __LINE__;
+                $message = sprintf("The '%s' method not exist in %s of %s:%s", $method, get_class(), __FILE__, $line);
+
+                throw new MethodNotExists($message);
+            }
+
+            (new self)
+                ->{$method}($item)
+                ->save($realpath, true);
+
+            $item = (new MakeItem)
+                ->loc($loc)
+                ->lastmod()
+                ->get();
+
+            $this->sitemaps->push($item);
+
+            $this->index++;
+        }
     }
 
     /**
@@ -112,12 +204,12 @@ class Sitemap
      */
     private function get()
     {
-        foreach ($this->builders as $model) {
-            $this->processBuilder($model);
+        foreach ($this->builders as $builder) {
+            $this->processBuilder($builder);
         }
 
-        foreach ($this->manual as $item) {
-            $this->processManual($item);
+        foreach ($this->manuals as $item) {
+            $this->processManuals($item);
         }
 
         return $this->xml->get();
@@ -151,22 +243,22 @@ class Sitemap
     /**
      * @param array $item
      */
-    private function processManual($item = [])
+    private function processManuals($item = [])
     {
         $item = new Collection($item);
 
         $loc        = $this->e($item->get('loc', config('app.url')));
-        $lastmod    = Carbon::parse($item->get('lastmod', Carbon::now()))->toAtomString();
         $changefreq = $item->get('changefreq', config('sitemap.frequency', 'daily'));
+        $lastmod    = Carbon::parse($item->get('lastmod', Carbon::now()))->toAtomString();
         $priority   = (float) $item->get('priority', config('sitemap.priority', 0.5));
 
         $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
     }
 
     /**
-     * @param string $model_name
-     * @param string $key
-     * @param mixed $default
+     * @param $model_name
+     * @param $key
+     * @param null $default
      * @param bool $ignore_empty
      *
      * @return mixed
@@ -183,8 +275,8 @@ class Sitemap
     }
 
     /**
-     * @param             $item
-     * @param string|bool $field
+     * @param $item
+     * @param bool $field
      *
      * @return string
      */
@@ -209,11 +301,11 @@ class Sitemap
      * @param bool $date_field
      * @param int $age
      *
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
     private function getItems(Builder $builder, $date_field = false, $age = 180)
     {
-        if ((int) $age && $date_field) {
+        if ($age && $date_field) {
             $date = Carbon::now()
                 ->addDays(-1 * abs((int) $age));
 

@@ -43,7 +43,7 @@ You can also publish the config file to change implementations (ie. interface to
 php artisan vendor:publish --provider="Helldar\Sitemap\ServiceProvider"
 ```
 
-Now you can use a sitemap() helper.
+Now you can use a `sitemap()` helper or `app('sitemap)` method.
 
 
 ## Configuration
@@ -105,6 +105,12 @@ for($i = 0; $i < 5; $i++) {
 }
 
 return sitemap()
+         ->manual($items)
+         ->show();
+
+// or
+
+return app('sitemap')
          ->manual($items)
          ->show();
 ```
@@ -188,7 +194,11 @@ And go to your URL. Example: `http://mysite.dev/sitemap`.
 
 ### Save
 
-To save the contents to a file, use the `save()` method:
+Since version 3.1, it is possible to save links to several files. The option `separate_files` in the [config/sitemap.php](src/config/sitemap.php#L18) file is responsible for enabling this feature.
+
+#### If the option `separate_files` is DISABLED
+
+To save the contents to the file, use the `save()` method:
 
 ```php
 $query1 = \App\Catalog::query()->where('id', '>', '1000');
@@ -214,6 +224,79 @@ sitemap()
 sitemap()
      ->builders($query1, $query2, $query3)
      ->save(storage_path('app/private/sitemap-2.xml'));
+```
+
+#### If the option `separate_files` is ENABLED
+
+To save the contents to the separated files, use the `save()` method with `'separate_files' => true` parameter in [config/sitemap.php](src/config/sitemap.php#L18) file.
+
+```php
+$query1 = \App\Catalog::query()->where('id', '>', '1000');
+$query2 = \App\News::query()->where('category_id', 10);
+$query3 = \App\Pages::query();
+
+sitemap()
+     ->builders($query1, $query2, $query3)
+     ->save();
+```
+
+In this case, the name of the file will be the default name from the settings: `'filename' => public_path('sitemap.xml')`.
+
+Each model builder will be processed and saved in a separate file, and the shared file will contain references to it:
+
+```
+/public/sitemap.xml
+/public/sitemap-1.xml
+/public/sitemap-2.xml
+/public/sitemap-3.xml
+```
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <lastmod>2018-07-05T13:51:40+00:00</lastmod>
+    <loc>http://example.com/sitemap-1.xml</loc>
+  </sitemap>
+  <sitemap>
+    <lastmod>2018-07-05T13:51:41+00:00</lastmod>
+    <loc>http://example.com/sitemap-2.xml</loc>
+  </sitemap>
+  <sitemap>
+    <lastmod>2018-07-05T13:51:41+00:00</lastmod>
+    <loc>http://example.com/sitemap-3.xml</loc>
+  </sitemap>
+</sitemapindex>
+```
+
+If you want to save multiple files, pass the path to the file as a parameter to the `save($path)` method with `'separate_files' => true` parameter in [config/sitemap.php](src/config/sitemap.php#L18) file:
+
+```php
+$query1 = \App\Catalog::query()->where('id', '>', '1000');
+$query2 = \App\News::query()->where('category_id', 10);
+$query3 = \App\Pages::query();
+
+sitemap()
+     ->builders($query1, $query2, $query3)
+     ->save(public_path('other-file-name.xml'));
+
+sitemap()
+     ->builders($query1, $query2, $query3)
+     ->save(storage_path('app/private/other-file-name.xml'));
+```
+
+Files will be created:
+```
+/public/other-file-name.xml
+/public/other-file-name-1.xml
+/public/other-file-name-2.xml
+/public/other-file-name-3.xml
+
+/app/private/other-file-name.xml
+/app/private/other-file-name-1.xml
+/app/private/other-file-name-2.xml
+/app/private/other-file-name-3.xml
+
 ```
 
 
