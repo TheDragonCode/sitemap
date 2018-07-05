@@ -1,13 +1,22 @@
 <?php
 
 return [
+
+    /*
+     * Storage name configuration to save files.
+     *
+     * Default, 'public'.
+     */
+
+    'storage' => 'public',
+
     /*
      * The path to the file.
      *
      * Default, 'sitemap.xml'.
      */
 
-    'filename' => public_path('sitemap.xml'),
+    'filename' => 'sitemap.xml',
 
     /*
      * Saving site maps to separated files with a shared file that contains links to others.

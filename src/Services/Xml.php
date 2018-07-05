@@ -2,6 +2,8 @@
 
 namespace Helldar\Sitemap\Services;
 
+use Illuminate\Support\Facades\Config;
+
 class Xml
 {
     /**
@@ -27,7 +29,7 @@ class Xml
 
         $this->root->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
 
-        $this->doc->formatOutput = (bool) config('sitemap.formatOutput', true);
+        $this->doc->formatOutput = (bool) Config::get('sitemap.formatOutput', true);
     }
 
     /**

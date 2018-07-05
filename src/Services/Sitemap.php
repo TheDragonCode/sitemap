@@ -7,12 +7,24 @@ use Helldar\Sitemap\Exceptions\MethodNotExists;
 use Helldar\Sitemap\Traits\Helpers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class Sitemap
 {
     use Helpers;
+
+    /**
+     * @var string
+     */
+    private $storage_disk;
+
+    /**
+     * @var \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    private $storage;
 
     /**
      * @var array
@@ -44,9 +56,12 @@ class Sitemap
      */
     public function __construct()
     {
-        $this->xml = Xml::init();
+        $this->xml      = Xml::init();
         $this->sitemaps = Collection::make();
-        $this->index = 1;
+        $this->index    = 1;
+
+        $this->storage_disk = Config::get('sitemap.storage', 'public');
+        $this->storage      = Storage::disk($this->storage_disk);
     }
 
     /**
@@ -119,9 +134,9 @@ class Sitemap
      */
     public function save($path = null, $only_one = false)
     {
-        $path = $path ?: config('sitemap.filename', public_path('sitemap.xml'));
+        $path = $path ?: Config::get('sitemap.filename', 'sitemap.xml');
 
-        if (!$only_one && config('sitemap.separate_files', false)) {
+        if (!$only_one && Config::get('sitemap.separate_files', false)) {
             return (int) $this->saveMany($path);
         }
 
@@ -129,13 +144,13 @@ class Sitemap
     }
 
     /**
-     * @param string $path
+     * @param $path
      *
      * @return bool
      */
     private function saveOne($path)
     {
-        return (bool) file_put_contents($path, $this->get());
+        return $this->storage->put($path, $this->get());
     }
 
     /**
@@ -148,10 +163,8 @@ class Sitemap
         $xml = Xml::init('sitemapindex');
 
         $directory = Str::finish(pathinfo($path, PATHINFO_DIRNAME), '/');
-        $filename = Str::slug(pathinfo($path, PATHINFO_FILENAME));
+        $filename  = Str::slug(pathinfo($path, PATHINFO_FILENAME));
         $extension = Str::lower(pathinfo($path, PATHINFO_EXTENSION));
-
-        $this->makeDirectory($directory);
 
         $this->processManyItems('builders', $this->builders, $directory, $filename, $extension, __LINE__);
         $this->processManyItems('manual', $this->manuals, $directory, $filename, $extension, __LINE__);
@@ -160,27 +173,26 @@ class Sitemap
             $xml->addItem($sitemap, 'sitemap');
         }
 
-        return (bool) file_put_contents($path, $xml->get());
+        return $this->storage->put($path, $xml->get());
     }
 
     /**
      * @param string $method
-     * @param array $items
+     * @param array|\Illuminate\Support\Collection $items
      * @param string $directory
      * @param string $filename
      * @param string $extension
+     * @param null|int $line
      */
     private function processManyItems($method, $items, $directory, $filename, $extension, $line = null)
     {
         foreach ($items as $item) {
             $file = sprintf('%s-%s.%s', $filename, $this->index, $extension);
-            $realpath = $directory . $file;
-
-            $loc = Str::after($directory, public_path());
-            $loc = url(Str::finish($loc, '/') . $file);
+            $path = $directory . $file;
+            $loc  = $this->urlToSitemapFile($path);
 
             if (!method_exists($this, $method)) {
-                $line = $line ?: __LINE__;
+                $line    = $line ?: __LINE__;
                 $message = sprintf("The '%s' method not exist in %s of %s:%s", $method, get_class(), __FILE__, $line);
 
                 throw new MethodNotExists($message);
@@ -192,14 +204,14 @@ class Sitemap
 
             (new self)
                 ->{$method}($item)
-                ->save($realpath, true);
+                ->save($path, true);
 
-            $item = (new MakeItem)
+            $make_item = (new MakeItem)
                 ->loc($loc)
                 ->lastmod()
                 ->get();
 
-            $this->sitemaps->push($item);
+            $this->sitemaps->push($make_item);
 
             $this->index++;
         }
@@ -230,19 +242,19 @@ class Sitemap
     {
         $name = get_class($builder->getModel());
 
-        $route = $this->config($name, 'route', 'index');
+        $route      = $this->config($name, 'route', 'index');
         $parameters = $this->config($name, 'route_parameters', ['*']);
-        $updated = $this->config($name, 'lastmod', false);
-        $age = $this->config($name, 'age', 180);
+        $updated    = $this->config($name, 'lastmod', false);
+        $age        = $this->config($name, 'age', 180);
         $changefreq = $this->config($name, 'frequency', 'daily');
-        $priority = $this->config($name, 'priority', 0.5);
+        $priority   = $this->config($name, 'priority', 0.5);
 
         $items = $this->getItems($builder, $updated, $age);
 
         foreach ($items as $item) {
-            $params = $this->routeParameters($item, $parameters);
+            $params  = $this->routeParameters($item, $parameters);
             $lastmod = $this->lastmod($item, $updated);
-            $loc = $this->e(route($route, $params, true));
+            $loc     = $this->e(route($route, $params));
 
             $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
         }
@@ -255,10 +267,10 @@ class Sitemap
     {
         $item = new Collection($item);
 
-        $loc = $this->e($item->get('loc', config('app.url')));
-        $changefreq = $item->get('changefreq', config('sitemap.frequency', 'daily'));
-        $lastmod = Carbon::parse($item->get('lastmod', Carbon::now()))->toAtomString();
-        $priority = (float) $item->get('priority', config('sitemap.priority', 0.5));
+        $loc        = $this->e($item->get('loc', Config::get('app.url')));
+        $changefreq = $item->get('changefreq', Config::get('sitemap.frequency', 'daily'));
+        $lastmod    = Carbon::parse($item->get('lastmod', Carbon::now()))->toAtomString();
+        $priority   = (float) $item->get('priority', Config::get('sitemap.priority', 0.5));
 
         $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
     }
@@ -273,13 +285,13 @@ class Sitemap
      */
     private function config($model_name, $key, $default = null, $ignore_empty = true)
     {
-        $value = config("sitemap.models.{$model_name}.{$key}", null);
+        $value = Config::get("sitemap.models.{$model_name}.{$key}", null);
 
         if ($value || !$ignore_empty) {
             return $value;
         }
 
-        return config("sitemap.{$key}", $default);
+        return Config::get("sitemap.{$key}", $default);
     }
 
     /**
@@ -326,14 +338,17 @@ class Sitemap
     }
 
     /**
-     * Check the existence of the directory and create it in the absence.
-     *
      * @param string $path
+     *
+     * @return mixed
      */
-    private function makeDirectory($path)
+    private function urlToSitemapFile($path)
     {
-        if (!file_exists($path)) {
-            mkdir($path, 0777, true);
-        }
+        $config  = Config::get("filesystems.disks.{$this->storage_disk}");
+        $collect = Collection::make($config);
+        $prefix  = $collect->get('url', '/');
+        $prefix  = Str::finish($prefix, '/');
+
+        return url($prefix . $path);
     }
 }

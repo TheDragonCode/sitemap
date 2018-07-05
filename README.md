@@ -12,6 +12,12 @@ A simple sitemap generator for PHP Framework.
     <a href="LICENSE"><img src="https://poser.pugx.org/andrey-helldar/sitemap/license?format=flat-square" alt="License" /></a>
 </p>
 
+## Attention
+
+1. The `models()` method was replaced by the `builders()`.
+For some time, the old `models()` method will still be available for use.
+2. To improve the mechanism for saving files, we switched to the use of the facade Storage. Update your [config/sitemap.php](config/sitemap.php#L5-L11) file.
+
 
 ## Installation
 
@@ -26,7 +32,7 @@ Instead, you may of course manually update your require block and run `composer 
 ```json
 {
     "require": {
-        "andrey-helldar/sitemap": "~3.1"
+        "andrey-helldar/sitemap": "~3.2"
     }
 }
 ```
@@ -43,7 +49,7 @@ You can also publish the config file to change implementations (ie. interface to
 php artisan vendor:publish --provider="Helldar\Sitemap\ServiceProvider"
 ```
 
-Now you can use a `sitemap()` helper or `app('sitemap')` method.
+Now you can use a `sitemap()` helper or the `app('sitemap')` method.
 
 
 ## Configuration
@@ -81,11 +87,6 @@ If any of the model values are undefined, a global value will be used.
 
 
 ## Using
-
-### Attention
-
-The `models()` method was replaced by the `builders()`.
-For some time, the old `models()` method will still be available for use.
 
 
 ### Manual
@@ -237,11 +238,11 @@ $query3 = \App\Pages::query();
 
 sitemap()
      ->builders($query1, $query2, $query3)
-     ->save(public_path('sitemap-1.xml'));
+     ->save('sitemap-1.xml');
 
 sitemap()
      ->builders($query1, $query2, $query3)
-     ->save(storage_path('app/private/sitemap-2.xml'));
+     ->save('foo/bar/sitemap-2.xml');
 ```
 
 #### If the option `separate_files` is ENABLED
@@ -258,15 +259,15 @@ sitemap()
      ->save();
 ```
 
-In this case, the name of the file will be the default name from the settings: `'filename' => public_path('sitemap.xml')`.
+In this case, the name of the file will be the default name from the settings: `'filename' => 'sitemap.xml'`. The files are saved through the `Storage` facade (see [config/sitemap.php](src/config/sitemap.php#L5-L11)).
 
-Each model builder will be processed and saved in a separate file, and the shared file will contain references to it:
+Each model builder will be processed and saved in a separate file, and the shared file will contain references to it (with the selected a `public` storage name):
 
 ```
-/public/sitemap.xml   // general file
-/public/sitemap-1.xml // generated file for the $query1 collection
-/public/sitemap-2.xml // generated file for the $query2 collection
-/public/sitemap-3.xml // generated file for the $query3 collection
+/storage/sitemap.xml   // general file
+/storage/sitemap-1.xml // generated file for the $query1 collection
+/storage/sitemap-2.xml // generated file for the $query2 collection
+/storage/sitemap-3.xml // generated file for the $query3 collection
 ```
 
 ```xml
@@ -274,20 +275,20 @@ Each model builder will be processed and saved in a separate file, and the share
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <lastmod>2018-07-05T13:51:40+00:00</lastmod>
-    <loc>http://example.com/sitemap-1.xml</loc>
+    <loc>http://example.com/storage/sitemap-1.xml</loc>
   </sitemap>
   <sitemap>
     <lastmod>2018-07-05T13:51:41+00:00</lastmod>
-    <loc>http://example.com/sitemap-2.xml</loc>
+    <loc>http://example.com/storage/sitemap-2.xml</loc>
   </sitemap>
   <sitemap>
     <lastmod>2018-07-05T13:51:41+00:00</lastmod>
-    <loc>http://example.com/sitemap-3.xml</loc>
+    <loc>http://example.com/storage/sitemap-3.xml</loc>
   </sitemap>
 </sitemapindex>
 ```
 
-If you want to save multiple files, pass the path to the file as a parameter to the `save($path)` method with `'separate_files' => true` parameter in [config/sitemap.php](src/config/sitemap.php#L18) file:
+If you want to save multiple files, pass the path to the file as a parameter to the `save($path)` method with `'separate_files' => true` parameter in [config/sitemap.php](src/config/sitemap.php#L21-L27) file:
 
 ```php
 $query1 = \App\Catalog::query()->where('id', '>', '1000');
@@ -309,27 +310,27 @@ for($i = 0; $i < 3; $i++) {
 sitemap()
      ->builders($query1, $query2, $query3)
      ->manual($manual_items)
-     ->save(public_path('other-file-name.xml'));
+     ->save(public_path('first.xml'));
 
 sitemap()
      ->builders($query1, $query2, $query3)
      ->manual($manual_items)
-     ->save(storage_path('app/private/other-file-name.xml'));
+     ->save(storage_path('foo/bar/second.xml'));
 ```
 
 Files will be created:
 ```
-/public/other-file-name.xml   // general file
-/public/other-file-name-1.xml // generated file for the $query1 collection
-/public/other-file-name-2.xml // generated file for the $query2 collection
-/public/other-file-name-3.xml // generated file for the $query3 collection
-/public/other-file-name-4.xml // generated file for the $manual_items collection
+/storage/first.xml   // general file
+/storage/first-1.xml // generated file for the $query1 collection
+/storage/first-2.xml // generated file for the $query2 collection
+/storage/first-3.xml // generated file for the $query3 collection
+/storage/first-4.xml // generated file for the $manual_items collection
 
-/storage/app/private/other-file-name.xml   // general file
-/storage/app/private/other-file-name-1.xml // generated file for the $query1 collection
-/storage/app/private/other-file-name-2.xml // generated file for the $query2 collection
-/storage/app/private/other-file-name-3.xml // generated file for the $query3 collection
-/storage/app/private/other-file-name-4.xml // generated file for the $manual_items collection
+/storage/foo/bar/second.xml   // general file
+/storage/foo/bar/second-1.xml // generated file for the $query1 collection
+/storage/foo/bar/second-2.xml // generated file for the $query2 collection
+/storage/foo/bar/second-3.xml // generated file for the $query3 collection
+/storage/foo/bar/second-4.xml // generated file for the $manual_items collection
 ```
 
 ## SEO
@@ -338,15 +339,15 @@ Sitemap is extremely useful when indexing a site by search bots. If you use a si
 
 For example, you created several files:
 ```text
-/sitemaps/promo.xml
-/sitemaps/promo-1.xml
-/sitemaps/promo-2.xml
-/sitemaps/promo-3.xml
+/storage/sitemaps/promo.xml
+/storage/sitemaps/promo-1.xml
+/storage/sitemaps/promo-2.xml
+/storage/sitemaps/promo-3.xml
 ```
 
 In the `robots.txt` file, you only need to specify a link to the main file:
 ```text
-Sitemap: http://example.com/sitemaps/promo.xml
+Sitemap: http://example.com/storage/sitemaps/promo.xml
 ```
 
 All the rest of the search bots will do for you.
