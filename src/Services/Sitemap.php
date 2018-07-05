@@ -44,9 +44,9 @@ class Sitemap
      */
     public function __construct()
     {
-        $this->xml = Xml::init();
+        $this->xml      = Xml::init();
         $this->sitemaps = Collection::make();
-        $this->index = 1;
+        $this->index    = 1;
     }
 
     /**
@@ -86,13 +86,13 @@ class Sitemap
     }
 
     /**
-     * @param $items
+     * @param array $items
      *
      * @return $this
      */
-    public function manual($items)
+    public function manual(...$items)
     {
-        $this->manuals = (new Manual($items))->get();
+        $this->manuals = (array) $items;
 
         return $this;
     }
@@ -148,7 +148,7 @@ class Sitemap
         $xml = Xml::init('sitemapindex');
 
         $directory = Str::finish(pathinfo($path, PATHINFO_DIRNAME), '/');
-        $filename = Str::slug(pathinfo($path, PATHINFO_FILENAME));
+        $filename  = Str::slug(pathinfo($path, PATHINFO_FILENAME));
         $extension = Str::lower(pathinfo($path, PATHINFO_EXTENSION));
 
         $this->processManyItems('builders', $this->builders, $directory, $filename, $extension, __LINE__);
@@ -171,17 +171,21 @@ class Sitemap
     private function processManyItems($method, $items, $directory, $filename, $extension, $line = null)
     {
         foreach ($items as $item) {
-            $file = sprintf('%s-%s.%s', $filename, $this->index, $extension);
+            $file     = sprintf('%s-%s.%s', $filename, $this->index, $extension);
             $realpath = $directory . $file;
 
             $loc = Str::after($directory, public_path());
             $loc = url(Str::finish($loc, '/') . $file);
 
             if (!method_exists($this, $method)) {
-                $line = $line ?: __LINE__;
+                $line    = $line ?: __LINE__;
                 $message = sprintf("The '%s' method not exist in %s of %s:%s", $method, get_class(), __FILE__, $line);
 
                 throw new MethodNotExists($message);
+            }
+
+            if ($method == 'manual') {
+                $item = (new Manual($item))->get();
             }
 
             (new self)
@@ -208,8 +212,10 @@ class Sitemap
             $this->processBuilder($builder);
         }
 
-        foreach ($this->manuals as $item) {
-            $this->processManuals($item);
+        foreach ($this->manuals as $items) {
+            foreach ($items as $item) {
+                $this->processManuals($item);
+            }
         }
 
         return $this->xml->get();
@@ -222,19 +228,19 @@ class Sitemap
     {
         $name = get_class($builder->getModel());
 
-        $route = $this->config($name, 'route', 'index');
+        $route      = $this->config($name, 'route', 'index');
         $parameters = $this->config($name, 'route_parameters', ['*']);
-        $updated = $this->config($name, 'lastmod', false);
-        $age = $this->config($name, 'age', 180);
+        $updated    = $this->config($name, 'lastmod', false);
+        $age        = $this->config($name, 'age', 180);
         $changefreq = $this->config($name, 'frequency', 'daily');
-        $priority = $this->config($name, 'priority', 0.5);
+        $priority   = $this->config($name, 'priority', 0.5);
 
         $items = $this->getItems($builder, $updated, $age);
 
         foreach ($items as $item) {
-            $params = $this->routeParameters($item, $parameters);
+            $params  = $this->routeParameters($item, $parameters);
             $lastmod = $this->lastmod($item, $updated);
-            $loc = $this->e(route($route, $params, true));
+            $loc     = $this->e(route($route, $params, true));
 
             $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
         }
@@ -247,10 +253,10 @@ class Sitemap
     {
         $item = new Collection($item);
 
-        $loc = $this->e($item->get('loc', config('app.url')));
+        $loc        = $this->e($item->get('loc', config('app.url')));
         $changefreq = $item->get('changefreq', config('sitemap.frequency', 'daily'));
-        $lastmod = Carbon::parse($item->get('lastmod', Carbon::now()))->toAtomString();
-        $priority = (float) $item->get('priority', config('sitemap.priority', 0.5));
+        $lastmod    = Carbon::parse($item->get('lastmod', Carbon::now()))->toAtomString();
+        $priority   = (float) $item->get('priority', config('sitemap.priority', 0.5));
 
         $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
     }
