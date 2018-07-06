@@ -16,7 +16,8 @@
         }
     ],
     "require": {
-        "php": ">=5.6.9",
+        "php": ">=5.6.4",
+        "ext-dom": "*",
         "illuminate/database": "^5.4",
         "illuminate/support": "^5.4",
         "illuminate/validation": "^5.4",
