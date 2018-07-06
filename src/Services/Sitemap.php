@@ -128,20 +128,15 @@ class Sitemap
      * Save data to files.
      *
      * @param null|string $path
-     * @param bool $only_one
      *
      * @return bool|int
      */
-    public function save($path = null, $only_one = false)
+    public function save($path = null)
     {
         $path  = $path ?: Config::get('sitemap.filename', 'sitemap.xml');
         $count = sizeof($this->builders) + sizeof($this->manuals);
 
-        if ($count == 1) {
-            $only_one = true;
-        }
-
-        if (!$only_one && Config::get('sitemap.separate_files', false)) {
+        if ($count > 1 && Config::get('sitemap.separate_files', false)) {
             return (int) $this->saveMany($path);
         }
 
