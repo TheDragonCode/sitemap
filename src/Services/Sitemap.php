@@ -204,7 +204,7 @@ class Sitemap
 
             (new self)
                 ->{$method}($item)
-                ->save($path, true);
+                ->save($path);
 
             $make_item = (new MakeItem)
                 ->loc($loc)
