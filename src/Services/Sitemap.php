@@ -133,7 +133,7 @@ class Sitemap
      */
     public function save($path = null)
     {
-        $path  = $path ?: Config::get('sitemap.filename', 'sitemap.xml');
+        $path = $path ?: Config::get('sitemap.filename', 'sitemap.xml');
         $count = sizeof($this->builders) + sizeof($this->manuals);
 
         if ($count > 1 && Config::get('sitemap.separate_files', false)) {
