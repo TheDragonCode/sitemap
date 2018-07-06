@@ -65,6 +65,8 @@ class Sitemap
     }
 
     /**
+     * Call the element creation mechanism.
+     *
      * @return \Helldar\Sitemap\Services\MakeItem
      */
     public function makeItem()
@@ -73,9 +75,11 @@ class Sitemap
     }
 
     /**
+     * Pass the list of model constructors for processing.
+     *
      * @param \Illuminate\Database\Eloquent\Builder ...$models_builders
      *
-     * @deprecated Use a `builders` method instead.
+     * @deprecated Use a `builders()` method instead.
      *
      * @return $this
      */
@@ -87,7 +91,7 @@ class Sitemap
     }
 
     /**
-     * Builders of your models.
+     * Pass the list of model constructors for processing.
      *
      * @param \Illuminate\Database\Eloquent\Builder ...$builders
      *
@@ -101,6 +105,8 @@ class Sitemap
     }
 
     /**
+     * Send a set of manually created items for processing.
+     *
      * @param array $items
      *
      * @return $this
@@ -125,7 +131,7 @@ class Sitemap
     }
 
     /**
-     * Save data to files.
+     * Saving data to files.
      *
      * @param null|string $path
      *
@@ -144,7 +150,9 @@ class Sitemap
     }
 
     /**
-     * @param $path
+     * Save data to file.
+     *
+     * @param string $path
      *
      * @return bool
      */
@@ -154,6 +162,8 @@ class Sitemap
     }
 
     /**
+     * Save items to multiple files.
+     *
      * @param string $path
      *
      * @return bool
@@ -177,6 +187,8 @@ class Sitemap
     }
 
     /**
+     * Start the processing of elements.
+     *
      * @param string $method
      * @param array|\Illuminate\Support\Collection $items
      * @param string $directory
@@ -218,6 +230,8 @@ class Sitemap
     }
 
     /**
+     * Retrieving the result of the processing of the elements in the case of saving all the data without dividing it into several files.
+     *
      * @return string
      */
     private function get()
@@ -236,6 +250,8 @@ class Sitemap
     }
 
     /**
+     * Read configuration patterns and generate a link to save to the site map.
+     *
      * @param \Illuminate\Database\Eloquent\Builder $builder
      */
     private function processBuilder(Builder $builder)
@@ -261,6 +277,8 @@ class Sitemap
     }
 
     /**
+     * Reading the configuration of the manually transferred items and creating a link for saving to the sitemap.
+     *
      * @param array $item
      */
     private function processManuals($item = [])
@@ -276,9 +294,11 @@ class Sitemap
     }
 
     /**
-     * @param $model_name
-     * @param $key
-     * @param null $default
+     * Reading the configuration for the item and returning the default value if it is missing.
+     *
+     * @param string $model_name
+     * @param string $key
+     * @param mixed $default
      * @param bool $ignore_empty
      *
      * @return mixed
@@ -295,7 +315,9 @@ class Sitemap
     }
 
     /**
-     * @param $item
+     * Set the date when the content was last updated.
+     *
+     * @param mixed $item
      * @param bool $field
      *
      * @return string
@@ -317,6 +339,8 @@ class Sitemap
     }
 
     /**
+     * Obtaining a selection of elements from the model builder.
+     *
      * @param \Illuminate\Database\Eloquent\Builder $builder
      * @param bool $date_field
      * @param int $age
@@ -338,6 +362,8 @@ class Sitemap
     }
 
     /**
+     * Getting the URL for the file in case it is split into several files.
+     *
      * @param string $path
      *
      * @return mixed

@@ -28,6 +28,8 @@ class Manual
     }
 
     /**
+     * Get all items.
+     *
      * @return array
      */
     public function get()
@@ -36,6 +38,8 @@ class Manual
     }
 
     /**
+     * Validate that all elements of the array are correct.
+     *
      * @param $data
      *
      * @return bool
@@ -52,6 +56,8 @@ class Manual
     }
 
     /**
+     * List of rules for checking the correctness of the elements.
+     *
      * @return array
      */
     private function rules()

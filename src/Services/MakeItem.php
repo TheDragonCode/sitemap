@@ -9,6 +9,9 @@ class MakeItem
 {
     use Helpers;
 
+    /**
+     * The available time update parameters for the content to be sent to search bots.
+     */
     const FREQ = ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'];
 
     /**
@@ -17,6 +20,8 @@ class MakeItem
     private $item = [];
 
     /**
+     * Set the content update rate for the item.
+     *
      * @param string $value
      *
      * @return $this
@@ -32,7 +37,9 @@ class MakeItem
     }
 
     /**
-     * @param null $value
+     * Set the date when the content was last updated.
+     *
+     * @param null|string|int $value
      *
      * @return $this
      */
@@ -50,6 +57,8 @@ class MakeItem
     }
 
     /**
+     * Set the URL for the item.
+     *
      * @param $value
      *
      * @return $this
@@ -62,18 +71,24 @@ class MakeItem
     }
 
     /**
+     * Set the priority for the item.
+     *
      * @param float $value
      *
      * @return $this
      */
     public function priority($value = 0.5)
     {
+        $value = ((float) $value < 0.1) ? 0.5 : $value;
+
         $this->setElement('priority', (float) $value);
 
         return $this;
     }
 
     /**
+     * Get the item to save to the site map.
+     *
      * @return array
      */
     public function get()
@@ -82,8 +97,10 @@ class MakeItem
     }
 
     /**
-     * @param $key
-     * @param $value
+     * Add an item parameter to the resulting array.
+     *
+     * @param string $key
+     * @param string $value
      */
     private function setElement($key, $value)
     {
