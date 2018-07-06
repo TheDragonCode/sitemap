@@ -8,7 +8,7 @@ return [
      * Default, 'public'.
      */
 
-    'storage' => 'public',
+    'storage' => env('SITEMAP_STORAGE', 'public'),
 
     /*
      * The path to the file.
@@ -16,7 +16,7 @@ return [
      * Default, 'sitemap.xml'.
      */
 
-    'filename' => 'sitemap.xml',
+    'filename' => env('SITEMAP_FILENAME', 'sitemap.xml'),
 
     /*
      * Saving site maps to separated files with a shared file that contains links to others.
@@ -24,13 +24,13 @@ return [
      * Default, false.
      */
 
-    'separate_files' => false,
+    'separate_files' => env('SITEMAP_SEPARATE', false),
 
     /*
      * Nicely formats output with indentation and extra space.
      */
 
-    'formatOutput' => true,
+    'formatOutput' => env('SITEMAP_FORMAT_OUTPUT', false),
 
     /*
      * The number of days that the entry will go to the site map.
