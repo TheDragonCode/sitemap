@@ -27,7 +27,7 @@ trait Helpers
         $result = [];
 
         foreach ($fields as $key => $value) {
-            $key = is_numeric($key) ? $value : $key;
+            $key   = is_numeric($key) ? $value : $key;
             $value = $item->{$value};
 
             $result[$key] = $value;
