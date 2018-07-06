@@ -56,12 +56,12 @@ class Sitemap
      */
     public function __construct()
     {
-        $this->xml = Xml::init();
+        $this->xml      = Xml::init();
         $this->sitemaps = Collection::make();
-        $this->index = 1;
+        $this->index    = 1;
 
         $this->storage_disk = Config::get('sitemap.storage', 'public');
-        $this->storage = Storage::disk($this->storage_disk);
+        $this->storage      = Storage::disk($this->storage_disk);
     }
 
     /**
@@ -133,7 +133,7 @@ class Sitemap
      */
     public function save($path = null)
     {
-        $path = $path ?: Config::get('sitemap.filename', 'sitemap.xml');
+        $path  = $path ?: Config::get('sitemap.filename', 'sitemap.xml');
         $count = sizeof($this->builders) + sizeof($this->manuals);
 
         if ($count > 1 && Config::get('sitemap.separate_files', false)) {
@@ -163,7 +163,7 @@ class Sitemap
         $xml = Xml::init('sitemapindex');
 
         $directory = Str::finish(pathinfo($path, PATHINFO_DIRNAME), '/');
-        $filename = Str::slug(pathinfo($path, PATHINFO_FILENAME));
+        $filename  = Str::slug(pathinfo($path, PATHINFO_FILENAME));
         $extension = Str::lower(pathinfo($path, PATHINFO_EXTENSION));
 
         $this->processManyItems('builders', $this->builders, $directory, $filename, $extension, __LINE__);
@@ -189,10 +189,10 @@ class Sitemap
         foreach ($items as $item) {
             $file = sprintf('%s-%s.%s', $filename, $this->index, $extension);
             $path = $directory . $file;
-            $loc = $this->urlToSitemapFile($path);
+            $loc  = $this->urlToSitemapFile($path);
 
             if (!method_exists($this, $method)) {
-                $line = $line ?: __LINE__;
+                $line    = $line ?: __LINE__;
                 $message = sprintf("The '%s' method not exist in %s of %s:%s", $method, get_class(), __FILE__, $line);
 
                 throw new MethodNotExists($message);
@@ -242,19 +242,19 @@ class Sitemap
     {
         $name = get_class($builder->getModel());
 
-        $route = $this->config($name, 'route', 'index');
+        $route      = $this->config($name, 'route', 'index');
         $parameters = $this->config($name, 'route_parameters', ['*']);
-        $updated = $this->config($name, 'lastmod', false);
-        $age = $this->config($name, 'age', 180);
+        $updated    = $this->config($name, 'lastmod', false);
+        $age        = $this->config($name, 'age', 180);
         $changefreq = $this->config($name, 'frequency', 'daily');
-        $priority = $this->config($name, 'priority', 0.5);
+        $priority   = $this->config($name, 'priority', 0.5);
 
         $items = $this->getItems($builder, $updated, $age);
 
         foreach ($items as $item) {
-            $params = $this->routeParameters($item, $parameters);
+            $params  = $this->routeParameters($item, $parameters);
             $lastmod = $this->lastmod($item, $updated);
-            $loc = $this->e(route($route, $params));
+            $loc     = $this->e(route($route, $params));
 
             $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
         }
@@ -267,10 +267,10 @@ class Sitemap
     {
         $item = new Collection($item);
 
-        $loc = $this->e($item->get('loc', Config::get('app.url')));
+        $loc        = $this->e($item->get('loc', Config::get('app.url')));
         $changefreq = $item->get('changefreq', Config::get('sitemap.frequency', 'daily'));
-        $lastmod = Carbon::parse($item->get('lastmod', Carbon::now()))->toAtomString();
-        $priority = (float) $item->get('priority', Config::get('sitemap.priority', 0.5));
+        $lastmod    = Carbon::parse($item->get('lastmod', Carbon::now()))->toAtomString();
+        $priority   = (float) $item->get('priority', Config::get('sitemap.priority', 0.5));
 
         $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
     }
@@ -344,10 +344,10 @@ class Sitemap
      */
     private function urlToSitemapFile($path)
     {
-        $config = Config::get("filesystems.disks.{$this->storage_disk}");
+        $config  = Config::get("filesystems.disks.{$this->storage_disk}");
         $collect = Collection::make($config);
-        $prefix = $collect->get('url', '/');
-        $prefix = Str::finish($prefix, '/');
+        $prefix  = $collect->get('url', '/');
+        $prefix  = Str::finish($prefix, '/');
 
         return url($prefix . $path);
     }
