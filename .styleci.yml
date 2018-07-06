@@ -1,6 +1,7 @@
 preset: psr2
 
 enabled:
+- align_double_arrow
 - align_equals
 - align_phpdoc
 - blank_line_after_opening_tag
@@ -44,7 +45,6 @@ enabled:
 - standardize_not_equal
 - ternary_spaces
 - trim_array_spaces
-- unalign_double_arrow
 - unary_operators_spaces
 - unneeded_control_parentheses
 - whitespacy_lines
