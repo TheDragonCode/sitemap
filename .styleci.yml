@@ -1,6 +1,7 @@
 preset: psr2
 
 enabled:
+- align_equals
 - align_phpdoc
 - blank_line_after_opening_tag
 - blank_line_before_continue
@@ -16,6 +17,7 @@ enabled:
 - multiline_array_trailing_comma
 - no_empty_lines_after_phpdocs
 - no_empty_phpdoc
+- no_unused_imports
 - operators_spaces
 - ordered_use
 - phpdoc_indent
@@ -43,8 +45,6 @@ enabled:
 - ternary_spaces
 - trim_array_spaces
 - unalign_double_arrow
-- unalign_equals
 - unary_operators_spaces
 - unneeded_control_parentheses
-- unused_use
 - whitespacy_lines
