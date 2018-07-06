@@ -57,11 +57,11 @@ class Manual
     private function rules()
     {
         return [
-            'items' => ['required', 'array', 'min:1', 'max:50000'],
-            'items.*.loc' => ['required', 'url', 'max:255'],
+            'items'              => ['required', 'array', 'min:1', 'max:50000'],
+            'items.*.loc'        => ['required', 'url', 'max:255'],
             'items.*.changefreq' => ['string', 'max:20', Rule::in('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never')],
-            'items.*.lastmod' => ['date'],
-            'items.*.priority' => ['numeric'],
+            'items.*.lastmod'    => ['date'],
+            'items.*.priority'   => ['numeric'],
         ];
     }
 }
