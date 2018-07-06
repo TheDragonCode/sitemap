@@ -355,6 +355,6 @@ All the rest of the search bots will do for you.
 Enjoy!
 
 
-## Copyright and License
+## License
 
-`Laravel Sitemap` was written by Andrey Helldar for the Laravel framework 5.4 or later, and is released under the MIT License. See the [LICENSE](LICENSE) file for details.
+This package is released under the [MIT License](LICENSE).
