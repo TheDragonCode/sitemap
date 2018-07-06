@@ -49,7 +49,7 @@ class Sitemap
     /**
      * @var int
      */
-    private $index;
+    private $index = 1;
 
     /**
      * Sitemap constructor.
@@ -58,7 +58,6 @@ class Sitemap
     {
         $this->xml      = Xml::init();
         $this->sitemaps = Collection::make();
-        $this->index    = 1;
 
         $this->storage_disk = Config::get('sitemap.storage', 'public');
         $this->storage      = Storage::disk($this->storage_disk);
