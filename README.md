@@ -118,13 +118,13 @@ for($i = 0; $i < 3; $i++) {
 }
 
 return sitemap()
-         ->manual($items)
+         ->manual($items_a, $items_b)
          ->show();
 
 // or
 
 return app('sitemap')
-         ->manual($items)
+         ->manual($items_a, $items_b)
          ->show();
 ```
 
