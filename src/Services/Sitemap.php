@@ -52,6 +52,11 @@ class Sitemap
     private $index = 1;
 
     /**
+     * @var null|string
+     */
+    private $url = null;
+
+    /**
      * Sitemap constructor.
      */
     public function __construct()
@@ -113,6 +118,30 @@ class Sitemap
     public function manual(...$items)
     {
         $this->manuals = (array) $items;
+
+        return $this;
+    }
+
+    /**
+     * Set domain name for using in multidomain application.
+     *
+     * @param string $domain
+     *
+     * @return $this
+     */
+    public function domain($domain)
+    {
+        $config = Config::get('sitemap.domains', []);
+        $config = Collection::make($config);
+        $url    = $config->get($domain);
+
+        if (is_null($url)) {
+            $config  = Config::get("filesystems.disks.{$this->storage_disk}");
+            $collect = Collection::make($config);
+            $url     = $collect->get('url', '/');
+        }
+
+        $this->url = Str::finish($url, '/');
 
         return $this;
     }
@@ -369,10 +398,7 @@ class Sitemap
      */
     private function urlToSitemapFile($path)
     {
-        $config  = Config::get("filesystems.disks.{$this->storage_disk}");
-        $collect = Collection::make($config);
-        $prefix  = $collect->get('url', '/');
-        $prefix  = Str::finish($prefix, '/');
+        $prefix = Str::finish($this->url, '/');
 
         return url($prefix . $path);
     }

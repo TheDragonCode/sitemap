@@ -11,6 +11,16 @@ return [
     'storage' => env('SITEMAP_STORAGE', 'public'),
 
     /*
+     * List of domain names for the formation of links to the site maps in case of their separation.
+     * See "separate_files" option.
+     */
+
+    'domains' => [
+        'foo' => env('APP_URL'),
+        'bar' => 'http://example.com',
+    ],
+
+    /*
      * The path to the file.
      *
      * Default, 'sitemap.xml'.

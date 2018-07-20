@@ -288,6 +288,67 @@ Each model builder will be processed and saved in a separate file, and the share
 </sitemapindex>
 ```
 
+If you use a multi-domain application, you can specify the domain names of the generated links to other files, having pre-specified them in the settings:
+
+```php
+'domains' => [
+    'foo' => env('APP_URL'), // http://example.com
+    'bar' => 'http://foo.bar',
+],
+```
+
+```php
+sitemap()
+     ->builders($query1, $query2, $query3)
+     ->domain('foo')
+     ->save();
+     
+sitemap()
+     ->builders($query1, $query2, $query3)
+     ->domain('bar')
+     ->save();
+```
+
+This method will create files with the following links:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <lastmod>2018-07-05T13:51:40+00:00</lastmod>
+    <loc>http://example.com/storage/sitemap-1.xml</loc>
+  </sitemap>
+  <sitemap>
+    <lastmod>2018-07-05T13:51:41+00:00</lastmod>
+    <loc>http://example.com/storage/sitemap-2.xml</loc>
+  </sitemap>
+  <sitemap>
+    <lastmod>2018-07-05T13:51:41+00:00</lastmod>
+    <loc>http://example.com/storage/sitemap-3.xml</loc>
+  </sitemap>
+</sitemapindex>
+```
+
+and
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <lastmod>2018-07-05T13:51:40+00:00</lastmod>
+    <loc>http://foo.bar/storage/sitemap-1.xml</loc>
+  </sitemap>
+  <sitemap>
+    <lastmod>2018-07-05T13:51:41+00:00</lastmod>
+    <loc>http://foo.bar/storage/sitemap-2.xml</loc>
+  </sitemap>
+  <sitemap>
+    <lastmod>2018-07-05T13:51:41+00:00</lastmod>
+    <loc>http://foo.bar/storage/sitemap-3.xml</loc>
+  </sitemap>
+</sitemapindex>
+```
+
 If you want to save multiple files, pass the path to the file as a parameter to the `save($path)` method with `'separate_files' => true` parameter in [config/sitemap.php](src/config/sitemap.php#L21-L27) file:
 
 ```php
