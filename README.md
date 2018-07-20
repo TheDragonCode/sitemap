@@ -16,7 +16,7 @@ A simple sitemap generator for PHP Framework.
 
 1. The `models()` method was replaced by the `builders()`.
 For some time, the old `models()` method will still be available for use.
-2. To improve the mechanism for saving files, we switched to the use of the facade Storage. Update your [config/sitemap.php](src/config/sitemap.php#L5-L11) file.
+2. To improve the mechanism for saving files, we switched to the use of the facade Storage. Update your [config/sitemap.php](src/config/sitemap.php#L11) file.
 
 
 ## Installation
@@ -215,7 +215,7 @@ And go to your URL. Example: `http://mysite.dev/sitemap`.
 
 ### Save
 
-Since version 3.1, it is possible to save links to several files. The option `separate_files` in the [config/sitemap.php](src/config/sitemap.php#L18) file is responsible for enabling this feature.
+Since version 3.1, it is possible to save links to several files. The option `separate_files` in the [config/sitemap.php](src/config/sitemap.php#L29) file is responsible for enabling this feature.
 
 #### If the option `separate_files` is DISABLED
 
@@ -249,7 +249,7 @@ sitemap()
 
 #### If the option `separate_files` is ENABLED
 
-To save the contents to the separated files, use the `save()` method with `'separate_files' => true` parameter in [config/sitemap.php](src/config/sitemap.php#L18) file.
+To save the contents to the separated files, use the `save()` method with `'separate_files' => true` parameter in [config/sitemap.php](src/config/sitemap.php#L29) file.
 
 ```php
 $query1 = \App\Catalog::query()->where('id', '>', '1000');
@@ -261,7 +261,7 @@ sitemap()
      ->save();
 ```
 
-In this case, the name of the file will be the default name from the settings: `'filename' => 'sitemap.xml'`. The files are saved through the `Storage` facade (see [config/sitemap.php](src/config/sitemap.php#L5-L11)).
+In this case, the name of the file will be the default name from the settings: `'filename' => 'sitemap.xml'`. The files are saved through the `Storage` facade (see [config/sitemap.php](src/config/sitemap.php#L11)).
 
 Each model builder will be processed and saved in a separate file, and the shared file will contain references to it (with the selected a `public` storage name):
 
@@ -351,7 +351,7 @@ and
 </sitemapindex>
 ```
 
-If you want to save multiple files, pass the path to the file as a parameter to the `save($path)` method with `'separate_files' => true` parameter in [config/sitemap.php](src/config/sitemap.php#L21-L27) file:
+If you want to save multiple files, pass the path to the file as a parameter to the `save($path)` method with `'separate_files' => true` parameter in [config/sitemap.php](src/config/sitemap.php#L37) file:
 
 ```php
 $query1 = \App\Catalog::query()->where('id', '>', '1000');
