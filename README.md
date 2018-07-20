@@ -351,6 +351,9 @@ and
 </sitemapindex>
 ```
 
+By default, the domain specified in `APP_URL` of `.env` file will be used.
+
+
 If you want to save multiple files, pass the path to the file as a parameter to the `save($path)` method with `'separate_files' => true` parameter in [config/sitemap.php](src/config/sitemap.php#L37) file:
 
 ```php
