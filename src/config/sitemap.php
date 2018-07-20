@@ -16,8 +16,8 @@ return [
      */
 
     'domains' => [
-        'foo' => env('APP_URL'),
-        'bar' => 'http://example.com',
+        //'foo' => env('APP_URL'),
+        //'bar' => 'http://example.com',
     ],
 
     /*
