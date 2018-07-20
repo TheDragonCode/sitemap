@@ -80,7 +80,7 @@ As the key of the array, you must use the model name for which the rules will be
     * the key is the parameter name for the routing. If the name of the routing parameter matches the name of the column in the database, you can specify only the value.
     * the value is the name of the column in the database to substitute the value.
  * **lastmod** - is the name of the column containing the record date. In case of absence, the current date is used. If the model does not need to take into account the time field, set the parameter `lastmod` to `false`.
- * **frequency** - is the value of the refresh rate of the content. This is necessary for some search robots.
+ * **frequency** - is the value of the refresh rate of the content. This is necessary for some search robots. You can also use constants from `Helldar\Sitemap\Services\Sitemap` class.
  * **priority** - is the priority of the reference for model records.
 
 If any of the model values are undefined, a global value will be used.
@@ -93,6 +93,8 @@ If any of the model values are undefined, a global value will be used.
 
 You can also transfer an array of items created manually:
 ```php
+use Helldar\Sitemap\Services\Sitemap;
+
 $items_a = [];
 $items_b = [];
 
@@ -109,7 +111,7 @@ for($i = 0; $i < 3; $i++) {
 
 for($i = 0; $i < 3; $i++) {
     $item = sitemap()->makeItem()
-        ->changefreq('weekly')
+        ->changefreq(Sitemap::FREQUENCY_WEEKLY)
         ->lastmod(Carbon\Carbon::now())
         ->loc("http://mysite.local/offers/" . $i)
         ->get();

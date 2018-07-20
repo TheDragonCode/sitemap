@@ -16,6 +16,20 @@ class Sitemap
 {
     use Helpers;
 
+    const FREQUENCY_ALWAYS  = 'always';
+
+    const FREQUENCY_DAILY   = 'daily';
+
+    const FREQUENCY_HOURLY  = 'hourly';
+
+    const FREQUENCY_MONTHLY = 'monthly';
+
+    const FREQUENCY_NEVER   = 'never';
+
+    const FREQUENCY_WEEKLY  = 'weekly';
+
+    const FREQUENCY_YEARLY  = 'yearly';
+
     /**
      * @var string
      */

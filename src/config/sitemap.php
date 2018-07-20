@@ -64,6 +64,18 @@ return [
      *
      * Available values: always, hourly, daily, weekly, monthly, yearly, never.
      *
+     * You can also use constants:
+     *
+     *   use Helldar\Sitemap\Services\Sitemap;
+     *
+     *   Sitemap::FREQUENCY_ALWAYS
+     *   Sitemap::FREQUENCY_DAILY
+     *   Sitemap::FREQUENCY_HOURLY
+     *   Sitemap::FREQUENCY_MONTHLY
+     *   Sitemap::FREQUENCY_NEVER
+     *   Sitemap::FREQUENCY_WEEKLY
+     *   Sitemap::FREQUENCY_YEARLY
+     *
      * Default, `daily`.
      */
 

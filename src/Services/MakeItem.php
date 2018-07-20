@@ -10,11 +10,6 @@ class MakeItem
     use Helpers;
 
     /**
-     * The available time update parameters for the content to be sent to search bots.
-     */
-    const FREQ = ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'];
-
-    /**
      * @var array
      */
     private $item = [];
@@ -29,7 +24,7 @@ class MakeItem
     public function changefreq($value = 'daily')
     {
         $value = $this->lower(trim($value));
-        $value = !in_array($value, self::FREQ) ? 'daily' : $value;
+        $value = in_array($value, $this->getFrequencies()) ? $value : Sitemap::FREQUENCY_DAILY;
 
         $this->setElement('changefreq', $value);
 
@@ -105,5 +100,21 @@ class MakeItem
     private function setElement($key, $value)
     {
         $this->item[$key] = $value;
+    }
+
+    /**
+     * @return array
+     */
+    private function getFrequencies()
+    {
+        return [
+            Sitemap::FREQUENCY_ALWAYS,
+            Sitemap::FREQUENCY_DAILY,
+            Sitemap::FREQUENCY_HOURLY,
+            Sitemap::FREQUENCY_MONTHLY,
+            Sitemap::FREQUENCY_NEVER,
+            Sitemap::FREQUENCY_WEEKLY,
+            Sitemap::FREQUENCY_YEARLY,
+        ];
     }
 }
