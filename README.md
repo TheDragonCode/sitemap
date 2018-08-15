@@ -12,12 +12,6 @@ A simple sitemap generator for PHP Framework.
     <a href="LICENSE"><img src="https://poser.pugx.org/andrey-helldar/sitemap/license?format=flat-square" alt="License" /></a>
 </p>
 
-## Attention
-
-1. The `models()` method was replaced by the `builders()`.
-For some time, the old `models()` method will still be available for use.
-2. To improve the mechanism for saving files, we switched to the use of the facade Storage. Update your [config/sitemap.php](src/config/sitemap.php#L11) file.
-
 
 ## Installation
 

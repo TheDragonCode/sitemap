@@ -95,22 +95,6 @@ class Sitemap
     /**
      * Pass the list of model constructors for processing.
      *
-     * @param \Illuminate\Database\Eloquent\Builder ...$models_builders
-     *
-     * @deprecated Use a `builders()` method instead.
-     *
-     * @return $this
-     */
-    public function models(Builder ...$models_builders)
-    {
-        $this->builders = (array) $models_builders;
-
-        return $this;
-    }
-
-    /**
-     * Pass the list of model constructors for processing.
-     *
      * @param \Illuminate\Database\Eloquent\Builder ...$builders
      *
      * @return $this
