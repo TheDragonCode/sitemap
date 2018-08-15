@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/andrey-helldar/sitemap",
-    "keywords": ["sitemap", "generator", "laravel", "simple", "separated files"],
+    "keywords": ["sitemap", "generator", "laravel", "simple", "separated files", "seo optimized", "seo"],
     "support": {
         "issues": "https://github.com/andrey-helldar/sitemap/issues",
         "source": "https://github.com/andrey-helldar/sitemap"
