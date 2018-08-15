@@ -1,4 +1,4 @@
-# Sitemap for Laravel 5.4+
+# Sitemap for Laravel 5.6+
 
 A simple sitemap generator for PHP Framework.
 
@@ -26,7 +26,7 @@ Instead, you may of course manually update your require block and run `composer 
 ```json
 {
     "require": {
-        "andrey-helldar/sitemap": "~3.2"
+        "andrey-helldar/sitemap": "~4.0"
     }
 }
 ```
