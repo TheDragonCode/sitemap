@@ -209,7 +209,7 @@ And go to your URL. Example: `http://mysite.dev/sitemap`.
 
 ### Save
 
-Since version 3.1, it is possible to save links to several files. The option `separate_files` in the [config/sitemap.php](src/config/sitemap.php#L29) file is responsible for enabling this feature.
+Since version 3.1, it is possible to save links to several files. The option `separate_files` in the [config/sitemap.php](src/config/sitemap.php) file is responsible for enabling this feature.
 
 #### If the option `separate_files` is DISABLED
 
@@ -243,7 +243,7 @@ sitemap()
 
 #### If the option `separate_files` is ENABLED
 
-To save the contents to the separated files, use the `save()` method with `'separate_files' => true` parameter in [config/sitemap.php](src/config/sitemap.php#L29) file.
+To save the contents to the separated files, use the `save()` method with `'separate_files' => true` parameter in [config/sitemap.php](src/config/sitemap.php) file.
 
 ```php
 $query1 = \App\Catalog::query()->where('id', '>', '1000');
@@ -255,7 +255,7 @@ sitemap()
      ->save();
 ```
 
-In this case, the name of the file will be the default name from the settings: `'filename' => 'sitemap.xml'`. The files are saved through the `Storage` facade (see [config/sitemap.php](src/config/sitemap.php#L11)).
+In this case, the name of the file will be the default name from the settings: `'filename' => 'sitemap.xml'`. The files are saved through the `Storage` facade (see [config/sitemap.php](src/config/sitemap.php)).
 
 Each model builder will be processed and saved in a separate file, and the shared file will contain references to it (with the selected a `public` storage name):
 
@@ -348,7 +348,7 @@ and
 By default, the domain specified in `APP_URL` of `.env` file will be used.
 
 
-If you want to save multiple files, pass the path to the file as a parameter to the `save($path)` method with `'separate_files' => true` parameter in [config/sitemap.php](src/config/sitemap.php#L37) file:
+If you want to save multiple files, pass the path to the file as a parameter to the `save($path)` method with `'separate_files' => true` parameter in [config/sitemap.php](src/config/sitemap.php) file:
 
 ```php
 $query1 = \App\Catalog::query()->where('id', '>', '1000');
