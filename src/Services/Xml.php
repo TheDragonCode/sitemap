@@ -40,7 +40,7 @@ class Xml
      *
      * @return \Helldar\Sitemap\Services\Xml
      */
-    public static function init($root = 'urlset'): Xml
+    public static function init($root = 'urlset'): self
     {
         return new self($root);
     }

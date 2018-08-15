@@ -21,7 +21,7 @@ class MakeItem
      *
      * @return \Helldar\Sitemap\Services\MakeItem
      */
-    public function changefreq(string $value = 'daily'): MakeItem
+    public function changefreq(string $value = 'daily'): self
     {
         $frequencies = Variables::getFrequencies();
 
@@ -40,7 +40,7 @@ class MakeItem
      *
      * @return \Helldar\Sitemap\Services\MakeItem
      */
-    public function lastmod($value = null): MakeItem
+    public function lastmod($value = null): self
     {
         if (is_numeric($value)) {
             $value = Carbon::createFromTimestamp($value);
@@ -60,7 +60,7 @@ class MakeItem
      *
      * @return \Helldar\Sitemap\Services\MakeItem
      */
-    public function loc(string $value): MakeItem
+    public function loc(string $value): self
     {
         $this->setElement('loc', trim($value));
 
@@ -74,7 +74,7 @@ class MakeItem
      *
      * @return \Helldar\Sitemap\Services\MakeItem
      */
-    public function priority(float $value = 0.5): MakeItem
+    public function priority(float $value = 0.5): self
     {
         $value = ((float) $value < 0.1) ? 0.5 : $value;
 
