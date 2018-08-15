@@ -2,6 +2,7 @@
 
 namespace Helldar\Sitemap\Services;
 
+use DOMDocument;
 use Illuminate\Support\Facades\Config;
 
 class Xml
@@ -23,7 +24,7 @@ class Xml
      */
     public function __construct($root = 'urlset')
     {
-        $this->doc = (new \DOMDocument('1.0', 'utf-8'));
+        $this->doc = new DOMDocument('1.0', 'utf-8');
 
         $this->root = $this->doc->createElement($root);
 
@@ -39,7 +40,7 @@ class Xml
      *
      * @return \Helldar\Sitemap\Services\Xml
      */
-    public static function init($root = 'urlset')
+    public static function init($root = 'urlset'): Xml
     {
         return new self($root);
     }
@@ -65,7 +66,7 @@ class Xml
     /**
      * @return string
      */
-    public function get()
+    public function get(): string
     {
         $this->doc->appendChild($this->root);
 

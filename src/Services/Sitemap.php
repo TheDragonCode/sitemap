@@ -6,8 +6,6 @@ use Carbon\Carbon;
 use Helldar\Sitemap\Exceptions\MethodNotExists;
 use Helldar\Sitemap\Traits\Helpers;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,20 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 class Sitemap
 {
     use Helpers;
-
-    const FREQUENCY_ALWAYS  = 'always';
-
-    const FREQUENCY_DAILY   = 'daily';
-
-    const FREQUENCY_HOURLY  = 'hourly';
-
-    const FREQUENCY_MONTHLY = 'monthly';
-
-    const FREQUENCY_NEVER   = 'never';
-
-    const FREQUENCY_WEEKLY  = 'weekly';
-
-    const FREQUENCY_YEARLY  = 'yearly';
 
     /**
      * @var string
@@ -76,9 +60,9 @@ class Sitemap
     public function __construct()
     {
         $this->xml      = Xml::init();
-        $this->sitemaps = Collection::make();
+        $this->sitemaps = collect();
 
-        $this->storage_disk = Config::get('sitemap.storage', 'public');
+        $this->storage_disk = config('sitemap.storage', 'public');
         $this->storage      = Storage::disk($this->storage_disk);
     }
 
@@ -87,7 +71,7 @@ class Sitemap
      *
      * @return \Helldar\Sitemap\Services\MakeItem
      */
-    public function makeItem()
+    public function makeItem(): MakeItem
     {
         return new MakeItem;
     }
@@ -97,9 +81,9 @@ class Sitemap
      *
      * @param \Illuminate\Database\Eloquent\Builder ...$builders
      *
-     * @return $this
+     * @return \Helldar\Sitemap\Services\Sitemap
      */
-    public function builders(Builder ...$builders)
+    public function builders(Builder ...$builders): Sitemap
     {
         $this->builders = (array) $builders;
 
@@ -111,9 +95,9 @@ class Sitemap
      *
      * @param array $items
      *
-     * @return $this
+     * @return \Helldar\Sitemap\Services\Sitemap
      */
-    public function manual(...$items)
+    public function manual(array ...$items): Sitemap
     {
         $this->manuals = (array) $items;
 
@@ -125,21 +109,21 @@ class Sitemap
      *
      * @param string $domain
      *
-     * @return $this
+     * @return \Helldar\Sitemap\Services\Sitemap
      */
-    public function domain($domain)
+    public function domain($domain): Sitemap
     {
-        $config = Config::get('sitemap.domains', []);
-        $config = Collection::make($config);
+        $config = config('sitemap.domains', []);
+        $config = collect($config);
         $url    = $config->get($domain);
 
         if (is_null($url)) {
-            $config  = Config::get("filesystems.disks.{$this->storage_disk}");
-            $collect = Collection::make($config);
+            $config  = config("filesystems.disks.{$this->storage_disk}");
+            $collect = collect($config);
             $url     = $collect->get('url', '/');
         }
 
-        $this->url = Str::finish($url, '/');
+        $this->url = str_finish($url, '/');
 
         return $this;
     }
@@ -149,7 +133,7 @@ class Sitemap
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function show()
+    public function show(): Response
     {
         return Response::create((string) $this->get(), 200, [
             'Content-Type' => 'application/xml',
@@ -161,14 +145,14 @@ class Sitemap
      *
      * @param null|string $path
      *
-     * @return bool|int
+     * @return int
      */
-    public function save($path = null)
+    public function save($path = null): int
     {
-        $path  = $path ?: Config::get('sitemap.filename', 'sitemap.xml');
+        $path  = $path ?: config('sitemap.filename', 'sitemap.xml');
         $count = sizeof($this->builders) + sizeof($this->manuals);
 
-        if ($count > 1 && Config::get('sitemap.separate_files', false)) {
+        if ($count > 1 && config('sitemap.separate_files', false)) {
             return (int) $this->saveMany($path);
         }
 
@@ -182,7 +166,7 @@ class Sitemap
      *
      * @return bool
      */
-    private function saveOne($path)
+    private function saveOne($path): bool
     {
         return $this->storage->put($path, $this->get());
     }
@@ -194,7 +178,7 @@ class Sitemap
      *
      * @return bool
      */
-    private function saveMany($path)
+    private function saveMany($path): bool
     {
         $xml = Xml::init('sitemapindex');
 
@@ -260,17 +244,17 @@ class Sitemap
      *
      * @return string
      */
-    private function get()
+    private function get(): string
     {
-        foreach ($this->builders as $builder) {
+        array_map(function ($builder) {
             $this->processBuilder($builder);
-        }
+        }, $this->builders);
 
-        foreach ($this->manuals as $items) {
-            foreach ($items as $item) {
+        array_map(function ($items) {
+            array_map(function ($item) {
                 $this->processManuals($item);
-            }
-        }
+            }, $items);
+        }, $this->manuals);
 
         return $this->xml->get();
     }
@@ -309,12 +293,12 @@ class Sitemap
      */
     private function processManuals($item = [])
     {
-        $item = new Collection($item);
+        $item = collect($item);
 
-        $loc        = $this->e($item->get('loc', Config::get('app.url')));
-        $changefreq = $item->get('changefreq', Config::get('sitemap.frequency', 'daily'));
-        $lastmod    = Carbon::parse($item->get('lastmod', Carbon::now()))->toAtomString();
-        $priority   = (float) $item->get('priority', Config::get('sitemap.priority', 0.5));
+        $loc        = $this->e($item->get('loc', config('app.url')));
+        $changefreq = $item->get('changefreq', config('sitemap.frequency', 'daily'));
+        $lastmod    = Carbon::parse($item->get('lastmod', now()))->toAtomString();
+        $priority   = (float) $item->get('priority', config('sitemap.priority', 0.5));
 
         $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
     }
@@ -331,13 +315,13 @@ class Sitemap
      */
     private function config($model_name, $key, $default = null, $ignore_empty = true)
     {
-        $value = Config::get("sitemap.models.{$model_name}.{$key}", null);
+        $value = config("sitemap.models.{$model_name}.{$key}", null);
 
         if ($value || !$ignore_empty) {
             return $value;
         }
 
-        return Config::get("sitemap.{$key}", $default);
+        return config("sitemap.{$key}", $default);
     }
 
     /**
@@ -348,7 +332,7 @@ class Sitemap
      *
      * @return string
      */
-    private function lastmod($item, $field = false)
+    private function lastmod($item, $field = false): string
     {
         if ($field && $value = $item->{$field}) {
             if (is_numeric($value)) {
@@ -360,8 +344,7 @@ class Sitemap
                 ->toAtomString();
         }
 
-        return Carbon::now()
-            ->toAtomString();
+        return now()->toAtomString();
     }
 
     /**
@@ -376,8 +359,7 @@ class Sitemap
     private function getItems(Builder $builder, $date_field = false, $age = 180)
     {
         if ($age && $date_field) {
-            $date = Carbon::now()
-                ->addDays(-1 * abs((int) $age));
+            $date = now()->addDays(-1 * abs((int) $age));
 
             return $builder
                 ->where($date_field, '>', $date)
@@ -392,11 +374,11 @@ class Sitemap
      *
      * @param string $path
      *
-     * @return mixed
+     * @return string
      */
-    private function urlToSitemapFile($path)
+    private function urlToSitemapFile($path): string
     {
-        $prefix = Str::finish($this->url, '/');
+        $prefix = str_finish($this->url, '/');
 
         return url($prefix . $path);
     }

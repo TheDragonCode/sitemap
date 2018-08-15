@@ -18,7 +18,7 @@ class Manual
      *
      * @param array $items
      */
-    public function __construct($items = [])
+    public function __construct(array $items = [])
     {
         if (!$this->validate(compact('items'))) {
             throw new SitemapManualUrlException();
@@ -32,7 +32,7 @@ class Manual
      *
      * @return array
      */
-    public function get()
+    public function get(): array
     {
         return $this->items;
     }
@@ -44,7 +44,7 @@ class Manual
      *
      * @return bool
      */
-    private function validate($data)
+    private function validate($data): bool
     {
         $validator = \Validator::make($data, $this->rules());
 
@@ -60,12 +60,14 @@ class Manual
      *
      * @return array
      */
-    private function rules()
+    private function rules(): array
     {
+        $frequencies = Variables::getFrequencies();
+
         return [
             'items'              => ['required', 'array', 'min:1', 'max:50000'],
             'items.*.loc'        => ['required', 'url', 'max:255'],
-            'items.*.changefreq' => ['string', 'max:20', Rule::in('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never')],
+            'items.*.changefreq' => ['string', 'max:20', Rule::in($frequencies)],
             'items.*.lastmod'    => ['date'],
             'items.*.priority'   => ['numeric'],
         ];

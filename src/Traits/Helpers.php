@@ -11,7 +11,7 @@ trait Helpers
      *
      * @return string
      */
-    private function e($value)
+    private function e($value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
     }
@@ -22,15 +22,17 @@ trait Helpers
      *
      * @return array
      */
-    private function routeParameters($item, $fields = [])
+    private function routeParameters($item, $fields = []): array
     {
         $result = [];
 
         foreach ($fields as $key => $value) {
             $key   = is_numeric($key) ? $value : $key;
-            $value = $item->{$value};
+            $value = $item->{$value} ?? false;
 
-            $result[$key] = $value;
+            if ($value) {
+                $result[$key] = $value;
+            }
         }
 
         return $result;
@@ -43,7 +45,7 @@ trait Helpers
      *
      * @return mixed|null|string|string[]
      */
-    private function lower($value)
+    private function lower($value): string
     {
         return mb_strtolower($value, 'UTF-8');
     }

@@ -19,12 +19,14 @@ class MakeItem
      *
      * @param string $value
      *
-     * @return $this
+     * @return \Helldar\Sitemap\Services\MakeItem
      */
-    public function changefreq($value = 'daily')
+    public function changefreq(string $value = 'daily'): MakeItem
     {
+        $frequencies = Variables::getFrequencies();
+
         $value = $this->lower(trim($value));
-        $value = in_array($value, $this->getFrequencies()) ? $value : Sitemap::FREQUENCY_DAILY;
+        $value = in_array($value, $frequencies) ? $value : Variables::FREQUENCY_DAILY;
 
         $this->setElement('changefreq', $value);
 
@@ -36,9 +38,9 @@ class MakeItem
      *
      * @param null|string|int $value
      *
-     * @return $this
+     * @return \Helldar\Sitemap\Services\MakeItem
      */
-    public function lastmod($value = null)
+    public function lastmod($value = null): MakeItem
     {
         if (is_numeric($value)) {
             $value = Carbon::createFromTimestamp($value);
@@ -54,11 +56,11 @@ class MakeItem
     /**
      * Set the URL for the item.
      *
-     * @param $value
+     * @param string $value
      *
-     * @return $this
+     * @return \Helldar\Sitemap\Services\MakeItem
      */
-    public function loc($value)
+    public function loc(string $value): MakeItem
     {
         $this->setElement('loc', trim($value));
 
@@ -70,9 +72,9 @@ class MakeItem
      *
      * @param float $value
      *
-     * @return $this
+     * @return \Helldar\Sitemap\Services\MakeItem
      */
-    public function priority($value = 0.5)
+    public function priority(float $value = 0.5): MakeItem
     {
         $value = ((float) $value < 0.1) ? 0.5 : $value;
 
@@ -86,7 +88,7 @@ class MakeItem
      *
      * @return array
      */
-    public function get()
+    public function get(): array
     {
         return $this->item;
     }
@@ -97,24 +99,8 @@ class MakeItem
      * @param string $key
      * @param string $value
      */
-    private function setElement($key, $value)
+    private function setElement(string $key, string $value)
     {
         $this->item[$key] = $value;
-    }
-
-    /**
-     * @return array
-     */
-    private function getFrequencies()
-    {
-        return [
-            Sitemap::FREQUENCY_ALWAYS,
-            Sitemap::FREQUENCY_DAILY,
-            Sitemap::FREQUENCY_HOURLY,
-            Sitemap::FREQUENCY_MONTHLY,
-            Sitemap::FREQUENCY_NEVER,
-            Sitemap::FREQUENCY_WEEKLY,
-            Sitemap::FREQUENCY_YEARLY,
-        ];
     }
 }
