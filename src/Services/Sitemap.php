@@ -83,7 +83,7 @@ class Sitemap
      *
      * @return \Helldar\Sitemap\Services\Sitemap
      */
-    public function builders(Builder ...$builders): Sitemap
+    public function builders(Builder ...$builders): self
     {
         $this->builders = (array) $builders;
 
@@ -97,7 +97,7 @@ class Sitemap
      *
      * @return \Helldar\Sitemap\Services\Sitemap
      */
-    public function manual(array ...$items): Sitemap
+    public function manual(array ...$items): self
     {
         $this->manuals = (array) $items;
 
@@ -111,7 +111,7 @@ class Sitemap
      *
      * @return \Helldar\Sitemap\Services\Sitemap
      */
-    public function domain($domain): Sitemap
+    public function domain($domain): self
     {
         $config = config('sitemap.domains', []);
         $config = collect($config);
