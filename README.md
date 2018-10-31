@@ -15,6 +15,8 @@ A simple sitemap generator for PHP Framework.
 
 ## Installation
 
+For the 5.4 and 5.5 version of Laravel Framework, use [version 3](https://github.com/andrey-helldar/sitemap/tree/3.x).
+
 To get the latest version of Laravel Sitemap, simply require the project using [Composer](https://getcomposer.org):
 
 ```
