@@ -4,6 +4,8 @@ namespace Helldar\Sitemap\Services;
 
 use Carbon\Carbon;
 use Helldar\Sitemap\Exceptions\MethodNotExists;
+use Helldar\Sitemap\Helpers\Variables;
+use Helldar\Sitemap\Services\Items\MakeItem;
 use Helldar\Sitemap\Traits\Helpers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
@@ -69,7 +71,7 @@ class Sitemap
     /**
      * Call the element creation mechanism.
      *
-     * @return \Helldar\Sitemap\Services\MakeItem
+     * @return \Helldar\Sitemap\Services\Items\MakeItem
      */
     public function makeItem(): MakeItem
     {
@@ -296,9 +298,9 @@ class Sitemap
         $item = collect($item);
 
         $loc        = $this->e($item->get('loc', config('app.url')));
-        $changefreq = $item->get('changefreq', config('sitemap.frequency', 'daily'));
-        $lastmod    = Carbon::parse($item->get('lastmod', now()))->toAtomString();
-        $priority   = (float) $item->get('priority', config('sitemap.priority', 0.5));
+        $changefreq = Variables::correctFrequency($item->get('changefreq', config('sitemap.frequency', 'daily')));
+        $lastmod    = Variables::getDate($item->get('lastmod'))->toAtomString();
+        $priority   = Variables::correctPriority($item->get('priority', config('sitemap.priority', 0.5)));
 
         $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
     }
@@ -335,16 +337,11 @@ class Sitemap
     private function lastmod($item, $field = false): string
     {
         if ($field && $value = $item->{$field}) {
-            if (is_numeric($value)) {
-                return Carbon::createFromTimestamp($value)
-                    ->toAtomString();
-            }
-
-            return Carbon::parse($value)
+            return Variables::getDate($value)
                 ->toAtomString();
         }
 
-        return now()->toAtomString();
+        return Carbon::now()->toAtomString();
     }
 
     /**
@@ -359,7 +356,7 @@ class Sitemap
     private function getItems(Builder $builder, $date_field = false, $age = 180)
     {
         if ($age && $date_field) {
-            $date = now()->addDays(-1 * abs((int) $age));
+            $date = Carbon::now()->addDays(-1 * abs((int) $age));
 
             return $builder
                 ->where($date_field, '>', $date)

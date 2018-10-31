@@ -1,17 +1,14 @@
 <?php
 
-namespace Helldar\Sitemap\Services;
+namespace Helldar\Sitemap\Services\Items;
 
-use Carbon\Carbon;
+use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Traits\Helpers;
 
 class MakeItem
 {
     use Helpers;
 
-    /**
-     * @var array
-     */
     private $item = [];
 
     /**
@@ -19,14 +16,11 @@ class MakeItem
      *
      * @param string $value
      *
-     * @return \Helldar\Sitemap\Services\MakeItem
+     * @return \Helldar\Sitemap\Services\Items\MakeItem
      */
     public function changefreq(string $value = 'daily'): self
     {
-        $frequencies = Variables::getFrequencies();
-
-        $value = $this->lower(trim($value));
-        $value = in_array($value, $frequencies) ? $value : Variables::FREQUENCY_DAILY;
+        $value = Variables::correctFrequency($value);
 
         $this->setElement('changefreq', $value);
 
@@ -38,17 +32,13 @@ class MakeItem
      *
      * @param null|string|int $value
      *
-     * @return \Helldar\Sitemap\Services\MakeItem
+     * @return \Helldar\Sitemap\Services\Items\MakeItem
      */
     public function lastmod($value = null): self
     {
-        if (is_numeric($value)) {
-            $value = Carbon::createFromTimestamp($value);
-        } else {
-            $value = $value ? Carbon::parse($value) : Carbon::now();
-        }
+        $date = Variables::getDate($value);
 
-        $this->setElement('lastmod', $value->toAtomString());
+        $this->setElement('lastmod', $date->toAtomString());
 
         return $this;
     }
@@ -58,7 +48,7 @@ class MakeItem
      *
      * @param string $value
      *
-     * @return \Helldar\Sitemap\Services\MakeItem
+     * @return \Helldar\Sitemap\Services\Items\MakeItem
      */
     public function loc(string $value): self
     {
@@ -72,13 +62,13 @@ class MakeItem
      *
      * @param float $value
      *
-     * @return \Helldar\Sitemap\Services\MakeItem
+     * @return \Helldar\Sitemap\Services\Items\MakeItem
      */
     public function priority(float $value = 0.5): self
     {
-        $value = ((float) $value < 0.1) ? 0.5 : $value;
+        $value = Variables::correctPriority($value);
 
-        $this->setElement('priority', (float) $value);
+        $this->setElement('priority', $value);
 
         return $this;
     }

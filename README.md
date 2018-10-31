@@ -26,7 +26,7 @@ Instead, you may of course manually update your require block and run `composer 
 ```json
 {
     "require": {
-        "andrey-helldar/sitemap": "~4.0"
+        "andrey-helldar/sitemap": "^4.0"
     }
 }
 ```
@@ -88,6 +88,7 @@ If any of the model values are undefined, a global value will be used.
 You can also transfer an array of items created manually:
 ```php
 use Helldar\Sitemap\Services\Sitemap;
+use Helldar\Sitemap\Helpers\Variables;
 
 $items_a = [];
 $items_b = [];
@@ -105,7 +106,7 @@ for($i = 0; $i < 3; $i++) {
 
 for($i = 0; $i < 3; $i++) {
     $item = sitemap()->makeItem()
-        ->changefreq(Sitemap::FREQUENCY_WEEKLY)
+        ->changefreq(Variables::FREQUENCY_WEEKLY)
         ->lastmod(Carbon\Carbon::now())
         ->loc("http://mysite.local/offers/" . $i)
         ->get();
@@ -208,8 +209,6 @@ app('route')->get('sitemap', function() {
 And go to your URL. Example: `http://mysite.dev/sitemap`.
 
 ### Save
-
-Since version 3.1, it is possible to save links to several files. The option `separate_files` in the [config/sitemap.php](src/config/sitemap.php) file is responsible for enabling this feature.
 
 #### If the option `separate_files` is DISABLED
 

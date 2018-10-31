@@ -66,15 +66,15 @@ return [
      *
      * You can also use constants:
      *
-     *   use Helldar\Sitemap\Services\Sitemap;
+     *   use Helldar\Sitemap\Helpers\Variables;
      *
-     *   Sitemap::FREQUENCY_ALWAYS
-     *   Sitemap::FREQUENCY_DAILY
-     *   Sitemap::FREQUENCY_HOURLY
-     *   Sitemap::FREQUENCY_MONTHLY
-     *   Sitemap::FREQUENCY_NEVER
-     *   Sitemap::FREQUENCY_WEEKLY
-     *   Sitemap::FREQUENCY_YEARLY
+     *   Variables::FREQUENCY_ALWAYS
+     *   Variables::FREQUENCY_DAILY
+     *   Variables::FREQUENCY_HOURLY
+     *   Variables::FREQUENCY_MONTHLY
+     *   Variables::FREQUENCY_NEVER
+     *   Variables::FREQUENCY_WEEKLY
+     *   Variables::FREQUENCY_YEARLY
      *
      * Default, `daily`.
      */

@@ -37,16 +37,4 @@ trait Helpers
 
         return $result;
     }
-
-    /**
-     * Convert the given string to lower-case.
-     *
-     * @param $value
-     *
-     * @return mixed|null|string|string[]
-     */
-    private function lower($value): string
-    {
-        return mb_strtolower($value, 'UTF-8');
-    }
 }

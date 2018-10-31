@@ -4,6 +4,8 @@ namespace Helldar\Sitemap\Services;
 
 use Helldar\Sitemap\Exceptions\SitemapManualUrlException;
 use Helldar\Sitemap\Exceptions\ValidatorException;
+use Helldar\Sitemap\Helpers\Variables;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class Manual
@@ -46,7 +48,7 @@ class Manual
      */
     private function validate($data): bool
     {
-        $validator = \Validator::make($data, $this->rules());
+        $validator = Validator::make($data, $this->rules());
 
         if ($validator->fails()) {
             throw new ValidatorException($validator->errors()->first());
