@@ -93,7 +93,7 @@ use Helldar\Sitemap\Helpers\Variables;
 $items_a = [];
 $items_b = [];
 
-for($i = 0; $i < 3; $i++) {
+for ($i = 0; $i < 3; $i++) {
     $item = sitemap()->makeItem()
         ->changefreq('weekly')
         ->lastmod(Carbon\Carbon::now())
@@ -104,7 +104,7 @@ for($i = 0; $i < 3; $i++) {
 }
 
 
-for($i = 0; $i < 3; $i++) {
+for ($i = 0; $i < 3; $i++) {
     $item = sitemap()->makeItem()
         ->changefreq(Variables::FREQUENCY_WEEKLY)
         ->lastmod(Carbon\Carbon::now())
@@ -177,6 +177,40 @@ return sitemap()
          ->builders($query1, $query2, $query3)
          ->manual($items1, $items2, $items3)
          ->show();
+```
+
+### Images
+
+Your can also transfer an array of image items created manually:
+```php
+use Helldar\Sitemap\Services\Sitemap;
+
+$items = [];
+
+for ($i = 0; $i < 5; $i++) {
+    $item = sitemap()->makeImages()
+        ->loc("http://mysite.local/page/" . $i)
+        ->image("http://mysite.local/images/1.jpg", "My Title 1", "Caption for image", "Limerick, Ireland", "Royalty free")
+        ->image("http://mysite.local/images/2.jpg", "My Title 2")
+        ->image("http://mysite.local/images/3.jpg")
+        ->get();
+    
+    array_push($items, $item);
+}
+
+return sitemap()
+         ->images($items)
+         ->show();
+
+// or
+
+return app('sitemap')
+         ->images($items)
+         ->show();
+```
+
+Returned:
+```xml
 ```
 
 ### Show
@@ -356,7 +390,7 @@ $query3 = \App\Pages::query();
 
 $manual_items = [];
 
-for($i = 0; $i < 3; $i++) {
+for ($i = 0; $i < 3; $i++) {
     $item = sitemap()->makeItem()
         ->changefreq('weekly')
         ->lastmod(Carbon\Carbon::now())

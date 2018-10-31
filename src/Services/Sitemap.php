@@ -5,55 +5,47 @@ namespace Helldar\Sitemap\Services;
 use Carbon\Carbon;
 use Helldar\Sitemap\Exceptions\MethodNotExists;
 use Helldar\Sitemap\Helpers\Variables;
+use Helldar\Sitemap\Interfaces\SitemapInterface;
+use Helldar\Sitemap\Services\Items\MakeImages;
 use Helldar\Sitemap\Services\Items\MakeItem;
 use Helldar\Sitemap\Traits\Helpers;
+use Helldar\Sitemap\Validators\Images;
+use Helldar\Sitemap\Validators\Manual;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
-class Sitemap
+class Sitemap implements SitemapInterface
 {
     use Helpers;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $storage_disk;
 
-    /**
-     * @var \Illuminate\Contracts\Filesystem\Filesystem
-     */
+    /** @var \Illuminate\Contracts\Filesystem\Filesystem|\Illuminate\Support\Facades\Storage */
     private $storage;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $builders = [];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $manuals = [];
 
-    /**
-     * @var \Illuminate\Support\Collection
-     */
+    /** @var array */
+    private $images = [];
+
+    /** @var \Illuminate\Support\Collection */
     private $sitemaps;
 
-    /**
-     * @var \Helldar\Sitemap\Services\Xml
-     */
+    /** @var \Helldar\Sitemap\Services\Xml */
     private $xml;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $index = 1;
 
-    /**
-     * @var null|string
-     */
+    /** @var null|string */
     private $url = null;
 
     /**
@@ -64,18 +56,18 @@ class Sitemap
         $this->xml      = Xml::init();
         $this->sitemaps = collect();
 
-        $this->storage_disk = config('sitemap.storage', 'public');
+        $this->storage_disk = Config::get('sitemap.storage', 'public');
         $this->storage      = Storage::disk($this->storage_disk);
     }
 
-    /**
-     * Call the element creation mechanism.
-     *
-     * @return \Helldar\Sitemap\Services\Items\MakeItem
-     */
     public function makeItem(): MakeItem
     {
         return new MakeItem;
+    }
+
+    public function makeImages(): MakeImages
+    {
+        return new MakeImages;
     }
 
     /**
@@ -106,6 +98,13 @@ class Sitemap
         return $this;
     }
 
+    public function images(array ...$images): self
+    {
+        $this->images = (array) $images;
+
+        return $this;
+    }
+
     /**
      * Set domain name for using in multidomain application.
      *
@@ -115,12 +114,12 @@ class Sitemap
      */
     public function domain($domain): self
     {
-        $config = config('sitemap.domains', []);
+        $config = Config::get('sitemap.domains', []);
         $config = collect($config);
         $url    = $config->get($domain);
 
         if (is_null($url)) {
-            $config  = config("filesystems.disks.{$this->storage_disk}");
+            $config  = Config::get("filesystems.disks.{$this->storage_disk}");
             $collect = collect($config);
             $url     = $collect->get('url', '/');
         }
@@ -137,7 +136,9 @@ class Sitemap
      */
     public function show(): Response
     {
-        return Response::create((string) $this->get(), 200, [
+        $except = ['images'];
+
+        return Response::create((string) $this->get($except), 200, [
             'Content-Type' => 'application/xml',
         ]);
     }
@@ -146,31 +147,33 @@ class Sitemap
      * Saving data to files.
      *
      * @param null|string $path
+     * @param array $except
      *
      * @return int
      */
-    public function save($path = null): int
+    public function save($path = null, array $except = ['images']): int
     {
-        $path  = $path ?: config('sitemap.filename', 'sitemap.xml');
-        $count = sizeof($this->builders) + sizeof($this->manuals);
+        $path  = $path ?: Config::get('sitemap.filename', 'sitemap.xml');
+        $count = sizeof($this->builders) + sizeof($this->manuals) + sizeof($this->images);
 
-        if ($count > 1 && config('sitemap.separate_files', false)) {
+        if ($count > 1 && Config::get('sitemap.separate_files', false)) {
             return (int) $this->saveMany($path);
         }
 
-        return (int) $this->saveOne($path);
+        return (int) $this->saveOne($path, $except);
     }
 
     /**
      * Save data to file.
      *
      * @param string $path
+     * @param null|array $except
      *
      * @return bool
      */
-    private function saveOne($path): bool
+    private function saveOne($path, array $except = []): bool
     {
-        return $this->storage->put($path, $this->get());
+        return $this->storage->put($path, $this->get($except));
     }
 
     /**
@@ -190,6 +193,7 @@ class Sitemap
 
         $this->processManyItems('builders', $this->builders, $directory, $filename, $extension, __LINE__);
         $this->processManyItems('manual', $this->manuals, $directory, $filename, $extension, __LINE__);
+        $this->processManyItems('images', $this->images, $directory, $filename, $extension, __LINE__);
 
         foreach ($this->sitemaps as $sitemap) {
             $xml->addItem($sitemap, 'sitemap');
@@ -208,27 +212,29 @@ class Sitemap
      * @param string $extension
      * @param null|int $line
      */
-    private function processManyItems($method, $items, $directory, $filename, $extension, $line = null)
+    private function processManyItems(string $method, array $items, string $directory, string $filename, string $extension, int $line = null)
     {
+        $line = $line ?: __LINE__;
+        $this->existsMethod($method, $line);
+
         foreach ($items as $item) {
             $file = sprintf('%s-%s.%s', $filename, $this->index, $extension);
             $path = $directory . $file;
             $loc  = $this->urlToSitemapFile($path);
 
-            if (!method_exists($this, $method)) {
-                $line    = $line ?: __LINE__;
-                $message = sprintf("The '%s' method not exist in %s of %s:%s", $method, get_class(), __FILE__, $line);
+            switch ($method) {
+                case 'manual':
+                    $item = (new Manual($item))->get();
+                    break;
 
-                throw new MethodNotExists($message);
-            }
-
-            if ($method == 'manual') {
-                $item = (new Manual($item))->get();
+                case 'images':
+                    $item = (new Images($item))->get();
+                    break;
             }
 
             (new self)
                 ->{$method}($item)
-                ->save($path);
+                ->save($path, []);
 
             $make_item = (new MakeItem)
                 ->loc($loc)
@@ -244,19 +250,33 @@ class Sitemap
     /**
      * Retrieving the result of the processing of the elements in the case of saving all the data without dividing it into several files.
      *
+     * @param array $except
+     *
      * @return string
      */
-    private function get(): string
+    private function get(array $except = []): string
     {
-        array_map(function ($builder) {
-            $this->processBuilder($builder);
-        }, $this->builders);
+        if (!in_array('builder', $except)) {
+            array_map(function ($builder) {
+                $this->processBuilder($builder);
+            }, $this->builders);
+        }
 
-        array_map(function ($items) {
-            array_map(function ($item) {
-                $this->processManuals($item);
-            }, $items);
-        }, $this->manuals);
+        if (!in_array('manuals', $except)) {
+            array_map(function ($items) {
+                array_map(function ($item) {
+                    $this->processManuals($item);
+                }, $items);
+            }, $this->manuals);
+        }
+
+        if (!in_array('images', $except)) {
+            array_map(function ($items) {
+                array_map(function ($item) {
+                    $this->processImages($item);
+                }, $items);
+            }, $this->images);
+        }
 
         return $this->xml->get();
     }
@@ -293,16 +313,21 @@ class Sitemap
      *
      * @param array $item
      */
-    private function processManuals($item = [])
+    private function processManuals(array $item = [])
     {
         $item = collect($item);
 
-        $loc        = $this->e($item->get('loc', config('app.url')));
-        $changefreq = Variables::correctFrequency($item->get('changefreq', config('sitemap.frequency', 'daily')));
+        $loc        = $this->e($item->get('loc', Config::get('app.url')));
+        $changefreq = Variables::correctFrequency($item->get('changefreq', Config::get('sitemap.frequency', 'daily')));
         $lastmod    = Variables::getDate($item->get('lastmod'))->toAtomString();
-        $priority   = Variables::correctPriority($item->get('priority', config('sitemap.priority', 0.5)));
+        $priority   = Variables::correctPriority($item->get('priority', Config::get('sitemap.priority', 0.5)));
 
         $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
+    }
+
+    private function processImages(array $item = [])
+    {
+        // TODO: Add image processing logic.
     }
 
     /**
@@ -317,13 +342,13 @@ class Sitemap
      */
     private function config($model_name, $key, $default = null, $ignore_empty = true)
     {
-        $value = config("sitemap.models.{$model_name}.{$key}", null);
+        $value = Config::get("sitemap.models.{$model_name}.{$key}", null);
 
         if ($value || !$ignore_empty) {
             return $value;
         }
 
-        return config("sitemap.{$key}", $default);
+        return Config::get("sitemap.{$key}", $default);
     }
 
     /**
@@ -378,5 +403,15 @@ class Sitemap
         $prefix = str_finish($this->url, '/');
 
         return url($prefix . $path);
+    }
+
+    private function existsMethod(string $method, int $line = null)
+    {
+        if (!method_exists($this, $method)) {
+            $line    = $line ?: __LINE__;
+            $message = sprintf("The '%s' method not exist in %s of %s:%s", $method, get_class(), __FILE__, $line);
+
+            throw new MethodNotExists($message);
+        }
     }
 }

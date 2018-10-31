@@ -4,6 +4,8 @@ namespace Helldar\Sitemap\Traits;
 
 trait Helpers
 {
+    private $item = [];
+
     /**
      * Escape HTML special characters in a string.
      *
@@ -36,5 +38,37 @@ trait Helpers
         }
 
         return $result;
+    }
+
+    /**
+     * Add an item parameter to the resulting array.
+     *
+     * @param string $key
+     * @param mixed $value
+     */
+    private function setElement(string $key, $value)
+    {
+        if (!empty($value)) {
+            $this->item[$key] = $value;
+        }
+    }
+
+    /**
+     * Push an item parameter or array of parameters to the resulting array.
+     *
+     * @param string $key
+     * @param mixed $value
+     */
+    private function pushElement(string $key, $value)
+    {
+        if (empty($value)) {
+            return;
+        }
+
+        if (!array_key_exists($key, $this->item)) {
+            $this->item[$key] = [];
+        }
+
+        array_push($this->item[$key], $value);
     }
 }

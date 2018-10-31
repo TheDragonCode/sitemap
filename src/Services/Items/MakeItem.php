@@ -3,13 +3,12 @@
 namespace Helldar\Sitemap\Services\Items;
 
 use Helldar\Sitemap\Helpers\Variables;
+use Helldar\Sitemap\Interfaces\MakeElementsInterface;
 use Helldar\Sitemap\Traits\Helpers;
 
-class MakeItem
+class MakeItem implements MakeElementsInterface
 {
     use Helpers;
-
-    private $item = [];
 
     /**
      * Set the content update rate for the item.
@@ -81,16 +80,5 @@ class MakeItem
     public function get(): array
     {
         return $this->item;
-    }
-
-    /**
-     * Add an item parameter to the resulting array.
-     *
-     * @param string $key
-     * @param string $value
-     */
-    private function setElement(string $key, string $value)
-    {
-        $this->item[$key] = $value;
     }
 }

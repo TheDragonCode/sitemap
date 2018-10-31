@@ -3,17 +3,18 @@
 namespace Helldar\Sitemap\Services;
 
 use DOMDocument;
+use DOMElement;
 use Illuminate\Support\Facades\Config;
 
 class Xml
 {
     /**
-     * @var \DOMDocument
+     * @var DOMDocument
      */
     private $doc;
 
     /**
-     * @var \DOMElement
+     * @var DOMElement
      */
     private $root;
 
@@ -21,14 +22,15 @@ class Xml
      * Xml constructor.
      *
      * @param string $root
+     * @param array $attributes
      */
-    public function __construct($root = 'urlset')
+    public function __construct($root = 'urlset', array $attributes = null)
     {
-        $this->doc = new DOMDocument('1.0', 'utf-8');
-
+        $this->doc  = new DOMDocument('1.0', 'utf-8');
         $this->root = $this->doc->createElement($root);
 
-        $this->root->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+        $attributes = $attributes ?: ['xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'];
+        $this->setAttributes($this->root, $attributes);
 
         $this->doc->formatOutput = (bool) Config::get('sitemap.formatOutput', true);
     }
@@ -37,12 +39,13 @@ class Xml
      * Initialization Xml service from static sources.
      *
      * @param string $root
+     * @param array $attributes
      *
      * @return \Helldar\Sitemap\Services\Xml
      */
-    public static function init($root = 'urlset'): self
+    public static function init($root = 'urlset', array $attributes = null): self
     {
-        return new self($root);
+        return new self($root, $attributes);
     }
 
     /**
@@ -71,5 +74,12 @@ class Xml
         $this->doc->appendChild($this->root);
 
         return $this->doc->saveXML();
+    }
+
+    private function setAttributes(DOMElement &$element, array $attributes = [])
+    {
+        foreach ($attributes as $name => $value) {
+            $element->setAttribute($name, $value);
+        }
     }
 }
