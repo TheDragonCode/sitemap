@@ -218,6 +218,10 @@ class Sitemap implements SitemapInterface
         $this->existsMethod($method, $line);
 
         foreach ($items as $item) {
+            if (empty($item)) {
+                continue;
+            }
+
             $file = sprintf('%s-%s.%s', $filename, $this->index, $extension);
             $path = $directory . $file;
             $loc  = $this->urlToSitemapFile($path);
