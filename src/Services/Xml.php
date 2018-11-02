@@ -76,6 +76,14 @@ class Xml
         return $this->doc->saveXML();
     }
 
+    /**
+     * Adds new attribute
+     *
+     * @see  https://php.net/manual/en/domelement.setattribute.php
+     *
+     * @param \DOMElement $element
+     * @param array $attributes
+     */
     private function setAttributes(DOMElement &$element, array $attributes = [])
     {
         foreach ($attributes as $name => $value) {
