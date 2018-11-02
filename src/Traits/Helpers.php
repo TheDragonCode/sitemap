@@ -2,6 +2,8 @@
 
 namespace Helldar\Sitemap\Traits;
 
+use Illuminate\Support\Str;
+
 trait Helpers
 {
     private $item = [];
@@ -74,5 +76,21 @@ trait Helpers
         }
 
         array_push($this->item[$key], $value);
+    }
+
+    protected function clearDirectory(string $prefix = null)
+    {
+        if (empty($prefix)) {
+            return;
+        }
+
+        $ext  = pathinfo($prefix, PATHINFO_EXTENSION);
+        $path = Str::before($prefix, '.' . $ext);
+
+        $path = storage_path("app/public/{$path}*.{$ext}");
+
+        foreach (glob($path) as $file) {
+            unlink($file);
+        }
     }
 }

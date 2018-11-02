@@ -106,6 +106,8 @@ class Sitemap
         $path  = $path ?: Config::get('sitemap.filename', 'sitemap.xml');
         $count = sizeof($this->builders) + sizeof($this->manuals) + sizeof($this->images);
 
+        $this->clearDirectory($path);
+
         if ($count > 1 && Config::get('sitemap.separate_files', false)) {
             return (int) $this->saveMany($path);
         }
