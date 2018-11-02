@@ -9,8 +9,8 @@ use Helldar\Sitemap\Interfaces\SitemapInterface;
 use Helldar\Sitemap\Services\Make\Images;
 use Helldar\Sitemap\Services\Make\Item;
 use Helldar\Sitemap\Traits\Helpers;
-use Helldar\Sitemap\Validators\Images;
-use Helldar\Sitemap\Validators\Manual;
+use Helldar\Sitemap\Validators\ImagesValidator;
+use Helldar\Sitemap\Validators\ManualValidator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
@@ -224,11 +224,11 @@ class Sitemap implements SitemapInterface
 
             switch ($method) {
                 case 'manual':
-                    $item = (new Manual($item))->get();
+                    $item = (new ManualValidator($item))->get();
                     break;
 
                 case 'images':
-                    $item = (new Images($item))->get();
+                    $item = (new ImagesValidator($item))->get();
                     break;
             }
 
