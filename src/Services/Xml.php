@@ -67,6 +67,22 @@ class Xml
     }
 
     /**
+     * @param string $name
+     * @param null|mixed $value
+     * @param array $attributes
+     *
+     * @return \DOMElement
+     */
+    public function makeItem(string $name, $value = null, array $attributes = []): DOMElement
+    {
+        $element = $this->doc->createElement($name, $value);
+
+        $this->setAttributes($element, $attributes);
+
+        return $element;
+    }
+
+    /**
      * @return string
      */
     public function get(): string
