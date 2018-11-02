@@ -4,7 +4,7 @@ namespace Helldar\Sitemap\Exceptions;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class SitemapManualUrlException extends HttpException
+class ImagesException extends HttpException
 {
     /**
      * SitemapManualUrlException constructor.
@@ -15,7 +15,7 @@ class SitemapManualUrlException extends HttpException
      */
     public function __construct($message = null, \Exception $previous = null, $code = 0)
     {
-        $message = $message ?: 'Error handling the list of URLs to generate a sitemap.';
+        $message = $message ?: 'Error handling the list of images to generate a sitemap.';
         $code    = $code ?: 400;
 
         parent::__construct($code, $message, $previous, [], $code);

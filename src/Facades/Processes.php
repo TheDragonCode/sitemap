@@ -1,12 +1,13 @@
 <?php
 
-namespace Helldar\Sitemap\Traits;
+namespace Helldar\Sitemap\Facades;
 
-use Illuminate\Support\Str;
-
-trait Helpers
+abstract class Processes
 {
-    private $item = [];
+    /** @var \Helldar\Sitemap\Services\Xml */
+    protected $xml;
+
+    protected $item = [];
 
     /**
      * Escape HTML special characters in a string.
@@ -17,7 +18,7 @@ trait Helpers
      */
     protected function e($value): string
     {
-        if (is_null($value)) {
+        if (empty($value)) {
             return null;
         }
 
@@ -76,21 +77,5 @@ trait Helpers
         }
 
         array_push($this->item[$key], $value);
-    }
-
-    protected function clearDirectory(string $prefix = null)
-    {
-        if (empty($prefix)) {
-            return;
-        }
-
-        $ext  = pathinfo($prefix, PATHINFO_EXTENSION);
-        $path = Str::before($prefix, '.' . $ext);
-
-        $path = storage_path("app/public/{$path}*.{$ext}");
-
-        foreach (glob($path) as $file) {
-            unlink($file);
-        }
     }
 }

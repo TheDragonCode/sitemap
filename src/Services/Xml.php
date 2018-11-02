@@ -2,17 +2,19 @@
 
 namespace Helldar\Sitemap\Services;
 
+use DOMDocument;
+use DOMElement;
 use Illuminate\Support\Facades\Config;
 
 class Xml
 {
     /**
-     * @var \DOMDocument
+     * @var DOMDocument
      */
     private $doc;
 
     /**
-     * @var \DOMElement
+     * @var DOMElement
      */
     private $root;
 
@@ -20,14 +22,15 @@ class Xml
      * Xml constructor.
      *
      * @param string $root
+     * @param array $attributes
      */
-    public function __construct($root = 'urlset')
+    public function __construct($root = 'urlset', array $attributes = [])
     {
-        $this->doc = (new \DOMDocument('1.0', 'utf-8'));
-
+        $this->doc  = new DOMDocument('1.0', 'utf-8');
         $this->root = $this->doc->createElement($root);
 
-        $this->root->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+        $attributes = $attributes ?: ['xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'];
+        $this->setAttributes($this->root, $attributes);
 
         $this->doc->formatOutput = (bool) Config::get('sitemap.formatOutput', true);
     }
@@ -36,19 +39,20 @@ class Xml
      * Initialization Xml service from static sources.
      *
      * @param string $root
+     * @param array $attributes
      *
      * @return \Helldar\Sitemap\Services\Xml
      */
-    public static function init($root = 'urlset')
+    public static function init($root = 'urlset', array $attributes = []): self
     {
-        return new self($root);
+        return new self($root, $attributes);
     }
 
     /**
      * @param array $parameters
      * @param string $element_name
      */
-    public function addItem($parameters = [], $element_name = 'url')
+    public function addItem(array $parameters = [], string $element_name = 'url')
     {
         ksort($parameters);
 
@@ -63,12 +67,57 @@ class Xml
     }
 
     /**
+     * @param string $name
+     * @param null|mixed $value
+     * @param array $attributes
+     *
+     * @return \DOMElement
+     */
+    public function makeItem(string $name, $value = null, array $attributes = []): DOMElement
+    {
+        $element = $this->doc->createElement($name, $value);
+
+        $this->setAttributes($element, $attributes);
+
+        return $element;
+    }
+
+    /**
+     * @param \DOMElement $parent
+     * @param \DOMElement $child
+     */
+    public function appendChild(DOMElement &$parent, DOMElement $child)
+    {
+        $parent->appendChild($child);
+    }
+
+    public function appendToRoot(DOMElement $element)
+    {
+        $this->appendChild($this->root, $element);
+    }
+
+    /**
      * @return string
      */
-    public function get()
+    public function get(): string
     {
         $this->doc->appendChild($this->root);
 
         return $this->doc->saveXML();
+    }
+
+    /**
+     * Adds new attribute
+     *
+     * @see  https://php.net/manual/en/domelement.setattribute.php
+     *
+     * @param \DOMElement $element
+     * @param array $attributes
+     */
+    private function setAttributes(DOMElement &$element, array $attributes = [])
+    {
+        foreach ($attributes as $name => $value) {
+            $element->setAttribute($name, $value);
+        }
     }
 }
