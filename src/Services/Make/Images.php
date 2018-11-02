@@ -1,11 +1,11 @@
 <?php
 
-namespace Helldar\Sitemap\Services\Items;
+namespace Helldar\Sitemap\Services\Make;
 
 use Helldar\Sitemap\Interfaces\MakeElementsInterface;
 use Helldar\Sitemap\Traits\Helpers;
 
-class MakeImages implements MakeElementsInterface
+class Images implements MakeElementsInterface
 {
     use Helpers;
 

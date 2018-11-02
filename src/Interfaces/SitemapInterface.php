@@ -2,15 +2,15 @@
 
 namespace Helldar\Sitemap\Interfaces;
 
-use Helldar\Sitemap\Services\Items\MakeImages;
-use Helldar\Sitemap\Services\Items\MakeItem;
+use Helldar\Sitemap\Services\Make\Images;
+use Helldar\Sitemap\Services\Make\Item;
 use Illuminate\Database\Eloquent\Builder;
 
 interface SitemapInterface
 {
-    public function makeItem(): MakeItem;
+    public function makeItem(): Item;
 
-    public function makeImages(): MakeImages;
+    public function makeImages(): Images;
 
     public function builders(Builder ...$builders);
 

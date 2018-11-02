@@ -6,8 +6,8 @@ use Carbon\Carbon;
 use Helldar\Sitemap\Exceptions\MethodNotExists;
 use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Interfaces\SitemapInterface;
-use Helldar\Sitemap\Services\Items\MakeImages;
-use Helldar\Sitemap\Services\Items\MakeItem;
+use Helldar\Sitemap\Services\Make\Images;
+use Helldar\Sitemap\Services\Make\Item;
 use Helldar\Sitemap\Traits\Helpers;
 use Helldar\Sitemap\Validators\Images;
 use Helldar\Sitemap\Validators\Manual;
@@ -60,14 +60,14 @@ class Sitemap implements SitemapInterface
         $this->storage      = Storage::disk($this->storage_disk);
     }
 
-    public function makeItem(): MakeItem
+    public function makeItem(): Item
     {
-        return new MakeItem;
+        return new Item;
     }
 
-    public function makeImages(): MakeImages
+    public function makeImages(): Images
     {
-        return new MakeImages;
+        return new Images;
     }
 
     /**
@@ -236,7 +236,7 @@ class Sitemap implements SitemapInterface
                 ->{$method}($item)
                 ->save($path, []);
 
-            $make_item = (new MakeItem)
+            $make_item = (new Item)
                 ->loc($loc)
                 ->lastmod()
                 ->get();

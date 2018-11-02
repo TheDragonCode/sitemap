@@ -1,12 +1,12 @@
 <?php
 
-namespace Helldar\Sitemap\Services\Items;
+namespace Helldar\Sitemap\Services\Make;
 
 use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Interfaces\MakeElementsInterface;
 use Helldar\Sitemap\Traits\Helpers;
 
-class MakeItem implements MakeElementsInterface
+class Item implements MakeElementsInterface
 {
     use Helpers;
 
@@ -15,7 +15,7 @@ class MakeItem implements MakeElementsInterface
      *
      * @param string $value
      *
-     * @return \Helldar\Sitemap\Services\Items\MakeItem
+     * @return \Helldar\Sitemap\Services\Make\Item
      */
     public function changefreq(string $value = 'daily'): self
     {
@@ -31,7 +31,7 @@ class MakeItem implements MakeElementsInterface
      *
      * @param null|string|int $value
      *
-     * @return \Helldar\Sitemap\Services\Items\MakeItem
+     * @return \Helldar\Sitemap\Services\Make\Item
      */
     public function lastmod($value = null): self
     {
@@ -47,7 +47,7 @@ class MakeItem implements MakeElementsInterface
      *
      * @param string $value
      *
-     * @return \Helldar\Sitemap\Services\Items\MakeItem
+     * @return \Helldar\Sitemap\Services\Make\Item
      */
     public function loc(string $value): self
     {
@@ -61,7 +61,7 @@ class MakeItem implements MakeElementsInterface
      *
      * @param float $value
      *
-     * @return \Helldar\Sitemap\Services\Items\MakeItem
+     * @return \Helldar\Sitemap\Services\Make\Item
      */
     public function priority(float $value = 0.5): self
     {
