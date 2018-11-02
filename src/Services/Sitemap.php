@@ -5,48 +5,39 @@ namespace Helldar\Sitemap\Services;
 use Carbon\Carbon;
 use Helldar\Sitemap\Exceptions\MethodNotExists;
 use Helldar\Sitemap\Helpers\Variables;
-use Helldar\Sitemap\Interfaces\SitemapInterface;
-use Helldar\Sitemap\Services\Make\Images;
 use Helldar\Sitemap\Services\Make\Item;
 use Helldar\Sitemap\Traits\Helpers;
+use Helldar\Sitemap\Traits\Processes\BuilderProcess;
+use Helldar\Sitemap\Traits\Processes\ImagesProcess;
+use Helldar\Sitemap\Traits\Processes\ManualProcess;
 use Helldar\Sitemap\Validators\ImagesValidator;
 use Helldar\Sitemap\Validators\ManualValidator;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
-class Sitemap implements SitemapInterface
+class Sitemap
 {
-    use Helpers;
-
-    /** @var string */
-    private $storage_disk;
-
-    /** @var \Illuminate\Contracts\Filesystem\Filesystem|\Illuminate\Support\Facades\Storage */
-    private $storage;
-
-    /** @var array */
-    private $builders = [];
-
-    /** @var array */
-    private $manuals = [];
-
-    /** @var array */
-    private $images = [];
-
-    /** @var \Illuminate\Support\Collection */
-    private $sitemaps;
+    use Helpers, BuilderProcess, ManualProcess, ImagesProcess;
 
     /** @var \Helldar\Sitemap\Services\Xml */
-    private $xml;
+    protected $xml;
+
+    /** @var string */
+    protected $storage_disk;
+
+    /** @var \Illuminate\Contracts\Filesystem\Filesystem|\Illuminate\Support\Facades\Storage */
+    protected $storage;
+
+    /** @var \Illuminate\Support\Collection */
+    protected $sitemaps;
 
     /** @var int */
-    private $index = 1;
+    protected $index = 1;
 
     /** @var null|string */
-    private $url = null;
+    protected $url = null;
 
     /**
      * Sitemap constructor.
@@ -58,51 +49,6 @@ class Sitemap implements SitemapInterface
 
         $this->storage_disk = Config::get('sitemap.storage', 'public');
         $this->storage      = Storage::disk($this->storage_disk);
-    }
-
-    public function makeItem(): Item
-    {
-        return new Item;
-    }
-
-    public function makeImages(): Images
-    {
-        return new Images;
-    }
-
-    /**
-     * Pass the list of model constructors for processing.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder ...$builders
-     *
-     * @return \Helldar\Sitemap\Services\Sitemap
-     */
-    public function builders(Builder ...$builders): self
-    {
-        $this->builders = (array) $builders;
-
-        return $this;
-    }
-
-    /**
-     * Send a set of manually created items for processing.
-     *
-     * @param array $items
-     *
-     * @return \Helldar\Sitemap\Services\Sitemap
-     */
-    public function manual(array ...$items): self
-    {
-        $this->manuals = (array) $items;
-
-        return $this;
-    }
-
-    public function images(array ...$images): self
-    {
-        $this->images = (array) $images;
-
-        return $this;
     }
 
     /**
@@ -136,7 +82,11 @@ class Sitemap implements SitemapInterface
      */
     public function show(): Response
     {
-        $except = ['images'];
+        $except = [];
+        
+        if ($this->builders || $this->manuals) {
+            $except = ['images'];
+        }
 
         return Response::create((string) $this->get($except), 200, [
             'Content-Type' => 'application/xml',
@@ -171,7 +121,7 @@ class Sitemap implements SitemapInterface
      *
      * @return bool
      */
-    private function saveOne($path, array $except = []): bool
+    protected function saveOne($path, array $except = []): bool
     {
         return $this->storage->put($path, $this->get($except));
     }
@@ -183,7 +133,7 @@ class Sitemap implements SitemapInterface
      *
      * @return bool
      */
-    private function saveMany($path): bool
+    protected function saveMany($path): bool
     {
         $xml = Xml::init('sitemapindex');
 
@@ -212,7 +162,7 @@ class Sitemap implements SitemapInterface
      * @param string $extension
      * @param null|int $line
      */
-    private function processManyItems(string $method, array $items, string $directory, string $filename, string $extension, int $line = null)
+    protected function processManyItems(string $method, array $items, string $directory, string $filename, string $extension, int $line = null)
     {
         $line = $line ?: __LINE__;
         $this->existsMethod($method, $line);
@@ -258,101 +208,25 @@ class Sitemap implements SitemapInterface
      *
      * @return string
      */
-    private function get(array $except = []): string
+    protected function get(array $except = []): string
     {
-        if (!in_array('builder', $except)) {
-            array_map(function ($builder) {
-                $this->processBuilder($builder);
-            }, $this->builders);
-        }
+        array_map(function ($builder) {
+            $this->processBuilder($builder);
+        }, $this->builders);
 
-        if (!in_array('manuals', $except)) {
-            array_map(function ($items) {
-                array_map(function ($item) {
-                    $this->processManuals($item);
-                }, $items);
-            }, $this->manuals);
-        }
+        array_map(function ($items) {
+            array_map(function ($item) {
+                $this->processManuals($item);
+            }, $items);
+        }, $this->manuals);
 
         if (!in_array('images', $except)) {
-            array_map(function ($items) {
-                array_map(function ($item) {
-                    $this->processImages($item);
-                }, $items);
+            array_map(function ($item) {
+                $this->processImages($item);
             }, $this->images);
         }
 
         return $this->xml->get();
-    }
-
-    /**
-     * Read configuration patterns and generate a link to save to the site map.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $builder
-     */
-    private function processBuilder(Builder $builder)
-    {
-        $name = get_class($builder->getModel());
-
-        $route      = $this->config($name, 'route', 'index');
-        $parameters = $this->config($name, 'route_parameters', ['*']);
-        $updated    = $this->config($name, 'lastmod', false);
-        $age        = $this->config($name, 'age', 180);
-        $changefreq = $this->config($name, 'frequency', 'daily');
-        $priority   = $this->config($name, 'priority', 0.5);
-
-        $items = $this->getItems($builder, $updated, $age);
-
-        foreach ($items as $item) {
-            $params  = $this->routeParameters($item, $parameters);
-            $lastmod = $this->lastmod($item, $updated);
-            $loc     = $this->e(route($route, $params));
-
-            $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
-        }
-    }
-
-    /**
-     * Reading the configuration of the manually transferred items and creating a link for saving to the sitemap.
-     *
-     * @param array $item
-     */
-    private function processManuals(array $item = [])
-    {
-        $item = collect($item);
-
-        $loc        = $this->e($item->get('loc', Config::get('app.url')));
-        $changefreq = Variables::correctFrequency($item->get('changefreq', Config::get('sitemap.frequency', 'daily')));
-        $lastmod    = Variables::getDate($item->get('lastmod'))->toAtomString();
-        $priority   = Variables::correctPriority($item->get('priority', Config::get('sitemap.priority', 0.5)));
-
-        $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
-    }
-
-    private function processImages(array $item = [])
-    {
-        // TODO: Add image processing logic.
-    }
-
-    /**
-     * Reading the configuration for the item and returning the default value if it is missing.
-     *
-     * @param string $model_name
-     * @param string $key
-     * @param mixed $default
-     * @param bool $ignore_empty
-     *
-     * @return mixed
-     */
-    private function config($model_name, $key, $default = null, $ignore_empty = true)
-    {
-        $value = Config::get("sitemap.models.{$model_name}.{$key}", null);
-
-        if ($value || !$ignore_empty) {
-            return $value;
-        }
-
-        return Config::get("sitemap.{$key}", $default);
     }
 
     /**
@@ -363,7 +237,7 @@ class Sitemap implements SitemapInterface
      *
      * @return string
      */
-    private function lastmod($item, $field = false): string
+    protected function lastmod($item, $field = false): string
     {
         if ($field && $value = $item->{$field}) {
             return Variables::getDate($value)
@@ -374,42 +248,20 @@ class Sitemap implements SitemapInterface
     }
 
     /**
-     * Obtaining a selection of elements from the model builder.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param bool $date_field
-     * @param int $age
-     *
-     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
-     */
-    private function getItems(Builder $builder, $date_field = false, $age = 180)
-    {
-        if ($age && $date_field) {
-            $date = Carbon::now()->addDays(-1 * abs((int) $age));
-
-            return $builder
-                ->where($date_field, '>', $date)
-                ->get();
-        }
-
-        return $builder->get();
-    }
-
-    /**
      * Getting the URL for the file in case it is split into several files.
      *
      * @param string $path
      *
      * @return string
      */
-    private function urlToSitemapFile($path): string
+    protected function urlToSitemapFile($path): string
     {
         $prefix = str_finish($this->url, '/');
 
         return url($prefix . $path);
     }
 
-    private function existsMethod(string $method, int $line = null)
+    protected function existsMethod(string $method, int $line = null)
     {
         if (!method_exists($this, $method)) {
             $line    = $line ?: __LINE__;

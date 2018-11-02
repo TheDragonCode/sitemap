@@ -83,6 +83,20 @@ class Xml
     }
 
     /**
+     * @param \DOMElement $parent
+     * @param \DOMElement $child
+     */
+    public function appendChild(DOMElement &$parent, DOMElement $child)
+    {
+        $parent->appendChild($child);
+    }
+
+    public function appendToRoot(DOMElement $element)
+    {
+        $this->appendChild($this->root, $element);
+    }
+
+    /**
      * @return string
      */
     public function get(): string

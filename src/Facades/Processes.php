@@ -1,10 +1,13 @@
 <?php
 
-namespace Helldar\Sitemap\Traits;
+namespace Helldar\Sitemap\Facades;
 
-trait Helpers
+abstract class Processes
 {
-    private $item = [];
+    /** @var \Helldar\Sitemap\Services\Xml */
+    protected $xml;
+
+    protected $item = [];
 
     /**
      * Escape HTML special characters in a string.
@@ -15,7 +18,7 @@ trait Helpers
      */
     protected function e($value): string
     {
-        if (is_null($value)) {
+        if (empty($value)) {
             return null;
         }
 

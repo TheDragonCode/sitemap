@@ -202,11 +202,11 @@ use Helldar\Sitemap\Services\Sitemap;
 
 $items = [];
 
-for ($i = 0; $i < 5; $i++) {
+for ($i = 0; $i < 2; $i++) {
     $item = sitemap()->makeImages()
         ->loc("http://mysite.local/page/" . $i)
-        ->image("http://mysite.local/images/1.jpg", "My Title 1", "Caption for image", "Limerick, Ireland", "Royalty free")
-        ->image("http://mysite.local/images/2.jpg", "My Title 2")
+        ->image("http://mysite.local/images/1.jpg", "My Title 1-".$i, "Caption for image", "Limerick, Ireland", "Royalty free")
+        ->image("http://mysite.local/images/2.jpg", "My Title 2-".$i)
         ->image("http://mysite.local/images/3.jpg")
         ->get();
     
@@ -226,7 +226,62 @@ return app('sitemap')
 
 Returned:
 ```xml
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+    <url>
+        <loc>http://mysite.local/page/0</loc>
+        <image:image>
+            <image:loc>http://mysite.local/images/1.jpg</image:loc>
+            <image:title>My Title 1-0</image:title>
+            <image:caption>Caption for image</image:caption>
+            <image:geo_location>Limerick, Ireland</image:geo_location>
+            <image:license>Royalty free</image:license>
+        </image:image>
+        <image:image>
+            <image:loc>http://mysite.local/images/2.jpg</image:loc>
+            <image:title>My Title 2-0</image:title>
+        </image:image>
+        <image:image>
+            <image:loc>http://mysite.local/images/3.jpg</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>http://mysite.local/page/1</loc>
+        <image:image>
+            <image:loc>http://mysite.local/images/1.jpg</image:loc>
+            <image:title>My Title 1-1</image:title>
+            <image:caption>Caption for image</image:caption>
+            <image:geo_location>Limerick, Ireland</image:geo_location>
+            <image:license>Royalty free</image:license>
+        </image:image>
+        <image:image>
+            <image:loc>http://mysite.local/images/2.jpg</image:loc>
+            <image:title>My Title 2-1</image:title>
+        </image:image>
+        <image:image>
+            <image:loc>http://mysite.local/images/3.jpg</image:loc>
+        </image:image>
+    </url>
+</urlset>
 ```
+
+Attention! Due to the different structure of documents, when trying to call method `show()`, an image map will be shown only if there are no calls to other methods.
+
+Example:
+```php
+// Will show the image map.
+return app('sitemap')
+         ->images($items)
+         ->show();
+
+// Shows the map for `builders`. The image map will be ignored.
+return app('sitemap')
+         ->builders($query1, $query2, $query3)
+         ->images($items)
+         ->show();
+```
+
+The same principle applies when saving to one file - images will be ignored. But when saving to several files, the map will be successfully created.
+
 
 ### Show
 
