@@ -13,6 +13,19 @@ A simple sitemap generator for PHP Framework.
 </p>
 
 
+## Content
+
+* [Installation](#installation)
+* [Configuration](#configuration)
+* [Using](#using)
+    * [Manual](#manual)
+    * [Images](#images)
+    * [Show](#show)
+    * [Save](#save)
+* [SEO](#seo)
+* [License](#license)
+
+
 ## Installation
 
 For the 5.4 and 5.5 version of Laravel Framework, use [version 3](https://github.com/andrey-helldar/sitemap/tree/3.x).
