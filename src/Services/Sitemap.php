@@ -83,7 +83,7 @@ class Sitemap
     public function show(): Response
     {
         $except = [];
-        
+
         if ($this->builders || $this->manuals) {
             $except = ['images'];
         }
