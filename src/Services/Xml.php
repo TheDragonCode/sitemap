@@ -24,7 +24,7 @@ class Xml
      * @param string $root
      * @param array $attributes
      */
-    public function __construct($root = 'urlset', array $attributes = null)
+    public function __construct($root = 'urlset', array $attributes = [])
     {
         $this->doc  = new DOMDocument('1.0', 'utf-8');
         $this->root = $this->doc->createElement($root);
@@ -43,7 +43,7 @@ class Xml
      *
      * @return \Helldar\Sitemap\Services\Xml
      */
-    public static function init($root = 'urlset', array $attributes = null): self
+    public static function init($root = 'urlset', array $attributes = []): self
     {
         return new self($root, $attributes);
     }
