@@ -52,7 +52,7 @@ class Xml
      * @param array $parameters
      * @param string $element_name
      */
-    public function addItem($parameters = [], $element_name = 'url')
+    public function addItem(array $parameters = [], string $element_name = 'url')
     {
         ksort($parameters);
 
