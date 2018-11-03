@@ -28,13 +28,7 @@ trait ManualProcess
      */
     public function manual(...$items): self
     {
-        array_map(function ($item) {
-            if ($item instanceof Item) {
-                $this->pushManualItem($item);
-            } else {
-                $this->manual($item);
-            }
-        }, $items);
+        $this->manuals = (array) $items;
 
         return $this;
     }

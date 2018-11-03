@@ -218,7 +218,7 @@ class Sitemap
 
         array_map(function ($items) {
             array_map(function ($item) {
-                $this->processManuals($item);
+                $this->processManuals($item->get());
             }, $items);
         }, $this->manuals);
 
