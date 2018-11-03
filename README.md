@@ -112,8 +112,7 @@ for ($i = 0; $i < 3; $i++) {
     $item = sitemap()->makeItem()
         ->changefreq('weekly')
         ->lastmod(Carbon\Carbon::now())
-        ->loc("http://mysite.local/page/" . $i)
-        ->get();
+        ->loc("http://mysite.local/page/" . $i);
 
     array_push($items_a, $item);
 }
@@ -123,8 +122,7 @@ for ($i = 0; $i < 3; $i++) {
     $item = sitemap()->makeItem()
         ->changefreq(Variables::FREQUENCY_WEEKLY)
         ->lastmod(Carbon\Carbon::now())
-        ->loc("http://mysite.local/offers/" . $i)
-        ->get();
+        ->loc("http://mysite.local/offers/" . $i);
 
     array_push($items_b, $item);
 }
@@ -207,8 +205,7 @@ for ($i = 0; $i < 2; $i++) {
         ->loc("http://mysite.local/page/" . $i)
         ->image("http://mysite.local/images/1.jpg", "My Title 1-".$i, "Caption for image", "Limerick, Ireland", "Royalty free")
         ->image("http://mysite.local/images/2.jpg", "My Title 2-".$i)
-        ->image("http://mysite.local/images/3.jpg")
-        ->get();
+        ->image("http://mysite.local/images/3.jpg");
     
     array_push($items, $item);
 }
@@ -464,8 +461,7 @@ for ($i = 0; $i < 3; $i++) {
     $item = sitemap()->makeItem()
         ->changefreq('weekly')
         ->lastmod(Carbon\Carbon::now())
-        ->loc("http://mysite.local/page/" . $i)
-        ->get();
+        ->loc("http://mysite.local/page/" . $i);
 
     array_push($manual_items, $item);
 }
