@@ -22,13 +22,19 @@ trait ManualProcess
     /**
      * Send a set of manually created items for processing.
      *
-     * @param array $items
+     * @param array|\Helldar\Sitemap\Services\Make\Item $items
      *
      * @return \Helldar\Sitemap\Services\Sitemap
      */
-    public function manual(array ...$items): self
+    public function manual(...$items): self
     {
-        $this->manuals = (array) $items;
+        array_map(function ($item) {
+            if ($item instanceof Item) {
+                $this->pushManualItem($item);
+            } else {
+                $this->manual($item);
+            }
+        }, $items);
 
         return $this;
     }
@@ -48,5 +54,10 @@ trait ManualProcess
         $priority   = Variables::correctPriority($item->get('priority', Config::get('sitemap.priority', 0.5)));
 
         $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
+    }
+
+    private function pushManualItem(Item $item)
+    {
+        array_push($this->manuals, $item->get());
     }
 }

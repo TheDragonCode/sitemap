@@ -20,9 +20,20 @@ trait ImagesProcess
         return new Images;
     }
 
+    /**
+     * @param array|\Helldar\Sitemap\Services\Make\Images ...$images
+     *
+     * @return \Helldar\Sitemap\Traits\Processes\ImagesProcess
+     */
     public function images(array ...$images): self
     {
-        $this->images = (array) $images;
+        array_map(function ($image) {
+            if ($image instanceof Images) {
+                $this->pushImage($image);
+            } else {
+                $this->images($image);
+            }
+        }, $images);
 
         return $this;
     }
@@ -76,5 +87,10 @@ trait ImagesProcess
             'xmlns'       => 'http://www.sitemaps.org/schemas/sitemap/0.9',
             'xmlns:image' => 'http://www.google.com/schemas/sitemap-image/1.1',
         ]);
+    }
+
+    private function pushImage(Images $image)
+    {
+        array_push($this->images, $image->get());
     }
 }
