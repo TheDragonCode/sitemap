@@ -21,36 +21,42 @@ trait ImagesProcess
     }
 
     /**
-     * @param array|\Helldar\Sitemap\Services\Make\Images ...$images
+     * @param \Helldar\Sitemap\Services\Make\Images ...$images
      *
      * @return \Helldar\Sitemap\Traits\Processes\ImagesProcess
      */
-    public function images(array ...$images): self
+    public function images($images): self
     {
         array_map(function ($image) {
             if ($image instanceof Images) {
                 $this->pushImage($image);
             } else {
-                $this->images($image);
+                array_map(function ($image) {
+                    $this->images($image);
+                }, $image);
             }
-        }, $images);
+        }, func_get_args());
 
         return $this;
     }
 
-    protected function processImages(array $item = [])
+    protected function processImages(Images $image)
     {
         $this->makeXml();
 
-        array_map(function ($item) {
-            $item = collect($item);
+        $item = collect($image->get());
 
-            $this->processImageSection($item);
-        }, $item);
+        $this->processImageSection($item);
     }
 
     private function processImageSection(Collection $item)
     {
+        $images = $item->get('images', []);
+
+        if (!$images) {
+            return;
+        }
+
         $xml = $this->xml->makeItem('url');
 
         if ($loc = $item->get('loc')) {
@@ -60,7 +66,7 @@ trait ImagesProcess
 
         array_map(function ($image) use (&$xml) {
             $this->processImageImages($xml, $image);
-        }, $item->get('images'));
+        }, $item->get('images', []));
 
         $this->xml->appendToRoot($xml);
     }
@@ -91,6 +97,6 @@ trait ImagesProcess
 
     private function pushImage(Images $image)
     {
-        array_push($this->images, $image->get());
+        array_push($this->images, $image);
     }
 }

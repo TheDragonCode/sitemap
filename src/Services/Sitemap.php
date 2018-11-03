@@ -180,11 +180,12 @@ class Sitemap
 
             switch ($method) {
                 case 'manual':
+                    //$data = $item->get();
                     $item = (new ManualValidator($item))->get();
                     break;
 
                 case 'images':
-                    $item = (new ImagesValidator($item))->get();
+                    new ImagesValidator($item->get());
                     break;
             }
 
