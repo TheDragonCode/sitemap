@@ -13,8 +13,10 @@ class ValidationFacade implements ValidationInterface
 
     private $items = [];
 
-    public function __construct(array $items = [])
+    public function __construct($items)
     {
+        $items = (array) $items;
+
         if (!$this->validate(compact('items'))) {
             throw new ImagesException;
         }

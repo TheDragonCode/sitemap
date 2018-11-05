@@ -10,7 +10,6 @@ use Helldar\Sitemap\Traits\Helpers;
 use Helldar\Sitemap\Traits\Processes\BuilderProcess;
 use Helldar\Sitemap\Traits\Processes\ImagesProcess;
 use Helldar\Sitemap\Traits\Processes\ManualProcess;
-use Helldar\Sitemap\Validators\ImagesValidator;
 use Helldar\Sitemap\Validators\ManualValidator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
@@ -97,22 +96,28 @@ class Sitemap
      * Saving data to files.
      *
      * @param null|string $path
-     * @param array $except
      *
-     * @return int
+     * @return bool
      */
-    public function save($path = null, array $except = ['images']): int
+    public function save($path = null): bool
     {
-        $path  = $path ?: Config::get('sitemap.filename', 'sitemap.xml');
-        $count = sizeof($this->builders) + sizeof($this->manuals) + sizeof($this->images);
+        $separate = Config::get('sitemap.separate_files', false);
+        $path     = $path ?: Config::get('sitemap.filename', 'sitemap.xml');
 
         $this->clearDirectory($path);
 
-        if ($count > 1 && Config::get('sitemap.separate_files', false)) {
-            return (int) $this->saveMany($path);
+        $images = sizeof($this->images);
+        $count  = sizeof($this->builders) + sizeof($this->manuals);
+
+        if ($images) {
+            $count++;
         }
 
-        return (int) $this->saveOne($path, $except);
+        if ($count > 1 && $separate) {
+            return $this->saveMany($path);
+        }
+
+        return $this->saveOne($path);
     }
 
     /**
@@ -123,7 +128,7 @@ class Sitemap
      *
      * @return bool
      */
-    protected function saveOne($path, array $except = []): bool
+    protected function saveOne($path, array $except = ['images']): bool
     {
         return $this->storage->put($path, $this->get($except));
     }
@@ -145,7 +150,7 @@ class Sitemap
 
         $this->processManyItems('builders', $this->builders, $directory, $filename, $extension, __LINE__);
         $this->processManyItems('manual', $this->manuals, $directory, $filename, $extension, __LINE__);
-        $this->processManyItems('images', $this->images, $directory, $filename, $extension, __LINE__);
+        $this->processManyImages('images', $this->images, $directory, $filename, $extension, __LINE__);
 
         foreach ($this->sitemaps as $sitemap) {
             $xml->addItem($sitemap, 'sitemap');
@@ -178,15 +183,8 @@ class Sitemap
             $path = $directory . $file;
             $loc  = $this->urlToSitemapFile($path);
 
-            switch ($method) {
-                case 'manual':
-                    //$data = $item->get();
-                    $item = (new ManualValidator($item))->get();
-                    break;
-
-                case 'images':
-                    new ImagesValidator($item->get());
-                    break;
+            if ($method == 'manual') {
+                $item = (new ManualValidator($item))->get();
             }
 
             (new self)
@@ -224,6 +222,8 @@ class Sitemap
         }, $this->manuals);
 
         if (!in_array('images', $except)) {
+            $this->makeXml();
+
             array_map(function ($item) {
                 $this->processImages($item);
             }, $this->images);

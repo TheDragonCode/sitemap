@@ -3,8 +3,11 @@
 namespace Helldar\Sitemap\Traits\Processes;
 
 use DOMElement;
+use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Services\Make\Images;
+use Helldar\Sitemap\Services\Make\Item;
 use Helldar\Sitemap\Services\Xml;
+use Helldar\Sitemap\Validators\ImagesValidator;
 use Illuminate\Support\Collection;
 
 trait ImagesProcess
@@ -25,28 +28,57 @@ trait ImagesProcess
      *
      * @return \Helldar\Sitemap\Traits\Processes\ImagesProcess
      */
-    public function images($images): self
+    public function images(...$images): self
     {
-        array_map(function ($image) {
+        foreach ($images as $image) {
             if ($image instanceof Images) {
                 $this->pushImage($image);
             } else {
-                array_map(function ($image) {
-                    $this->images($image);
-                }, $image);
+                foreach ($image as $item) {
+                    $this->pushImage($item);
+                }
             }
-        }, func_get_args());
+        }
 
         return $this;
     }
 
     protected function processImages(Images $image)
     {
-        $this->makeXml();
-
         $item = collect($image->get());
 
         $this->processImageSection($item);
+    }
+
+    protected function processManyImages(string $method, array $items, string $directory, string $filename, string $extension, int $line = null)
+    {
+        $line = $line ?: __LINE__;
+        $this->existsMethod($method, $line);
+
+        $chunk = array_chunk($items, 500);
+
+        foreach ($chunk as $images) {
+            $file = sprintf('%s-%s.%s', $filename, $this->index, $extension);
+            $path = $directory . $file;
+            $loc  = $this->urlToSitemapFile($path);
+
+            $array = Variables::toArray($images);
+
+            new ImagesValidator($array);
+
+            (new self)
+                ->{$method}($images)
+                ->saveOne($path, []);
+
+            $make_item = (new Item)
+                ->loc($loc)
+                ->lastmod()
+                ->get();
+
+            $this->sitemaps->push($make_item);
+
+            $this->index++;
+        }
     }
 
     private function processImageSection(Collection $item)
