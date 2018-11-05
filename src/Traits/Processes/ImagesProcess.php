@@ -18,6 +18,8 @@ trait ImagesProcess
     /** @var array */
     protected $images = [];
 
+    protected $chunk_count = 1000;
+
     public function makeImages(): Images
     {
         return new Images;
@@ -55,7 +57,7 @@ trait ImagesProcess
         $line = $line ?: __LINE__;
         $this->existsMethod($method, $line);
 
-        $chunk = array_chunk($items, 500);
+        $chunk = array_chunk($items, $this->chunk_count);
 
         foreach ($chunk as $images) {
             $file = sprintf('%s-%s.%s', $filename, $this->index, $extension);
