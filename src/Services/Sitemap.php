@@ -260,8 +260,9 @@ class Sitemap
     protected function urlToSitemapFile($path): string
     {
         $prefix = str_finish($this->url, '/');
+        $disk   = Config::get('sitemap.storage');
 
-        return url($prefix . $path);
+        return Storage::disk($disk)->url($prefix . $path);
     }
 
     protected function existsMethod(string $method, int $line = null)
