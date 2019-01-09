@@ -18,4 +18,3 @@ if (!function_exists('is_url')) {
         return filter_var($value, FILTER_VALIDATE_URL) !== false;
     }
 }
-
