@@ -3,7 +3,6 @@
     "description": "A simple sitemap generator for PHP Framework.",
     "type": "library",
     "license": "MIT",
-    "homepage": "https://github.com/andrey-helldar/sitemap",
     "keywords": ["sitemap", "generator", "laravel", "simple", "separated files", "seo optimized", "seo"],
     "support": {
         "issues": "https://github.com/andrey-helldar/sitemap/issues",
@@ -24,6 +23,9 @@
         "nesbot/carbon": "^1.25|^2.0",
         "symfony/http-foundation": "^4.0",
         "symfony/http-kernel": "^4.0"
+    },
+    "suggest": {
+        "symfony/thanks": "Give thanks (in the form of a GitHub) to your fellow PHP package maintainers"
     },
     "autoload": {
         "psr-4": {
