@@ -262,6 +262,10 @@ class Sitemap
         $prefix = str_finish($this->url, '/');
         $disk   = Config::get('sitemap.storage');
 
+        if (is_url($prefix . $path)) {
+            return $prefix . $path;
+        }
+
         return Storage::disk($disk)->url($prefix . $path);
     }
 
