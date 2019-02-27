@@ -260,7 +260,7 @@ class Sitemap
      */
     protected function urlToSitemapFile($path): string
     {
-        $prefix = str_finish($this->url, '/');
+        $prefix = Str::finish($this->url, '/');
         $disk   = Config::get('sitemap.storage');
 
         if (is_url($prefix . $path)) {
