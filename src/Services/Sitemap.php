@@ -11,6 +11,7 @@ use Helldar\Sitemap\Traits\Processes\BuilderProcess;
 use Helldar\Sitemap\Traits\Processes\ImagesProcess;
 use Helldar\Sitemap\Traits\Processes\ManualProcess;
 use Helldar\Sitemap\Validators\ManualValidator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -44,7 +45,7 @@ class Sitemap
     public function __construct()
     {
         $this->xml      = Xml::init();
-        $this->sitemaps = collect();
+        $this->sitemaps = Collection::make();
 
         $this->storage_disk = Config::get('sitemap.storage', 'public');
         $this->storage      = Storage::disk($this->storage_disk);
@@ -60,16 +61,16 @@ class Sitemap
     public function domain($domain): self
     {
         $config = Config::get('sitemap.domains', []);
-        $config = collect($config);
+        $config = Collection::make($config);
         $url    = $config->get($domain);
 
         if (is_null($url)) {
             $config  = Config::get("filesystems.disks.{$this->storage_disk}");
-            $collect = collect($config);
+            $collect = Collection::make($config);
             $url     = $collect->get('url', '/');
         }
 
-        $this->url = str_finish($url, '/');
+        $this->url = Str::finish($url, '/');
 
         return $this;
     }

@@ -4,6 +4,7 @@ namespace Helldar\Sitemap\Traits\Processes;
 
 use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Services\Make\Item;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 
 trait ManualProcess
@@ -16,7 +17,7 @@ trait ManualProcess
 
     public function makeItem(): Item
     {
-        return new Item();
+        return new Item;
     }
 
     /**
@@ -40,7 +41,7 @@ trait ManualProcess
      */
     protected function processManuals(array $item = [])
     {
-        $item = collect($item);
+        $item = Collection::make($item);
 
         $loc        = $this->e($item->get('loc', Config::get('app.url')));
         $changefreq = Variables::correctFrequency($item->get('changefreq', Config::get('sitemap.frequency', 'daily')));

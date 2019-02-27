@@ -47,7 +47,7 @@ trait ImagesProcess
 
     protected function processImages(Images $image)
     {
-        $item = collect($image->get());
+        $item = Collection::make($image->get());
 
         $this->processImageSection($item);
     }
