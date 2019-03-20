@@ -2,7 +2,6 @@
 
 namespace Helldar\Sitemap\Facades;
 
-use Helldar\Sitemap\Exceptions\ImagesException;
 use Helldar\Sitemap\Exceptions\ValidatorException;
 use Helldar\Sitemap\Interfaces\ValidationInterface;
 use Illuminate\Support\Facades\Validator;
@@ -17,9 +16,7 @@ abstract class ValidationFacade implements ValidationInterface
     {
         $items = (array) $items;
 
-        if (!$this->validate(\compact('items'))) {
-            throw new ImagesException;
-        }
+        $this->validate(\compact('items'));
 
         $this->items = $items;
     }
@@ -34,7 +31,7 @@ abstract class ValidationFacade implements ValidationInterface
         return [];
     }
 
-    private function validate(array $data = []): bool
+    private function validate(array $data = [])
     {
         $validator = Validator::make($data, $this->rules());
 
@@ -43,7 +40,5 @@ abstract class ValidationFacade implements ValidationInterface
 
             throw new ValidatorException(\implode(PHP_EOL, $errors));
         }
-
-        return true;
     }
 }
