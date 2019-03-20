@@ -7,7 +7,7 @@ use Helldar\Sitemap\Exceptions\ValidatorException;
 use Helldar\Sitemap\Interfaces\ValidationInterface;
 use Illuminate\Support\Facades\Validator;
 
-class ValidationFacade implements ValidationInterface
+abstract class ValidationFacade implements ValidationInterface
 {
     protected $exception = ValidatorException::class;
 
