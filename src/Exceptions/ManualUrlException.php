@@ -6,18 +6,11 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ManualUrlException extends HttpException
 {
-    /**
-     * SitemapManualUrlException constructor.
-     *
-     * @param null $message
-     * @param \Exception|null $previous
-     * @param int $code
-     */
-    public function __construct($message = null, \Exception $previous = null, $code = 0)
+    public function __construct(string $message = null, ?int $code = 0)
     {
         $message = $message ?: 'Error handling the list of URLs to generate a sitemap.';
         $code    = $code ?: 400;
 
-        parent::__construct($code, $message, $previous, [], $code);
+        parent::__construct($code, $message, null, [], $code);
     }
 }
