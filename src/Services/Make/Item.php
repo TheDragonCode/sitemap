@@ -51,7 +51,7 @@ class Item implements MakeElementsInterface
      */
     public function loc(string $value): self
     {
-        $this->setElement('loc', trim($value));
+        $this->setElement('loc', \trim($value));
 
         return $this;
     }

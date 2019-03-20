@@ -38,7 +38,7 @@ class Variables
     {
         $frequency = Str::lower(trim($frequency));
 
-        return in_array($frequency, self::getFrequencies()) ? $frequency : self::FREQUENCY_DAILY;
+        return \in_array($frequency, self::getFrequencies()) ? $frequency : self::FREQUENCY_DAILY;
     }
 
     public static function correctPriority(float $priority = 0.5): float
@@ -52,7 +52,7 @@ class Variables
 
     public static function getDate($value = null): Carbon
     {
-        if (is_numeric($value)) {
+        if (\is_numeric($value)) {
             return Carbon::createFromTimestamp($value);
         }
 
@@ -62,15 +62,15 @@ class Variables
     public static function toArray($object): array
     {
         foreach ($object as &$item) {
-            if (is_object($item)) {
-                if (method_exists($item, 'get')) {
+            if (\is_object($item)) {
+                if (\method_exists($item, 'get')) {
                     $item = $item->get();
                 } else {
                     $item = (array) $item;
                 }
             }
 
-            if (is_array($item) || is_object($item)) {
+            if (\is_array($item) || \is_object($item)) {
                 self::toArray($item);
             }
         }

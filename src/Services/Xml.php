@@ -54,7 +54,7 @@ class Xml
      */
     public function addItem(array $parameters = [], string $element_name = 'url')
     {
-        ksort($parameters);
+        \ksort($parameters);
 
         $section = $this->doc->createElement($element_name);
 

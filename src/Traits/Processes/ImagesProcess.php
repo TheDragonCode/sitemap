@@ -60,7 +60,7 @@ trait ImagesProcess
         $chunk = array_chunk($items, $this->chunk_count);
 
         foreach ($chunk as $images) {
-            $file = sprintf('%s-%s.%s', $filename, $this->index, $extension);
+            $file = \sprintf('%s-%s.%s', $filename, $this->index, $extension);
             $path = $directory . $file;
             $loc  = $this->urlToSitemapFile($path);
 
@@ -98,7 +98,7 @@ trait ImagesProcess
             $this->xml->appendChild($xml, $loc);
         }
 
-        array_map(function ($image) use (&$xml) {
+        \array_map(function ($image) use (&$xml) {
             $this->processImageImages($xml, $image);
         }, $item->get('images', []));
 
@@ -109,14 +109,14 @@ trait ImagesProcess
     {
         $element = $this->xml->makeItem('image:image');
 
-        array_map(function ($key, $value) use (&$element) {
+        \array_map(function ($key, $value) use (&$element) {
             if ($key == 'loc') {
                 $value = $this->e($value);
             }
 
             $el = $this->xml->makeItem('image:' . $key, $value);
             $this->xml->appendChild($element, $el);
-        }, array_keys($image), array_values($image));
+        }, \array_keys($image), \array_values($image));
 
         $this->xml->appendChild($xml, $element);
     }
@@ -131,6 +131,6 @@ trait ImagesProcess
 
     private function pushImage(Images $image)
     {
-        array_push($this->images, $image);
+        \array_push($this->images, $image);
     }
 }

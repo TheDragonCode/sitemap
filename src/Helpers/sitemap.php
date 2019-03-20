@@ -8,13 +8,13 @@ if (!function_exists('sitemap')) {
      */
     function sitemap(): Sitemap
     {
-        return app('sitemap');
+        return \app('sitemap');
     }
 }
 
 if (!function_exists('is_url')) {
     function is_url(string $value): bool
     {
-        return filter_var($value, FILTER_VALIDATE_URL) !== false;
+        return \filter_var($value, FILTER_VALIDATE_URL) !== false;
     }
 }

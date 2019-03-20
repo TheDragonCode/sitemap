@@ -107,8 +107,8 @@ class Sitemap
 
         $this->clearDirectory($path);
 
-        $images = sizeof($this->images);
-        $count  = sizeof($this->builders) + sizeof($this->manuals);
+        $images = \sizeof($this->images);
+        $count  = \sizeof($this->builders) + \sizeof($this->manuals);
 
         if ($images) {
             $count++;
@@ -145,9 +145,9 @@ class Sitemap
     {
         $xml = Xml::init('sitemapindex');
 
-        $directory = Str::finish(pathinfo($path, PATHINFO_DIRNAME), '/');
-        $filename  = Str::slug(pathinfo($path, PATHINFO_FILENAME));
-        $extension = Str::lower(pathinfo($path, PATHINFO_EXTENSION));
+        $directory = Str::finish(\pathinfo($path, PATHINFO_DIRNAME), '/');
+        $filename  = Str::slug(\pathinfo($path, PATHINFO_FILENAME));
+        $extension = Str::lower(\pathinfo($path, PATHINFO_EXTENSION));
 
         $this->processManyItems('builders', $this->builders, $directory, $filename, $extension, __LINE__);
         $this->processManyItems('manual', $this->manuals, $directory, $filename, $extension, __LINE__);
@@ -180,7 +180,7 @@ class Sitemap
                 continue;
             }
 
-            $file = sprintf('%s-%s.%s', $filename, $this->index, $extension);
+            $file = \sprintf('%s-%s.%s', $filename, $this->index, $extension);
             $path = $directory . $file;
             $loc  = $this->urlToSitemapFile($path);
 
@@ -212,20 +212,20 @@ class Sitemap
      */
     protected function get(array $except = []): string
     {
-        array_map(function ($builder) {
+        \array_map(function ($builder) {
             $this->processBuilder($builder);
         }, $this->builders);
 
-        array_map(function ($items) {
-            array_map(function ($item) {
+        \array_map(function ($items) {
+            \array_map(function ($item) {
                 $this->processManuals($item->get());
             }, $items);
         }, $this->manuals);
 
-        if (!in_array('images', $except)) {
+        if (!\in_array('images', $except)) {
             $this->makeXml();
 
-            array_map(function ($item) {
+            \array_map(function ($item) {
                 $this->processImages($item);
             }, $this->images);
         }
@@ -263,7 +263,7 @@ class Sitemap
         $prefix = Str::finish($this->url, '/');
         $disk   = Config::get('sitemap.storage');
 
-        if (is_url($prefix . $path)) {
+        if (\is_url($prefix . $path)) {
             return $prefix . $path;
         }
 
@@ -272,9 +272,9 @@ class Sitemap
 
     protected function existsMethod(string $method, int $line = null)
     {
-        if (!method_exists($this, $method)) {
+        if (!\method_exists($this, $method)) {
             $line    = $line ?: __LINE__;
-            $message = sprintf("The '%s' method not exist in %s of %s:%s", $method, get_class(), __FILE__, $line);
+            $message = \sprintf("The '%s' method not exist in %s of %s:%s", $method, \get_class(), __FILE__, $line);
 
             throw new MethodNotExists($message);
         }

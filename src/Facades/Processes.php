@@ -22,7 +22,7 @@ abstract class Processes
             return null;
         }
 
-        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
+        return \htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
     }
 
     /**
@@ -36,7 +36,7 @@ abstract class Processes
         $result = [];
 
         foreach ($fields as $key => $value) {
-            $key   = is_numeric($key) ? $value : $key;
+            $key   = \is_numeric($key) ? $value : $key;
             $value = $item->{$value} ?? false;
 
             if ($value) {
@@ -72,10 +72,10 @@ abstract class Processes
             return;
         }
 
-        if (!array_key_exists($key, $this->item)) {
+        if (!\array_key_exists($key, $this->item)) {
             $this->item[$key] = [];
         }
 
-        array_push($this->item[$key], $value);
+        \array_push($this->item[$key], $value);
     }
 }

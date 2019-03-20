@@ -17,7 +17,7 @@ class ValidationFacade implements ValidationInterface
     {
         $items = (array) $items;
 
-        if (!$this->validate(compact('items'))) {
+        if (!$this->validate(\compact('items'))) {
             throw new ImagesException;
         }
 
@@ -41,7 +41,7 @@ class ValidationFacade implements ValidationInterface
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
 
-            throw new ValidatorException(implode(PHP_EOL, $errors));
+            throw new ValidatorException(\implode(PHP_EOL, $errors));
         }
 
         return true;

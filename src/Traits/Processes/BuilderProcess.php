@@ -35,7 +35,7 @@ trait BuilderProcess
      */
     protected function processBuilder(Builder $builder)
     {
-        $name = get_class($builder->getModel());
+        $name = \get_class($builder->getModel());
 
         $route      = $this->config($name, 'route', 'index');
         $parameters = $this->config($name, 'route_parameters', ['*']);
@@ -49,9 +49,9 @@ trait BuilderProcess
         foreach ($items as $item) {
             $params  = $this->routeParameters($item, $parameters);
             $lastmod = $this->lastmod($item, $updated);
-            $loc     = $this->e(route($route, $params));
+            $loc     = $this->e(\route($route, $params));
 
-            $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'));
+            $this->xml->addItem(\compact('loc', 'lastmod', 'changefreq', 'priority'));
         }
     }
 

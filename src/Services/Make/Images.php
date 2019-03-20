@@ -13,14 +13,14 @@ class Images implements MakeElementsInterface
 
     public function loc(string $value): self
     {
-        $this->setElement('loc', trim($value));
+        $this->setElement('loc', \trim($value));
 
         return $this;
     }
 
     public function image(string $loc, string $title = null, string $caption = null, string $geo_location = null, string $license = null): self
     {
-        $image = array_filter(compact('loc', 'title', 'caption', 'geo_location', 'license'));
+        $image = \array_filter(\compact('loc', 'title', 'caption', 'geo_location', 'license'));
 
         $this->pushElement('images', $image);
 

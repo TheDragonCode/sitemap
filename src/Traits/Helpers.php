@@ -17,11 +17,11 @@ trait Helpers
      */
     protected function e($value): string
     {
-        if (is_null($value)) {
+        if (\is_null($value)) {
             return null;
         }
 
-        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
+        return \htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
     }
 
     /**
@@ -35,7 +35,7 @@ trait Helpers
         $result = [];
 
         foreach ($fields as $key => $value) {
-            $key   = is_numeric($key) ? $value : $key;
+            $key   = \is_numeric($key) ? $value : $key;
             $value = $item->{$value} ?? false;
 
             if ($value) {
@@ -71,11 +71,11 @@ trait Helpers
             return;
         }
 
-        if (!array_key_exists($key, $this->item)) {
+        if (!\array_key_exists($key, $this->item)) {
             $this->item[$key] = [];
         }
 
-        array_push($this->item[$key], $value);
+        \array_push($this->item[$key], $value);
     }
 
     protected function clearDirectory(string $prefix = null)
@@ -84,13 +84,13 @@ trait Helpers
             return;
         }
 
-        $ext  = pathinfo($prefix, PATHINFO_EXTENSION);
+        $ext  = \pathinfo($prefix, PATHINFO_EXTENSION);
         $path = Str::before($prefix, '.' . $ext);
 
-        $path = storage_path("app/public/{$path}*.{$ext}");
+        $path = \storage_path("app/public/{$path}*.{$ext}");
 
-        foreach (glob($path) as $file) {
-            unlink($file);
+        foreach (\glob($path) as $file) {
+            \unlink($file);
         }
     }
 }
