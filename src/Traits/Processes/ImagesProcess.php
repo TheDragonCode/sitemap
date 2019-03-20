@@ -57,7 +57,7 @@ trait ImagesProcess
         $line = $line ?: __LINE__;
         $this->existsMethod($method, $line);
 
-        $chunk = array_chunk($items, $this->chunk_count);
+        $chunk = \array_chunk($items, $this->chunk_count);
 
         foreach ($chunk as $images) {
             $file = \sprintf('%s-%s.%s', $filename, $this->index, $extension);

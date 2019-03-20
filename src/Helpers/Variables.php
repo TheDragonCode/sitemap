@@ -36,7 +36,7 @@ class Variables
 
     public static function correctFrequency(string $frequency = 'daily'): string
     {
-        $frequency = Str::lower(trim($frequency));
+        $frequency = Str::lower(\trim($frequency));
 
         return \in_array($frequency, self::getFrequencies()) ? $frequency : self::FREQUENCY_DAILY;
     }

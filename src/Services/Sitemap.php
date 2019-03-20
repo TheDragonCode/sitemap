@@ -64,7 +64,7 @@ class Sitemap
         $config = new Collection($config);
         $url    = $config->get($domain);
 
-        if (is_null($url)) {
+        if (\is_null($url)) {
             $config  = Config::get("filesystems.disks.{$this->storage_disk}");
             $collect = new Collection($config);
             $url     = $collect->get('url', '/');
