@@ -15,7 +15,7 @@ trait Helpers
      *
      * @return string
      */
-    protected function e($value): string
+    protected function e($value): ?string
     {
         if (\is_null($value)) {
             return null;

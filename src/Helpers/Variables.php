@@ -21,6 +21,8 @@ class Variables
 
     const FREQUENCY_YEARLY  = 'yearly';
 
+    const PRIORITY_DEFAULT  = 0.5;
+
     public static function getFrequencies(): array
     {
         return [
@@ -47,7 +49,7 @@ class Variables
             return $priority;
         }
 
-        return 0.5;
+        return self::PRIORITY_DEFAULT;
     }
 
     public static function getDate($value = null): Carbon

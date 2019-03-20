@@ -14,9 +14,9 @@ abstract class Processes
      *
      * @param $value
      *
-     * @return string
+     * @return null|string
      */
-    protected function e($value): string
+    protected function e($value): ?string
     {
         if (empty($value)) {
             return null;

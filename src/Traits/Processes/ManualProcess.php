@@ -50,9 +50,4 @@ trait ManualProcess
 
         $this->xml->addItem(\compact('loc', 'lastmod', 'changefreq', 'priority'));
     }
-
-    private function pushManualItem(Item $item)
-    {
-        array_push($this->manuals, $item->get());
-    }
 }
