@@ -41,7 +41,7 @@ trait ManualProcess
      */
     protected function processManuals(array $item = [])
     {
-        $item = Collection::make($item);
+        $item = new Collection($item);
 
         $loc        = $this->e($item->get('loc', Config::get('app.url')));
         $changefreq = Variables::correctFrequency($item->get('changefreq', Config::get('sitemap.frequency', 'daily')));

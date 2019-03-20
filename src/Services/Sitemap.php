@@ -45,7 +45,7 @@ class Sitemap
     public function __construct()
     {
         $this->xml      = Xml::init();
-        $this->sitemaps = Collection::make();
+        $this->sitemaps = new Collection;
 
         $this->storage_disk = Config::get('sitemap.storage', 'public');
         $this->storage      = Storage::disk($this->storage_disk);
@@ -61,12 +61,12 @@ class Sitemap
     public function domain($domain): self
     {
         $config = Config::get('sitemap.domains', []);
-        $config = Collection::make($config);
+        $config = new Collection($config);
         $url    = $config->get($domain);
 
         if (is_null($url)) {
             $config  = Config::get("filesystems.disks.{$this->storage_disk}");
-            $collect = Collection::make($config);
+            $collect = new Collection($config);
             $url     = $collect->get('url', '/');
         }
 
