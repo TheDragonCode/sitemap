@@ -52,7 +52,7 @@ trait BuilderProcess
             $lastmod = $this->lastmod($item, $updated);
             $loc     = Str::e(\route($route, $params));
 
-            $this->xml->addItem(\compact('loc', 'lastmod', 'changefreq', 'priority'));
+            $this->xml->addItem(\compact('loc', 'lastmod', 'changefreq', 'priority'), 'url');
         }
     }
 

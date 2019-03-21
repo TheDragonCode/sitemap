@@ -49,6 +49,6 @@ trait ManualProcess
         $lastmod    = Variables::getDate($item->get('lastmod'))->toAtomString();
         $priority   = Variables::correctPriority($item->get('priority', Config::get('sitemap.priority', 0.5)));
 
-        $this->xml->addItem(\compact('loc', 'lastmod', 'changefreq', 'priority'));
+        $this->xml->addItem(\compact('loc', 'lastmod', 'changefreq', 'priority'), 'url');
     }
 }
