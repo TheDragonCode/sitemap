@@ -5,6 +5,8 @@ namespace Helldar\Sitemap\Services;
 use Carbon\Carbon;
 use Helldar\Core\Xml\Exceptions\MethodNotFoundException;
 use Helldar\Core\Xml\Facades\Xml;
+use Helldar\Core\Xml\Helpers\Str;
+use Helldar\Core\Xml\Helpers\Url;
 use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Services\Make\Item;
 use Helldar\Sitemap\Traits\Helpers;
@@ -15,7 +17,6 @@ use Helldar\Sitemap\Validators\ManualValidator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class Sitemap
@@ -264,7 +265,7 @@ class Sitemap
     {
         $prefix = Str::finish($this->url, '/');
 
-        if (\is_url($prefix . $path)) {
+        if (Url::isValid($prefix . $path)) {
             return $prefix . $path;
         }
 

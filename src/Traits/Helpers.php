@@ -2,7 +2,7 @@
 
 namespace Helldar\Sitemap\Traits;
 
-use Illuminate\Support\Str;
+use Helldar\Core\Xml\Helpers\Str;
 
 trait Helpers
 {

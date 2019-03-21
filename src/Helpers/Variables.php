@@ -3,7 +3,7 @@
 namespace Helldar\Sitemap\Helpers;
 
 use Carbon\Carbon;
-use Illuminate\Support\Str;
+use Helldar\Core\Xml\Helpers\Str;
 
 class Variables
 {

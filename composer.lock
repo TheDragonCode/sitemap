@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc28bf0e7e543795131b9bf4318e2e4b",
+    "content-hash": "d0e14b8215894833c49772310616dc7d",
     "packages": [
         {
             "name": "andrey-helldar/xml-core",
@@ -12,16 +12,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/andrey-helldar/xml-core.git",
-                "reference": "f70f1e756027a72c2909531218f79b993ece29db"
+                "reference": "c69d9ac085226c7fb4471ef395af4542d189c011"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andrey-helldar/xml-core/zipball/f70f1e756027a72c2909531218f79b993ece29db",
-                "reference": "f70f1e756027a72c2909531218f79b993ece29db",
+                "url": "https://api.github.com/repos/andrey-helldar/xml-core/zipball/c69d9ac085226c7fb4471ef395af4542d189c011",
+                "reference": "c69d9ac085226c7fb4471ef395af4542d189c011",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
+                "illuminate/support": "^5.7",
                 "illuminate/validation": "^5.7",
                 "php": "^7.1.3",
                 "symfony/http-kernel": "^4.1"
@@ -58,7 +59,7 @@
                 "core",
                 "xml"
             ],
-            "time": "2019-03-21T16:44:45+00:00"
+            "time": "2019-03-21T17:28:28+00:00"
         },
         {
             "name": "doctrine/inflector",
