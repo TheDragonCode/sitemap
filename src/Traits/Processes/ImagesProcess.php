@@ -124,10 +124,16 @@ trait ImagesProcess
 
     private function makeXml()
     {
-        $this->xml = Xml::init('urlset', [
+        $root = 'urlset';
+
+        $attributes = [
             'xmlns'       => 'http://www.sitemaps.org/schemas/sitemap/0.9',
             'xmlns:image' => 'http://www.google.com/schemas/sitemap-image/1.1',
-        ]);
+        ];
+
+        $format_output = \config('sitemap.format_output', true);
+
+        $this->xml = Xml::init($root, $attributes, $format_output);
     }
 
     private function pushImage(Images $image)
