@@ -29,8 +29,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Helldar\\Sitemap\\": "src/",
-            "Helldar\\Core\\Xml\\": "xml-core/src"
+            "Helldar\\Sitemap\\": "src/"
         }
     },
     "autoload-dev": {
