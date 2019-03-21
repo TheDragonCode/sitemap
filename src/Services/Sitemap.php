@@ -146,7 +146,9 @@ class Sitemap
      */
     protected function saveMany($path): bool
     {
-        $xml = Xml::init('sitemapindex');
+        $format_output = \config('sitemap.format_output', true);
+
+        $xml = Xml::init('sitemapindex', [], $format_output);
 
         $directory = Str::finish(\pathinfo($path, PATHINFO_DIRNAME), '/');
         $filename  = Str::slug(\pathinfo($path, PATHINFO_FILENAME));
