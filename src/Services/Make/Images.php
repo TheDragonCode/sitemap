@@ -2,14 +2,13 @@
 
 namespace Helldar\Sitemap\Services\Make;
 
-use Helldar\Sitemap\Interfaces\MakeElementsInterface;
+use Helldar\Core\Xml\Abstracts\Item as ItemAbstract;
+use Helldar\Core\Xml\Interfaces\ItemInterface;
 use Helldar\Sitemap\Traits\Helpers;
 
-class Images implements MakeElementsInterface
+class Images extends ItemAbstract implements ItemInterface
 {
     use Helpers;
-
-    private $item = [];
 
     public function loc(string $value): self
     {
@@ -25,10 +24,5 @@ class Images implements MakeElementsInterface
         $this->pushElement('images', $image);
 
         return $this;
-    }
-
-    public function get(): array
-    {
-        return $this->item;
     }
 }

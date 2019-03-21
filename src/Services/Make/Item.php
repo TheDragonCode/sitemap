@@ -2,11 +2,12 @@
 
 namespace Helldar\Sitemap\Services\Make;
 
+use Helldar\Core\Xml\Abstracts\Item as ItemAbstract;
+use Helldar\Core\Xml\Interfaces\ItemInterface;
 use Helldar\Sitemap\Helpers\Variables;
-use Helldar\Sitemap\Interfaces\MakeElementsInterface;
 use Helldar\Sitemap\Traits\Helpers;
 
-class Item implements MakeElementsInterface
+class Item extends ItemAbstract implements ItemInterface
 {
     use Helpers;
 
@@ -70,15 +71,5 @@ class Item implements MakeElementsInterface
         $this->setElement('priority', $value);
 
         return $this;
-    }
-
-    /**
-     * Get the item to save to the site map.
-     *
-     * @return array
-     */
-    public function get(): array
-    {
-        return $this->item;
     }
 }

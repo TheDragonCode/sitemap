@@ -2,15 +2,12 @@
 
 namespace Helldar\Sitemap\Validators;
 
-use Helldar\Sitemap\Exceptions\ManualUrlException;
-use Helldar\Sitemap\Facades\ValidationFacade;
+use Helldar\Core\Xml\Abstracts\Validation;
 use Helldar\Sitemap\Helpers\Variables;
 use Illuminate\Validation\Rule;
 
-class ManualValidator extends ValidationFacade
+class ManualValidator extends Validation
 {
-    protected $exception = ManualUrlException::class;
-
     protected function rules(): array
     {
         $frequencies = Variables::getFrequencies();

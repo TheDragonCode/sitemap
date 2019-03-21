@@ -3,16 +3,17 @@
 namespace Helldar\Sitemap\Traits\Processes;
 
 use DOMElement;
-use Helldar\Sitemap\Helpers\Variables;
+use Helldar\Core\Xml\Facades\Xml;
+use Helldar\Core\Xml\Helpers\Arr;
+use Helldar\Core\Xml\Helpers\Str;
 use Helldar\Sitemap\Services\Make\Images;
 use Helldar\Sitemap\Services\Make\Item;
-use Helldar\Sitemap\Services\Xml;
 use Helldar\Sitemap\Validators\ImagesValidator;
 use Illuminate\Support\Collection;
 
 trait ImagesProcess
 {
-    /** @var \Helldar\Sitemap\Services\Xml */
+    /** @var \Helldar\Core\Xml\Facades\Xml */
     protected $xml;
 
     /** @var array */
@@ -64,7 +65,7 @@ trait ImagesProcess
             $path = $directory . $file;
             $loc  = $this->urlToSitemapFile($path);
 
-            $array = Variables::toArray($images);
+            $array = Arr::toArray($images);
 
             new ImagesValidator($array);
 
@@ -94,7 +95,7 @@ trait ImagesProcess
         $xml = $this->xml->makeItem('url');
 
         if ($loc = $item->get('loc')) {
-            $loc = $this->xml->makeItem('loc', $this->e($loc));
+            $loc = $this->xml->makeItem('loc', Str::e($loc));
             $this->xml->appendChild($xml, $loc);
         }
 
@@ -111,7 +112,7 @@ trait ImagesProcess
 
         \array_map(function ($key, $value) use (&$element) {
             if ($key == 'loc') {
-                $value = $this->e($value);
+                $value = Str::e($value);
             }
 
             $el = $this->xml->makeItem('image:' . $key, $value);

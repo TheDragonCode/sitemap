@@ -3,7 +3,8 @@
 namespace Helldar\Sitemap\Services;
 
 use Carbon\Carbon;
-use Helldar\Sitemap\Exceptions\MethodNotExists;
+use Helldar\Core\Xml\Exceptions\MethodNotFoundException;
+use Helldar\Core\Xml\Facades\Xml;
 use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Services\Make\Item;
 use Helldar\Sitemap\Traits\Helpers;
@@ -21,7 +22,7 @@ class Sitemap
 {
     use Helpers, BuilderProcess, ManualProcess, ImagesProcess;
 
-    /** @var \Helldar\Sitemap\Services\Xml */
+    /** @var \Helldar\Core\Xml\Facades\Xml */
     protected $xml;
 
     /** @var string */
@@ -44,7 +45,8 @@ class Sitemap
      */
     public function __construct()
     {
-        $this->xml      = Xml::init();
+        $this->initXml();
+
         $this->sitemaps = new Collection;
 
         $this->storage_disk = Config::get('sitemap.storage', 'public');
@@ -275,7 +277,16 @@ class Sitemap
             $line    = $line ?: __LINE__;
             $message = \sprintf("The '%s' method not exist in %s of %s:%s", $method, \get_class(), __FILE__, $line);
 
-            throw new MethodNotExists($message);
+            throw new MethodNotFoundException($message);
         }
+    }
+
+    private function initXml()
+    {
+        $root          = 'urlset';
+        $attributes    = ['xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'];
+        $format_output = \config('sitemap.format_output', true);
+
+        $this->xml = Xml::init($root, $attributes, $format_output);
     }
 }

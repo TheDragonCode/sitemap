@@ -2,6 +2,7 @@
 
 namespace Helldar\Sitemap\Traits\Processes;
 
+use Helldar\Core\Xml\Helpers\Str;
 use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Services\Make\Item;
 use Illuminate\Support\Collection;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Config;
 
 trait ManualProcess
 {
-    /** @var \Helldar\Sitemap\Services\Xml */
+    /** @var \Helldar\Core\Xml\Facades\Xml */
     protected $xml;
 
     /** @var array */
@@ -43,7 +44,7 @@ trait ManualProcess
     {
         $item = new Collection($item);
 
-        $loc        = $this->e($item->get('loc', Config::get('app.url')));
+        $loc        = Str::e($item->get('loc', Config::get('app.url')));
         $changefreq = Variables::correctFrequency($item->get('changefreq', Config::get('sitemap.frequency', 'daily')));
         $lastmod    = Variables::getDate($item->get('lastmod'))->toAtomString();
         $priority   = Variables::correctPriority($item->get('priority', Config::get('sitemap.priority', 0.5)));

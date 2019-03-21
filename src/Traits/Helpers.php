@@ -6,24 +6,6 @@ use Illuminate\Support\Str;
 
 trait Helpers
 {
-    private $item = [];
-
-    /**
-     * Escape HTML special characters in a string.
-     *
-     * @param $value
-     *
-     * @return string
-     */
-    protected function e($value): ?string
-    {
-        if (\is_null($value)) {
-            return null;
-        }
-
-        return \htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
-    }
-
     /**
      * @param \Illuminate\Support\Collection $item
      * @param array $fields

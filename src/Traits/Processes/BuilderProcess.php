@@ -3,12 +3,13 @@
 namespace Helldar\Sitemap\Traits\Processes;
 
 use Carbon\Carbon;
+use Helldar\Core\Xml\Helpers\Str;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
 
 trait BuilderProcess
 {
-    /** @var \Helldar\Sitemap\Services\Xml */
+    /** @var \Helldar\Core\Xml\Facades\Xml */
     protected $xml;
 
     /** @var array */
@@ -49,7 +50,7 @@ trait BuilderProcess
         foreach ($items as $item) {
             $params  = $this->routeParameters($item, $parameters);
             $lastmod = $this->lastmod($item, $updated);
-            $loc     = $this->e(\route($route, $params));
+            $loc     = Str::e(\route($route, $params));
 
             $this->xml->addItem(\compact('loc', 'lastmod', 'changefreq', 'priority'));
         }

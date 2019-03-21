@@ -40,7 +40,7 @@ return [
      * Nicely formats output with indentation and extra space.
      */
 
-    'formatOutput' => env('SITEMAP_FORMAT_OUTPUT', false),
+    'format_output' => env('SITEMAP_FORMAT_OUTPUT', false),
 
     /*
      * The number of days that the entry will go to the site map.

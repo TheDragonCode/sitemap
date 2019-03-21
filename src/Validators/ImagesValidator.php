@@ -2,13 +2,10 @@
 
 namespace Helldar\Sitemap\Validators;
 
-use Helldar\Sitemap\Exceptions\ImagesException;
-use Helldar\Sitemap\Facades\ValidationFacade;
+use Helldar\Core\Xml\Abstracts\Validation;
 
-class ImagesValidator extends ValidationFacade
+class ImagesValidator extends Validation
 {
-    protected $exception = ImagesException::class;
-
     protected function rules(): array
     {
         return [
