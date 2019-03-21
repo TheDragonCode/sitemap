@@ -12,7 +12,7 @@ composer update
 
 ### Config
 
-* Replace `formatOutput` option to `format_output` in [config/sitemap.php](src/config/sitemap.php) file.
+* Replace `formatOutput` option to `format_output` in [config/sitemap.php](../src/config/sitemap.php) file.
 
 
 Yes, that's all 😊
