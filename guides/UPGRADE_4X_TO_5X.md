@@ -1,6 +1,6 @@
 # Upgrade from 4.x to 5.x
 
-### Updating Dependencies
+## Updating Dependencies
 
 Update your `andrey-helldar/sitemap` dependency to `^5.0` in your `composer.json` file.
 
@@ -10,7 +10,7 @@ composer update
 ```
 
 
-### Config
+## Config
 
 * Replace `formatOutput` option to `format_output` in [config/sitemap.php](../src/config/sitemap.php) file.
 
