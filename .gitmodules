@@ -1,3 +1,3 @@
 [submodule "xml-core"]
 	path = xml-core
-	url = git@github.com:andrey-helldar/xml-core.git
+	url = https://github.com/andrey-helldar/xml-core.git
