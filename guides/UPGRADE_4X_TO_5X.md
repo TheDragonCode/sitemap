@@ -9,6 +9,10 @@ Update dependencies with the command:
 composer update
 ```
 
+## Methods
+
+Function `sitemap()` is deprecated. Use `app('sitemap')` instead.
+
 
 ## Config
 
