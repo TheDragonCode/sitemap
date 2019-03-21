@@ -41,7 +41,7 @@ Instead, you may of course manually update your require block and run `composer 
 ```json
 {
     "require": {
-        "andrey-helldar/sitemap": "^4.0"
+        "andrey-helldar/sitemap": "^5.0"
     }
 }
 ```
@@ -58,7 +58,7 @@ You can also publish the config file to change implementations (ie. interface to
 php artisan vendor:publish --provider="Helldar\Sitemap\ServiceProvider"
 ```
 
-Now you can use a `sitemap()` helper or the `app('sitemap')` method.
+Now you can use a `app('sitemap')` method.
 
 
 ## Configuration
@@ -97,21 +97,21 @@ If any of the model values are undefined, a global value will be used.
 
 ## Using
 
-
 ### Manual
 
 You can also transfer an array of items created manually:
 ```php
-use Helldar\Sitemap\Services\Sitemap;
+use Carbon\Carbon;
 use Helldar\Sitemap\Helpers\Variables;
+use Helldar\Sitemap\Services\Sitemap;
 
 $items_a = [];
 $items_b = [];
 
 for ($i = 0; $i < 3; $i++) {
-    $item = sitemap()->makeItem()
+    $item = app('sitemap')->makeItem()
         ->changefreq('weekly')
-        ->lastmod(Carbon\Carbon::now())
+        ->lastmod(Carbon::now())
         ->loc("http://mysite.local/page/" . $i);
 
     array_push($items_a, $item);
@@ -119,19 +119,13 @@ for ($i = 0; $i < 3; $i++) {
 
 
 for ($i = 0; $i < 3; $i++) {
-    $item = sitemap()->makeItem()
+    $item = app('sitemap')->makeItem()
         ->changefreq(Variables::FREQUENCY_WEEKLY)
-        ->lastmod(Carbon\Carbon::now())
+        ->lastmod(Carbon::now())
         ->loc("http://mysite.local/offers/" . $i);
 
     array_push($items_b, $item);
 }
-
-return sitemap()
-         ->manual($items_a, $items_b)
-         ->show();
-
-// or
 
 return app('sitemap')
          ->manual($items_a, $items_b)
@@ -186,7 +180,7 @@ $query1 = \App\Catalog::query()->where('id', '>', '1000');
 $query2 = \App\News::query()->where('category_id', 10);
 $query3 = \App\Pages::query();
 
-return sitemap()
+return app('sitemap')
          ->builders($query1, $query2, $query3)
          ->manual($items1, $items2, $items3)
          ->show();
@@ -201,7 +195,7 @@ use Helldar\Sitemap\Services\Sitemap;
 $items = [];
 
 for ($i = 0; $i < 2; $i++) {
-    $item = sitemap()->makeImages()
+    $item = app('sitemap')->makeImages()
         ->loc("http://mysite.local/page/" . $i)
         ->image("http://mysite.local/images/1.jpg", "My Title 1-".$i, "Caption for image", "Limerick, Ireland", "Royalty free")
         ->image("http://mysite.local/images/2.jpg", "My Title 2-".$i)
@@ -209,12 +203,6 @@ for ($i = 0; $i < 2; $i++) {
     
     array_push($items, $item);
 }
-
-return sitemap()
-         ->images($items)
-         ->show();
-
-// or
 
 return app('sitemap')
          ->images($items)
@@ -289,7 +277,7 @@ $query1 = \App\Catalog::query()->where('id', '>', '1000');
 $query2 = \App\News::query()->where('category_id', 10);
 $query3 = \App\Pages::query();
 
-return sitemap()
+return app('sitemap')
          ->builders($query1, $query2, $query3)
          ->show();
 ```
@@ -301,7 +289,7 @@ app('route')->get('sitemap', function() {
     $query2 = \App\News::query()->where('category_id', 10);
     $query3 = \App\Pages::query();
 
-    return sitemap()
+    return app('sitemap')
              ->builders($query1, $query2, $query3)
              ->show();
 });
@@ -320,7 +308,7 @@ $query1 = \App\Catalog::query()->where('id', '>', '1000');
 $query2 = \App\News::query()->where('category_id', 10);
 $query3 = \App\Pages::query();
 
-sitemap()
+app('sitemap')
      ->builders($query1, $query2, $query3)
      ->save();
 ```
@@ -332,11 +320,11 @@ $query1 = \App\Catalog::query()->where('id', '>', '1000');
 $query2 = \App\News::query()->where('category_id', 10);
 $query3 = \App\Pages::query();
 
-sitemap()
+app('sitemap')
      ->builders($query1, $query2, $query3)
      ->save('sitemap-1.xml');
 
-sitemap()
+app('sitemap')
      ->builders($query1, $query2, $query3)
      ->save('foo/bar/sitemap-2.xml');
 ```
@@ -350,7 +338,7 @@ $query1 = \App\Catalog::query()->where('id', '>', '1000');
 $query2 = \App\News::query()->where('category_id', 10);
 $query3 = \App\Pages::query();
 
-sitemap()
+app('sitemap')
      ->builders($query1, $query2, $query3)
      ->save();
 ```
@@ -394,12 +382,12 @@ If you use a multi-domain application, you can specify the domain names of the g
 ```
 
 ```php
-sitemap()
+app('sitemap')
      ->builders($query1, $query2, $query3)
      ->domain('foo')
      ->save();
      
-sitemap()
+app('sitemap')
      ->builders($query1, $query2, $query3)
      ->domain('bar')
      ->save();
@@ -458,7 +446,7 @@ $query3 = \App\Pages::query();
 $manual_items = [];
 
 for ($i = 0; $i < 3; $i++) {
-    $item = sitemap()->makeItem()
+    $item = app('sitemap')->makeItem()
         ->changefreq('weekly')
         ->lastmod(Carbon\Carbon::now())
         ->loc("http://mysite.local/page/" . $i);
@@ -466,12 +454,12 @@ for ($i = 0; $i < 3; $i++) {
     array_push($manual_items, $item);
 }
 
-sitemap()
+app('sitemap')
      ->builders($query1, $query2, $query3)
      ->manual($manual_items)
      ->save(public_path('first.xml'));
 
-sitemap()
+app('sitemap')
      ->builders($query1, $query2, $query3)
      ->manual($manual_items)
      ->save(storage_path('foo/bar/second.xml'));
