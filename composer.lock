@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9dddee20d5c1e5c55052d3519d63f252",
+    "content-hash": "88105af57b90e13fa48388087d00be13",
     "packages": [
         {
             "name": "andrey-helldar/xml-core",
-            "version": "dev-master",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/andrey-helldar/xml-core.git",
-                "reference": "226501f811594447faacd9e2b89450ebf01b979e"
+                "reference": "11d310da3eb8f4b0d291e55ea5c76c5c8fa8ba16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andrey-helldar/xml-core/zipball/226501f811594447faacd9e2b89450ebf01b979e",
-                "reference": "226501f811594447faacd9e2b89450ebf01b979e",
+                "url": "https://api.github.com/repos/andrey-helldar/xml-core/zipball/11d310da3eb8f4b0d291e55ea5c76c5c8fa8ba16",
+                "reference": "11d310da3eb8f4b0d291e55ea5c76c5c8fa8ba16",
                 "shasum": ""
             },
             "require": {
@@ -36,7 +36,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "2.0-dev"
                 }
             },
             "autoload": {
@@ -59,7 +59,7 @@
                 "core",
                 "xml"
             ],
-            "time": "2019-03-21T18:27:41+00:00"
+            "time": "2019-03-21T19:36:31+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -2791,9 +2791,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "andrey-helldar/xml-core": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
