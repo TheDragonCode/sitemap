@@ -16,6 +16,7 @@ A simple sitemap generator for PHP Framework.
 ## Content
 
 * [Installation](#installation)
+* [Upgrade guide](#upgrade-guides)
 * [Configuration](#configuration)
 * [Using](#using)
     * [Manual](#manual)
@@ -59,6 +60,11 @@ php artisan vendor:publish --provider="Helldar\Sitemap\ServiceProvider"
 ```
 
 Now you can use a `app('sitemap')` method.
+
+
+## Upgrade Guides
+
+* [Upgrading from 4.x to 5.x](guides/UPGRADE_4X_TO_5X.md)
 
 
 ## Configuration
