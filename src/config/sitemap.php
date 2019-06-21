@@ -112,7 +112,7 @@ return [
         //    'route_parameters' => [
         //        'slug' => 'table_field_for_slug',
         //        'foo'  => 'table_field_for_foo',
-        //        'bar'  => 'table_field_for_bar',
+        //        'bar'  => 'my_relation.slug',
         //        'baz',
         //    ],
         //    'age'       => 180,

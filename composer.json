@@ -19,6 +19,7 @@
         "ext-dom": "*",
         "andrey-helldar/xml-core": "^1.0",
         "illuminate/database": "^5.6",
+        "illuminate/support": "^5.6",
         "nesbot/carbon": "^1.25 || ^2.0",
         "symfony/http-foundation": "^4.0"
     },

@@ -3,6 +3,7 @@
 namespace Helldar\Sitemap\Traits;
 
 use Helldar\Core\Xml\Helpers\Str;
+use Illuminate\Support\Arr;
 
 trait Helpers
 {
@@ -18,10 +19,10 @@ trait Helpers
 
         foreach ($fields as $key => $value) {
             $key   = \is_numeric($key) ? $value : $key;
-            $value = $item->{$value} ?? false;
+            $value = Arr::get($item, $value, false);
 
             if ($value) {
-                $result[$key] = $value;
+                Arr::set($result, $key, $value);
             }
         }
 

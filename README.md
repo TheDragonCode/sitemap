@@ -78,7 +78,7 @@ To configure the generation, you need to fill the `models` array in the `config/
         'route_parameters' => [
             'slug' => 'table_field_for_slug',
             'foo'  => 'table_field_for_foo',
-            'bar'  => 'table_field_for_bar',
+            bar'  => 'my_relation.slug',
             'baz',
         ],
         'lastmod' => 'updated_at',
@@ -93,7 +93,7 @@ As the key of the array, you must use the model name for which the rules will be
  * **route** - the name of the route to generate the URL.
  * **route_parameters** - the parameters to be passed to the URL generation method, where:
     * the key is the parameter name for the routing. If the name of the routing parameter matches the name of the column in the database, you can specify only the value.
-    * the value is the name of the column in the database to substitute the value.
+    * the value is the name of the column in the database to substitute the value. If the value needs to be taken from the link, then you should specify the appeal through a point. For example: `'bar' => 'my_relation.slug'`.
  * **lastmod** - is the name of the column containing the record date. In case of absence, the current date is used. If the model does not need to take into account the time field, set the parameter `lastmod` to `false`.
  * **frequency** - is the value of the refresh rate of the content. This is necessary for some search robots. You can also use constants from `Helldar\Sitemap\Services\Sitemap` class.
  * **priority** - is the priority of the reference for model records.
