@@ -10,7 +10,7 @@ use function is_numeric;
 
 class Dates implements DateContract
 {
-    static public function parse($value = null): DateTimeInterface
+    public static function parse($value = null): DateTimeInterface
     {
         if (is_numeric($value)) {
             return Carbon::createFromTimestamp($value);

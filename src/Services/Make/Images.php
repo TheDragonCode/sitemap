@@ -2,13 +2,13 @@
 
 namespace Helldar\Sitemap\Services\Make;
 
-use Helldar\Core\Xml\Abstracts\Item as ItemAbstract;
-use Helldar\Core\Xml\Interfaces\ItemInterface;
-use Helldar\Sitemap\Contracts\ImagesItemContract;
-use Helldar\Sitemap\Traits\Helpers;
-
 use function array_filter;
 use function compact;
+use Helldar\Core\Xml\Abstracts\Item as ItemAbstract;
+use Helldar\Core\Xml\Interfaces\ItemInterface;
+
+use Helldar\Sitemap\Contracts\ImagesItemContract;
+use Helldar\Sitemap\Traits\Helpers;
 use function trim;
 
 class Images extends ItemAbstract implements ItemInterface, ImagesItemContract

@@ -2,9 +2,9 @@
 
 namespace Helldar\Sitemap;
 
-use Helldar\Sitemap\Services\Sitemap;
-
 use function config_path;
+
+use Helldar\Sitemap\Services\Sitemap;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {

@@ -6,5 +6,5 @@ use DateTimeInterface;
 
 interface DateContract
 {
-    static public function parse($value = null): DateTimeInterface;
+    public static function parse($value = null): DateTimeInterface;
 }

@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\Config as IlluminateConfig;
 
 class Config implements ConfigContract
 {
-    static public function get(string $key, $default = null)
+    public static function get(string $key, $default = null)
     {
         $key = self::key($key);
 
         return IlluminateConfig::get($key, $default);
     }
 
-    static private function key(string $key): string
+    private static function key(string $key): string
     {
         return 'sitemap.' . $key;
     }
