@@ -3,15 +3,15 @@
 namespace Helldar\Sitemap\Traits\Processes;
 
 use Carbon\Carbon;
+use function compact;
+use function get_class;
 use Helldar\Core\Xml\Facades\Xml;
 use Helldar\Core\Xml\Helpers\Str;
 use Helldar\Sitemap\Services\Sitemap;
 use Illuminate\Database\Eloquent\Builder;
+
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Config;
-
-use function compact;
-use function get_class;
 use function route;
 
 trait BuilderProcess
@@ -77,7 +77,7 @@ trait BuilderProcess
     {
         $value = Config::get("sitemap.models.{$model_name}.{$key}", null);
 
-        if ($value || ! $ignore_empty) {
+        if ($value || !$ignore_empty) {
             return $value;
         }
 

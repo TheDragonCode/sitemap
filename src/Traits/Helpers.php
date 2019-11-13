@@ -2,13 +2,12 @@
 
 namespace Helldar\Sitemap\Traits;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-
 use function array_key_exists;
 use function array_push;
+
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use function is_numeric;
-use function storage_path;
 
 trait Helpers
 {
@@ -42,7 +41,7 @@ trait Helpers
      */
     protected function setElement(string $key, $value)
     {
-        if (! empty($value)) {
+        if (!empty($value)) {
             $this->item[$key] = $value;
         }
     }
@@ -59,7 +58,7 @@ trait Helpers
             return;
         }
 
-        if (! array_key_exists($key, $this->item)) {
+        if (!array_key_exists($key, $this->item)) {
             $this->item[$key] = [];
         }
 

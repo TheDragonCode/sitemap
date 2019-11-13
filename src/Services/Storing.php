@@ -6,7 +6,7 @@ use Helldar\Sitemap\Contracts\Sitemap\StorableContract;
 
 class Storing implements StorableContract
 {
-    static public function save(string $path = null, array ...$items): bool
+    public static function save(string $path = null, array ...$items): bool
     {
         $is_separate = self::allowSeparate();
         $path        = self::path($path);
@@ -14,12 +14,12 @@ class Storing implements StorableContract
         Storage::clear($path);
     }
 
-    static private function allowSeparate(): bool
+    private static function allowSeparate(): bool
     {
         return Config::get('separate_files', false);
     }
 
-    static private function path(string $path = null): string
+    private static function path(string $path = null): string
     {
         return $path ?: Config::get('filename', 'sitemap.xml');
     }

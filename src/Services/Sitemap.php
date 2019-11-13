@@ -2,7 +2,9 @@
 
 namespace Helldar\Sitemap\Services;
 
+use function array_map;
 use Carbon\Carbon;
+use function get_class;
 use Helldar\Core\Xml\Exceptions\MethodNotFoundException;
 use Helldar\Core\Xml\Facades\Xml;
 use Helldar\Core\Xml\Helpers\Str;
@@ -16,16 +18,14 @@ use Helldar\Sitemap\Traits\Processes\BuilderProcess;
 use Helldar\Sitemap\Traits\Processes\ImagesProcess;
 use Helldar\Sitemap\Traits\Processes\ManualProcess;
 use Helldar\Sitemap\Validators\ManualValidator;
-use Illuminate\Support\Collection;
-use Symfony\Component\HttpFoundation\Response;
 
-use function array_map;
-use function get_class;
+use Illuminate\Support\Collection;
 use function in_array;
 use function method_exists;
 use function pathinfo;
 use function sizeof;
 use function sprintf;
+use Symfony\Component\HttpFoundation\Response;
 
 class Sitemap implements SitemapContract, ShowableContract, StorableContract
 {
@@ -217,7 +217,7 @@ class Sitemap implements SitemapContract, ShowableContract, StorableContract
             }, $items);
         }, $this->manuals);
 
-        if (! in_array('images', $except)) {
+        if (!in_array('images', $except)) {
             $this->makeXml();
 
             array_map(function ($item) {
@@ -266,7 +266,7 @@ class Sitemap implements SitemapContract, ShowableContract, StorableContract
 
     protected function existsMethod(string $method, int $line = null)
     {
-        if (! method_exists($this, $method)) {
+        if (!method_exists($this, $method)) {
             $line    = $line ?: __LINE__;
             $message = sprintf("The '%s' method not exist in %s of %s:%s", $method, get_class(), __FILE__, $line);
 
