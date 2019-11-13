@@ -18,6 +18,5 @@ trait BuildersProcess
 
     protected function processBuilder(Builder $builder): void
     {
-
     }
 }

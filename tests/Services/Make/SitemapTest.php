@@ -11,22 +11,18 @@ class SitemapTest extends TestCase
 {
     public function testShow()
     {
-
     }
 
     public function testManual()
     {
-
     }
 
     public function testSave()
     {
-
     }
 
     public function testBuilders()
     {
-
     }
 
     public function testItem()
