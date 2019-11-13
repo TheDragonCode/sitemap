@@ -3,7 +3,7 @@
     "description": "A simple sitemap generator for PHP Framework.",
     "type": "library",
     "license": "MIT",
-    "keywords": ["sitemap", "generator", "laravel", "simple", "separated files", "seo optimized", "seo"],
+    "keywords": ["sitemap", "generator", "laravel", "simple", "seo optimized", "seo"],
     "support": {
         "issues": "https://github.com/andrey-helldar/sitemap/issues",
         "source": "https://github.com/andrey-helldar/sitemap"
@@ -24,7 +24,7 @@
         "symfony/http-foundation": "^4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.5|^8.0"
+        "phpunit/phpunit": "^8.0"
     },
     "suggest": {
         "symfony/thanks": "Give thanks (in the form of a GitHub) to your fellow PHP package maintainers"
@@ -46,9 +46,6 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "extra": {
-        "branch-alias": {
-            "dev-master": "6.0-dev"
-        },
         "laravel": {
             "providers": [
                 "Helldar\\Sitemap\\ServiceProvider"
