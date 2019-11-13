@@ -23,4 +23,14 @@ class Storing implements StorableContract
     {
         return $path ?: Config::get('filename', 'sitemap.xml');
     }
+
+    static private function saveOne(string $path, array $except = ['images']): bool
+    {
+        return Storage::put($path);
+    }
+
+    static private function saveMany(string $path): bool
+    {
+
+    }
 }
