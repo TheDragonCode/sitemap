@@ -7,11 +7,11 @@ use Helldar\Sitemap\Contracts\Sitemap\GetaableContract;
 
 interface ItemContract extends GetaableContract
 {
-    public function changefreq(string $frequency): ItemContract;
+    public function changefreq(string $frequency): self;
 
-    public function lastmod(DateTimeInterface $date = null): ItemContract;
+    public function lastmod(DateTimeInterface $date = null): self;
 
-    public function loc(string $url): ItemContract;
+    public function loc(string $url): self;
 
-    public function priority(float $value = 0.5): ItemContract;
+    public function priority(float $value = 0.5): self;
 }

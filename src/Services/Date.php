@@ -10,7 +10,7 @@ class Date implements DateContract
 {
     public static function parse($date = null): DateTimeInterface
     {
-        return ! empty($date)
+        return !empty($date)
             ? Carbon::parse($date)
             : Carbon::now();
     }

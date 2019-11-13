@@ -24,6 +24,5 @@ trait ManualsProcess
 
     protected function processManuals(ItemContract $item)
     {
-
     }
 }

@@ -13,7 +13,7 @@ trait Element
 
     protected function setElement(string $key, $value): void
     {
-        if (! empty($value)) {
+        if (!empty($value)) {
             $this->element[$key] = $value;
         }
     }
@@ -24,7 +24,7 @@ trait Element
             return;
         }
 
-        if (! array_key_exists($key, $this->element)) {
+        if (!array_key_exists($key, $this->element)) {
             $this->element[$key] = [];
         }
 

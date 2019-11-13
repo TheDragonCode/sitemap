@@ -9,9 +9,9 @@ interface SitemapContract
 {
     public function item(): ItemContract;
 
-    public function builders(Builder ...$builders): SitemapContract;
+    public function builders(Builder ...$builders): self;
 
-    public function manual(ItemContract ...$items): SitemapContract;
+    public function manual(ItemContract ...$items): self;
 
     public function show(): Response;
 
