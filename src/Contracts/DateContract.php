@@ -6,5 +6,10 @@ use DateTimeInterface;
 
 interface DateContract
 {
-    public static function parse($value = null): DateTimeInterface;
+    /**
+     * @param null|string|DateTimeInterface $date
+     *
+     * @return DateTimeInterface
+     */
+    public static function parse($date = null): DateTimeInterface;
 }

@@ -9,13 +9,22 @@ class Config implements ConfigContract
 {
     public static function get(string $key, $default = null)
     {
-        $key = self::key($key);
+        $key    = static::key($key);
+        $config = static::resolve();
 
-        return IlluminateConfig::get($key, $default);
+        return $config::get($key, $default);
     }
 
     private static function key(string $key): string
     {
         return 'sitemap.' . $key;
+    }
+
+    /**
+     * @return IlluminateConfig|string
+     */
+    private static function resolve()
+    {
+        return IlluminateConfig::class;
     }
 }
