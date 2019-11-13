@@ -7,40 +7,32 @@ use Helldar\Core\Xml\Exceptions\MethodNotFoundException;
 use Helldar\Core\Xml\Facades\Xml;
 use Helldar\Core\Xml\Helpers\Str;
 use Helldar\Core\Xml\Helpers\Url;
-use Helldar\Sitemap\Helpers\Variables;
+use Helldar\Sitemap\Contracts\Sitemap\ShowableContract;
+use Helldar\Sitemap\Contracts\Sitemap\StorableContract;
+use Helldar\Sitemap\Contracts\SitemapContract;
 use Helldar\Sitemap\Services\Make\Item;
 use Helldar\Sitemap\Traits\Helpers;
 use Helldar\Sitemap\Traits\Processes\BuilderProcess;
 use Helldar\Sitemap\Traits\Processes\ImagesProcess;
 use Helldar\Sitemap\Traits\Processes\ManualProcess;
 use Helldar\Sitemap\Validators\ManualValidator;
-use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 use function array_map;
 use function get_class;
 use function in_array;
-use function is_null;
 use function method_exists;
 use function pathinfo;
 use function sizeof;
 use function sprintf;
 
-class Sitemap
+class Sitemap implements SitemapContract, ShowableContract, StorableContract
 {
     use Helpers, BuilderProcess, ManualProcess, ImagesProcess;
 
     /** @var Xml */
     protected $xml;
-
-    /** @var string */
-    protected $storage_disk;
-
-    /** @var Filesystem|Storage */
-    protected $storage;
 
     /** @var Collection */
     protected $sitemaps;
@@ -59,9 +51,6 @@ class Sitemap
         $this->initXml();
 
         $this->sitemaps = new Collection;
-
-        $this->storage_disk = Config::get('sitemap.storage', 'public');
-        $this->storage      = Storage::disk($this->storage_disk);
     }
 
     /**
@@ -71,19 +60,9 @@ class Sitemap
      *
      * @return Sitemap
      */
-    public function domain($domain): self
+    public function url(string $domain): SitemapContract
     {
-        $config = Config::get('sitemap.domains', []);
-        $config = new Collection($config);
-        $url    = $config->get($domain);
-
-        if (is_null($url)) {
-            $config  = Config::get("filesystems.disks.{$this->storage_disk}");
-            $collect = new Collection($config);
-            $url     = $collect->get('url', '/');
-        }
-
-        $this->url = Str::finish($url, '/');
+        $this->url = Config::get("domains.{$domain}", '/');
 
         return $this;
     }
@@ -113,10 +92,10 @@ class Sitemap
      *
      * @return bool
      */
-    public function save($path = null): bool
+    public function save(string $path = null): bool
     {
-        $separate = Config::get('sitemap.separate_files', false);
-        $path     = $path ?: Config::get('sitemap.filename', 'sitemap.xml');
+        $separate = Config::get('separate_files', false);
+        $path     = $path ?: Config::get('filename', 'sitemap.xml');
 
         $this->clearDirectory($path);
 
@@ -299,7 +278,7 @@ class Sitemap
     {
         $root          = 'urlset';
         $attributes    = ['xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'];
-        $format_output = \config('sitemap.format_output', true);
+        $format_output = Config::get('format_output', false);
 
         $this->xml = Xml::init($root, $attributes, $format_output);
     }

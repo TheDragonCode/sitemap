@@ -4,19 +4,20 @@ namespace Helldar\Sitemap\Services\Make;
 
 use Helldar\Core\Xml\Abstracts\Item as ItemAbstract;
 use Helldar\Core\Xml\Interfaces\ItemInterface;
+use Helldar\Sitemap\Contracts\ImagesItemContract;
 use Helldar\Sitemap\Traits\Helpers;
 
 use function array_filter;
 use function compact;
 use function trim;
 
-class Images extends ItemAbstract implements ItemInterface
+class Images extends ItemAbstract implements ItemInterface, ImagesItemContract
 {
     use Helpers;
 
     public function loc(string $value): self
     {
-        $this->setElement('loc', trim($value));
+        $this->setElement(__FUNCTION__, trim($value));
 
         return $this;
     }

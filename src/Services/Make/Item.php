@@ -4,7 +4,9 @@ namespace Helldar\Sitemap\Services\Make;
 
 use Helldar\Core\Xml\Abstracts\Item as ItemAbstract;
 use Helldar\Core\Xml\Interfaces\ItemInterface;
-use Helldar\Sitemap\Helpers\Variables;
+use Helldar\Sitemap\Services\Dates;
+use Helldar\Sitemap\Services\Frequencies;
+use Helldar\Sitemap\Services\Priorities;
 use Helldar\Sitemap\Traits\Helpers;
 
 use function trim;
@@ -22,9 +24,9 @@ class Item extends ItemAbstract implements ItemInterface
      */
     public function changefreq(string $value = 'daily'): self
     {
-        $value = Variables::correctFrequency($value);
+        $value = Frequencies::get($value);
 
-        $this->setElement('changefreq', $value);
+        $this->setElement(__FUNCTION__, $value);
 
         return $this;
     }
@@ -38,9 +40,9 @@ class Item extends ItemAbstract implements ItemInterface
      */
     public function lastmod($value = null): self
     {
-        $date = Variables::getDate($value);
+        $date = Dates::parse($value);
 
-        $this->setElement('lastmod', $date->toAtomString());
+        $this->setElement(__FUNCTION__, $date->toAtomString());
 
         return $this;
     }
@@ -54,7 +56,7 @@ class Item extends ItemAbstract implements ItemInterface
      */
     public function loc(string $value): self
     {
-        $this->setElement('loc', trim($value));
+        $this->setElement(__FUNCTION__, trim($value));
 
         return $this;
     }
@@ -68,9 +70,9 @@ class Item extends ItemAbstract implements ItemInterface
      */
     public function priority(float $value = 0.5): self
     {
-        $value = Variables::correctPriority($value);
+        $value = Priorities::get($value);
 
-        $this->setElement('priority', $value);
+        $this->setElement(__FUNCTION__, $value);
 
         return $this;
     }

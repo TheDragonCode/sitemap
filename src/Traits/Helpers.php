@@ -2,18 +2,13 @@
 
 namespace Helldar\Sitemap\Traits;
 
-use Helldar\Core\Xml\Helpers\Str;
 use Illuminate\Support\Arr;
-
 use Illuminate\Support\Collection;
 
 use function array_key_exists;
 use function array_push;
-use function glob;
 use function is_numeric;
-use function pathinfo;
 use function storage_path;
-use function unlink;
 
 trait Helpers
 {
@@ -69,21 +64,5 @@ trait Helpers
         }
 
         array_push($this->item[$key], $value);
-    }
-
-    protected function clearDirectory(string $prefix = null)
-    {
-        if (empty($prefix)) {
-            return;
-        }
-
-        $ext  = pathinfo($prefix, PATHINFO_EXTENSION);
-        $path = Str::before($prefix, '.' . $ext);
-
-        $path = storage_path("app/public/{$path}*.{$ext}");
-
-        foreach (glob($path) as $file) {
-            unlink($file);
-        }
     }
 }
