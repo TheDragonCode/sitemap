@@ -2,15 +2,15 @@
 
 namespace Helldar\Sitemap\Traits\Processes;
 
+use function compact;
 use Helldar\Core\Xml\Facades\Xml;
 use Helldar\Core\Xml\Helpers\Str;
 use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Services\Make\Item;
 use Helldar\Sitemap\Services\Sitemap;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Config;
 
-use function compact;
+use Illuminate\Support\Facades\Config;
 
 trait ManualProcess
 {

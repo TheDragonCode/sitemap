@@ -6,9 +6,9 @@ use Helldar\Sitemap\Constants\Frequency;
 
 interface FrequencyContract
 {
-    static public function all(): array;
+    public static function all(): array;
 
-    static public function get(string $frequency = Frequency::DAILY): string;
+    public static function get(string $frequency = Frequency::DAILY): string;
 
-    static public function exists(string $frequency = Frequency::DAILY): bool;
+    public static function exists(string $frequency = Frequency::DAILY): bool;
 }

@@ -8,7 +8,7 @@ use function trim;
 
 class Str
 {
-    static public function lower(string $value): string
+    public static function lower(string $value): string
     {
         return StrHelper::lower(trim($value));
     }

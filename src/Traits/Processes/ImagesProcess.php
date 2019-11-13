@@ -2,21 +2,21 @@
 
 namespace Helldar\Sitemap\Traits\Processes;
 
-use DOMElement;
-use Helldar\Core\Xml\Facades\Xml;
-use Helldar\Core\Xml\Helpers\Arr;
-use Helldar\Core\Xml\Helpers\Str;
-use Helldar\Sitemap\Services\Make\Images;
-use Helldar\Sitemap\Services\Make\Item;
-use Helldar\Sitemap\Validators\ImagesValidator;
-use Illuminate\Support\Collection;
-
 use function array_chunk;
 use function array_keys;
 use function array_map;
 use function array_push;
 use function array_values;
 use function config;
+use DOMElement;
+use Helldar\Core\Xml\Facades\Xml;
+
+use Helldar\Core\Xml\Helpers\Arr;
+use Helldar\Core\Xml\Helpers\Str;
+use Helldar\Sitemap\Services\Make\Images;
+use Helldar\Sitemap\Services\Make\Item;
+use Helldar\Sitemap\Validators\ImagesValidator;
+use Illuminate\Support\Collection;
 use function sprintf;
 
 trait ImagesProcess
@@ -96,7 +96,7 @@ trait ImagesProcess
     {
         $images = $item->get('images', []);
 
-        if (! $images) {
+        if (!$images) {
             return;
         }
 

@@ -7,7 +7,7 @@ use Helldar\Sitemap\Contracts\FrequencyContract;
 
 class Frequencies implements FrequencyContract
 {
-    static public function all(): array
+    public static function all(): array
     {
         return [
             Frequency::ALWAYS,
@@ -20,7 +20,7 @@ class Frequencies implements FrequencyContract
         ];
     }
 
-    static public function get(string $frequency = Frequency::DAILY): string
+    public static function get(string $frequency = Frequency::DAILY): string
     {
         $frequency = Str::lower($frequency);
 
@@ -29,7 +29,7 @@ class Frequencies implements FrequencyContract
             : Frequency::DAILY;
     }
 
-    static public function exists(string $frequency = Frequency::DAILY): bool
+    public static function exists(string $frequency = Frequency::DAILY): bool
     {
         return in_array($frequency, self::all());
     }

@@ -4,5 +4,5 @@ namespace Helldar\Sitemap\Contracts;
 
 interface ConfigContract
 {
-    static public function get(string $key, $default = null);
+    public static function get(string $key, $default = null);
 }
