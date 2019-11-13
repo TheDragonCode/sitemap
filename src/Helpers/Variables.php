@@ -5,23 +5,27 @@ namespace Helldar\Sitemap\Helpers;
 use Carbon\Carbon;
 use Helldar\Core\Xml\Helpers\Str;
 
+use function in_array;
+use function is_numeric;
+use function trim;
+
 class Variables
 {
-    const FREQUENCY_ALWAYS  = 'always';
+    const FREQUENCY_ALWAYS = 'always';
 
-    const FREQUENCY_DAILY   = 'daily';
+    const FREQUENCY_DAILY = 'daily';
 
-    const FREQUENCY_HOURLY  = 'hourly';
+    const FREQUENCY_HOURLY = 'hourly';
 
     const FREQUENCY_MONTHLY = 'monthly';
 
-    const FREQUENCY_NEVER   = 'never';
+    const FREQUENCY_NEVER = 'never';
 
-    const FREQUENCY_WEEKLY  = 'weekly';
+    const FREQUENCY_WEEKLY = 'weekly';
 
-    const FREQUENCY_YEARLY  = 'yearly';
+    const FREQUENCY_YEARLY = 'yearly';
 
-    const PRIORITY_DEFAULT  = 0.5;
+    const PRIORITY_DEFAULT = 0.5;
 
     public static function getFrequencies(): array
     {
@@ -38,9 +42,9 @@ class Variables
 
     public static function correctFrequency(string $frequency = 'daily'): string
     {
-        $frequency = Str::lower(\trim($frequency));
+        $frequency = Str::lower(trim($frequency));
 
-        return \in_array($frequency, self::getFrequencies()) ? $frequency : self::FREQUENCY_DAILY;
+        return in_array($frequency, self::getFrequencies()) ? $frequency : self::FREQUENCY_DAILY;
     }
 
     public static function correctPriority(float $priority = 0.5): float
@@ -54,7 +58,7 @@ class Variables
 
     public static function getDate($value = null): Carbon
     {
-        if (\is_numeric($value)) {
+        if (is_numeric($value)) {
             return Carbon::createFromTimestamp($value);
         }
 

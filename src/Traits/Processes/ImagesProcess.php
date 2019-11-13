@@ -11,9 +11,17 @@ use Helldar\Sitemap\Services\Make\Item;
 use Helldar\Sitemap\Validators\ImagesValidator;
 use Illuminate\Support\Collection;
 
+use function array_chunk;
+use function array_keys;
+use function array_map;
+use function array_push;
+use function array_values;
+use function config;
+use function sprintf;
+
 trait ImagesProcess
 {
-    /** @var \Helldar\Core\Xml\Facades\Xml */
+    /** @var Xml */
     protected $xml;
 
     /** @var array */
@@ -27,9 +35,9 @@ trait ImagesProcess
     }
 
     /**
-     * @param \Helldar\Sitemap\Services\Make\Images ...$images
+     * @param Images ...$images
      *
-     * @return \Helldar\Sitemap\Traits\Processes\ImagesProcess
+     * @return ImagesProcess
      */
     public function images(...$images): self
     {
@@ -58,10 +66,10 @@ trait ImagesProcess
         $line = $line ?: __LINE__;
         $this->existsMethod($method, $line);
 
-        $chunk = \array_chunk($items, $this->chunk_count);
+        $chunk = array_chunk($items, $this->chunk_count);
 
         foreach ($chunk as $images) {
-            $file = \sprintf('%s-%s.%s', $filename, $this->index, $extension);
+            $file = sprintf('%s-%s.%s', $filename, $this->index, $extension);
             $path = $directory . $file;
             $loc  = $this->urlToSitemapFile($path);
 
@@ -88,7 +96,7 @@ trait ImagesProcess
     {
         $images = $item->get('images', []);
 
-        if (!$images) {
+        if (! $images) {
             return;
         }
 
@@ -99,7 +107,7 @@ trait ImagesProcess
             $this->xml->appendChild($xml, $loc);
         }
 
-        \array_map(function ($image) use (&$xml) {
+        array_map(function ($image) use (&$xml) {
             $this->processImageImages($xml, $image);
         }, $item->get('images', []));
 
@@ -110,14 +118,14 @@ trait ImagesProcess
     {
         $element = $this->xml->makeItem('image:image');
 
-        \array_map(function ($key, $value) use (&$element) {
+        array_map(function ($key, $value) use (&$element) {
             if ($key == 'loc') {
                 $value = Str::e($value);
             }
 
             $el = $this->xml->makeItem('image:' . $key, $value);
             $this->xml->appendChild($element, $el);
-        }, \array_keys($image), \array_values($image));
+        }, array_keys($image), array_values($image));
 
         $this->xml->appendChild($xml, $element);
     }
@@ -131,13 +139,13 @@ trait ImagesProcess
             'xmlns:image' => 'http://www.google.com/schemas/sitemap-image/1.1',
         ];
 
-        $format_output = \config('sitemap.format_output', true);
+        $format_output = config('sitemap.format_output', true);
 
         $this->xml = Xml::init($root, $attributes, $format_output);
     }
 
     private function pushImage(Images $image)
     {
-        \array_push($this->images, $image);
+        array_push($this->images, $image);
     }
 }

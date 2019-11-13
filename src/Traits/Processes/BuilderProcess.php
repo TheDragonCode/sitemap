@@ -3,13 +3,20 @@
 namespace Helldar\Sitemap\Traits\Processes;
 
 use Carbon\Carbon;
+use Helldar\Core\Xml\Facades\Xml;
 use Helldar\Core\Xml\Helpers\Str;
+use Helldar\Sitemap\Services\Sitemap;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Config;
+
+use function compact;
+use function get_class;
+use function route;
 
 trait BuilderProcess
 {
-    /** @var \Helldar\Core\Xml\Facades\Xml */
+    /** @var Xml */
     protected $xml;
 
     /** @var array */
@@ -18,9 +25,9 @@ trait BuilderProcess
     /**
      * Pass the list of model constructors for processing.
      *
-     * @param \Illuminate\Database\Eloquent\Builder ...$builders
+     * @param Builder ...$builders
      *
-     * @return \Helldar\Sitemap\Services\Sitemap
+     * @return Sitemap
      */
     public function builders(Builder ...$builders): self
     {
@@ -32,11 +39,11 @@ trait BuilderProcess
     /**
      * Read configuration patterns and generate a link to save to the site map.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param Builder $builder
      */
     protected function processBuilder(Builder $builder)
     {
-        $name = \get_class($builder->getModel());
+        $name = get_class($builder->getModel());
 
         $route      = $this->config($name, 'route', 'index');
         $parameters = $this->config($name, 'route_parameters', ['*']);
@@ -50,9 +57,9 @@ trait BuilderProcess
         foreach ($items as $item) {
             $params  = $this->routeParameters($item, $parameters);
             $lastmod = $this->lastmod($item, $updated);
-            $loc     = Str::e(\route($route, $params));
+            $loc     = Str::e(route($route, $params));
 
-            $this->xml->addItem(\compact('loc', 'lastmod', 'changefreq', 'priority'), 'url');
+            $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'), 'url');
         }
     }
 
@@ -70,7 +77,7 @@ trait BuilderProcess
     {
         $value = Config::get("sitemap.models.{$model_name}.{$key}", null);
 
-        if ($value || !$ignore_empty) {
+        if ($value || ! $ignore_empty) {
             return $value;
         }
 
@@ -80,11 +87,11 @@ trait BuilderProcess
     /**
      * Obtaining a selection of elements from the model builder.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param Builder $builder
      * @param bool $date_field
      * @param int $age
      *
-     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     * @return Builder[]|Collection
      */
     protected function getItems(Builder $builder, $date_field = false, $age = 180)
     {

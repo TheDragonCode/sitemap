@@ -2,15 +2,19 @@
 
 namespace Helldar\Sitemap\Traits\Processes;
 
+use Helldar\Core\Xml\Facades\Xml;
 use Helldar\Core\Xml\Helpers\Str;
 use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Services\Make\Item;
+use Helldar\Sitemap\Services\Sitemap;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 
+use function compact;
+
 trait ManualProcess
 {
-    /** @var \Helldar\Core\Xml\Facades\Xml */
+    /** @var Xml */
     protected $xml;
 
     /** @var array */
@@ -24,9 +28,9 @@ trait ManualProcess
     /**
      * Send a set of manually created items for processing.
      *
-     * @param array|\Helldar\Sitemap\Services\Make\Item $items
+     * @param array|Item $items
      *
-     * @return \Helldar\Sitemap\Services\Sitemap
+     * @return Sitemap
      */
     public function manual(...$items): self
     {
@@ -49,6 +53,6 @@ trait ManualProcess
         $lastmod    = Variables::getDate($item->get('lastmod'))->toAtomString();
         $priority   = Variables::correctPriority($item->get('priority', Config::get('sitemap.priority', 0.5)));
 
-        $this->xml->addItem(\compact('loc', 'lastmod', 'changefreq', 'priority'), 'url');
+        $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'), 'url');
     }
 }

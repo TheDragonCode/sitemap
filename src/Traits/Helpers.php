@@ -5,10 +5,20 @@ namespace Helldar\Sitemap\Traits;
 use Helldar\Core\Xml\Helpers\Str;
 use Illuminate\Support\Arr;
 
+use Illuminate\Support\Collection;
+
+use function array_key_exists;
+use function array_push;
+use function glob;
+use function is_numeric;
+use function pathinfo;
+use function storage_path;
+use function unlink;
+
 trait Helpers
 {
     /**
-     * @param \Illuminate\Support\Collection $item
+     * @param Collection $item
      * @param array $fields
      *
      * @return array
@@ -18,7 +28,7 @@ trait Helpers
         $result = [];
 
         foreach ($fields as $key => $value) {
-            $key   = \is_numeric($key) ? $value : $key;
+            $key   = is_numeric($key) ? $value : $key;
             $value = Arr::get($item, $value, false);
 
             if ($value) {
@@ -37,7 +47,7 @@ trait Helpers
      */
     protected function setElement(string $key, $value)
     {
-        if (!empty($value)) {
+        if (! empty($value)) {
             $this->item[$key] = $value;
         }
     }
@@ -54,11 +64,11 @@ trait Helpers
             return;
         }
 
-        if (!\array_key_exists($key, $this->item)) {
+        if (! array_key_exists($key, $this->item)) {
             $this->item[$key] = [];
         }
 
-        \array_push($this->item[$key], $value);
+        array_push($this->item[$key], $value);
     }
 
     protected function clearDirectory(string $prefix = null)
@@ -67,13 +77,13 @@ trait Helpers
             return;
         }
 
-        $ext  = \pathinfo($prefix, PATHINFO_EXTENSION);
+        $ext  = pathinfo($prefix, PATHINFO_EXTENSION);
         $path = Str::before($prefix, '.' . $ext);
 
-        $path = \storage_path("app/public/{$path}*.{$ext}");
+        $path = storage_path("app/public/{$path}*.{$ext}");
 
-        foreach (\glob($path) as $file) {
-            \unlink($file);
+        foreach (glob($path) as $file) {
+            unlink($file);
         }
     }
 }

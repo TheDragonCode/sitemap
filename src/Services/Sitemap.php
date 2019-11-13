@@ -14,25 +14,35 @@ use Helldar\Sitemap\Traits\Processes\BuilderProcess;
 use Helldar\Sitemap\Traits\Processes\ImagesProcess;
 use Helldar\Sitemap\Traits\Processes\ManualProcess;
 use Helldar\Sitemap\Validators\ManualValidator;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
+use function array_map;
+use function get_class;
+use function in_array;
+use function is_null;
+use function method_exists;
+use function pathinfo;
+use function sizeof;
+use function sprintf;
+
 class Sitemap
 {
     use Helpers, BuilderProcess, ManualProcess, ImagesProcess;
 
-    /** @var \Helldar\Core\Xml\Facades\Xml */
+    /** @var Xml */
     protected $xml;
 
     /** @var string */
     protected $storage_disk;
 
-    /** @var \Illuminate\Contracts\Filesystem\Filesystem|\Illuminate\Support\Facades\Storage */
+    /** @var Filesystem|Storage */
     protected $storage;
 
-    /** @var \Illuminate\Support\Collection */
+    /** @var Collection */
     protected $sitemaps;
 
     /** @var int */
@@ -59,7 +69,7 @@ class Sitemap
      *
      * @param string $domain
      *
-     * @return \Helldar\Sitemap\Services\Sitemap
+     * @return Sitemap
      */
     public function domain($domain): self
     {
@@ -67,7 +77,7 @@ class Sitemap
         $config = new Collection($config);
         $url    = $config->get($domain);
 
-        if (\is_null($url)) {
+        if (is_null($url)) {
             $config  = Config::get("filesystems.disks.{$this->storage_disk}");
             $collect = new Collection($config);
             $url     = $collect->get('url', '/');
@@ -81,7 +91,7 @@ class Sitemap
     /**
      * Return response with XML data.
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function show(): Response
     {
@@ -110,8 +120,8 @@ class Sitemap
 
         $this->clearDirectory($path);
 
-        $images = \sizeof($this->images);
-        $count  = \sizeof($this->builders) + \sizeof($this->manuals);
+        $images = sizeof($this->images);
+        $count  = sizeof($this->builders) + sizeof($this->manuals);
 
         if ($images) {
             $count++;
@@ -151,9 +161,9 @@ class Sitemap
 
         $xml = Xml::init('sitemapindex', $attributes, $format_output);
 
-        $directory = Str::finish(\pathinfo($path, PATHINFO_DIRNAME), '/');
-        $filename  = Str::slug(\pathinfo($path, PATHINFO_FILENAME));
-        $extension = Str::lower(\pathinfo($path, PATHINFO_EXTENSION));
+        $directory = Str::finish(pathinfo($path, PATHINFO_DIRNAME), '/');
+        $filename  = Str::slug(pathinfo($path, PATHINFO_FILENAME));
+        $extension = Str::lower(pathinfo($path, PATHINFO_EXTENSION));
 
         $this->processManyItems('builders', $this->builders, $directory, $filename, $extension, __LINE__);
         $this->processManyItems('manual', $this->manuals, $directory, $filename, $extension, __LINE__);
@@ -170,7 +180,7 @@ class Sitemap
      * Start the processing of elements.
      *
      * @param string $method
-     * @param array|\Illuminate\Support\Collection $items
+     * @param array|Collection $items
      * @param string $directory
      * @param string $filename
      * @param string $extension
@@ -186,7 +196,7 @@ class Sitemap
                 continue;
             }
 
-            $file = \sprintf('%s-%s.%s', $filename, $this->index, $extension);
+            $file = sprintf('%s-%s.%s', $filename, $this->index, $extension);
             $path = $directory . $file;
             $loc  = $this->urlToSitemapFile($path);
 
@@ -218,20 +228,20 @@ class Sitemap
      */
     protected function get(array $except = []): string
     {
-        \array_map(function ($builder) {
+        array_map(function ($builder) {
             $this->processBuilder($builder);
         }, $this->builders);
 
-        \array_map(function ($items) {
-            \array_map(function ($item) {
+        array_map(function ($items) {
+            array_map(function ($item) {
                 $this->processManuals($item->get());
             }, $items);
         }, $this->manuals);
 
-        if (!\in_array('images', $except)) {
+        if (! in_array('images', $except)) {
             $this->makeXml();
 
-            \array_map(function ($item) {
+            array_map(function ($item) {
                 $this->processImages($item);
             }, $this->images);
         }
@@ -277,9 +287,9 @@ class Sitemap
 
     protected function existsMethod(string $method, int $line = null)
     {
-        if (!\method_exists($this, $method)) {
+        if (! method_exists($this, $method)) {
             $line    = $line ?: __LINE__;
-            $message = \sprintf("The '%s' method not exist in %s of %s:%s", $method, \get_class(), __FILE__, $line);
+            $message = sprintf("The '%s' method not exist in %s of %s:%s", $method, get_class(), __FILE__, $line);
 
             throw new MethodNotFoundException($message);
         }

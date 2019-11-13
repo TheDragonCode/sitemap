@@ -7,6 +7,8 @@ use Helldar\Core\Xml\Interfaces\ItemInterface;
 use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Traits\Helpers;
 
+use function trim;
+
 class Item extends ItemAbstract implements ItemInterface
 {
     use Helpers;
@@ -16,7 +18,7 @@ class Item extends ItemAbstract implements ItemInterface
      *
      * @param string $value
      *
-     * @return \Helldar\Sitemap\Services\Make\Item
+     * @return Item
      */
     public function changefreq(string $value = 'daily'): self
     {
@@ -32,7 +34,7 @@ class Item extends ItemAbstract implements ItemInterface
      *
      * @param null|string|int $value
      *
-     * @return \Helldar\Sitemap\Services\Make\Item
+     * @return Item
      */
     public function lastmod($value = null): self
     {
@@ -48,11 +50,11 @@ class Item extends ItemAbstract implements ItemInterface
      *
      * @param string $value
      *
-     * @return \Helldar\Sitemap\Services\Make\Item
+     * @return Item
      */
     public function loc(string $value): self
     {
-        $this->setElement('loc', \trim($value));
+        $this->setElement('loc', trim($value));
 
         return $this;
     }
@@ -62,7 +64,7 @@ class Item extends ItemAbstract implements ItemInterface
      *
      * @param float $value
      *
-     * @return \Helldar\Sitemap\Services\Make\Item
+     * @return Item
      */
     public function priority(float $value = 0.5): self
     {
