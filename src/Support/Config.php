@@ -15,6 +15,7 @@ class Config implements ConfigContract
      * @param null $default
      *
      * @throws UnknownConfigException
+     *
      * @return mixed
      */
     public static function get(string $key, $default = null)

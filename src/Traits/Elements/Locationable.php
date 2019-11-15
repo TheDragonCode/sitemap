@@ -19,7 +19,7 @@ trait Locationable
      */
     public function loc(string $url): ItemContract
     {
-        if (! Http::isUrl($url)) {
+        if (!Http::isUrl($url)) {
             throw new NotValidUrlException($url);
         }
 
