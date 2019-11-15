@@ -1,17 +1,13 @@
 <?php
 
-namespace Helldar\Contracts\Sitemap;
+namespace Helldar\Sitemap\Contracts\Sitemap;
 
-use DateTimeInterface;
-use Helldar\Sitemap\Contracts\Sitemap\GetaableContract;
+use Helldar\Sitemap\Contracts\Elements\FrequencyContract;
+use Helldar\Sitemap\Contracts\Elements\LastModificationContract;
+use Helldar\Sitemap\Contracts\Elements\LocationContract;
+use Helldar\Sitemap\Contracts\Elements\PriorityContract;
 
-interface ItemContract extends GetaableContract
+interface ItemContract extends FrequencyContract, LastModificationContract, LocationContract, PriorityContract
 {
-    public function changefreq(string $frequency): self;
-
-    public function lastmod(DateTimeInterface $date = null): self;
-
-    public function loc(string $url): self;
-
-    public function priority(float $value = 0.5): self;
+    //
 }

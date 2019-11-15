@@ -1,12 +1,10 @@
 <?php
 
-use Helldar\Contracts\Sitemap\SitemapContract;
-use Helldar\Sitemap\Services\Make\Sitemap;
-use Helldar\Sitemap\Services\Xml;
+use Helldar\Sitemap\Support\Make\Sitemap;
 
-if (!function_exists('sitemap')) {
-    function sitemap(): SitemapContract
+if (! function_exists('sitemap')) {
+    function sitemap()
     {
-        return new Sitemap(new Xml());
+        return new Sitemap();
     }
 }
