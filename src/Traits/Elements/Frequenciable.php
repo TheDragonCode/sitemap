@@ -12,8 +12,13 @@ trait Frequenciable
 
     public function changefreq(string $frequency): ItemContract
     {
-        $this->changefreq = Frequency::get($frequency);
+        $this->changefreq = $frequency;
 
         return $this;
+    }
+
+    protected function getChangefreqAttribute(): string
+    {
+        return Frequency::get($this->changefreq);
     }
 }

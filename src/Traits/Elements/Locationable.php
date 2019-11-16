@@ -10,21 +10,24 @@ trait Locationable
 {
     protected $loc;
 
-    /**
-     * @param string $url
-     *
-     * @throws NotValidUrlException
-     *
-     * @return ItemContract
-     */
     public function loc(string $url): ItemContract
     {
-        if (!Http::isUrl($url)) {
-            throw new NotValidUrlException($url);
-        }
-
         $this->loc = $url;
 
         return $this;
+    }
+
+    /**
+     * @throws NotValidUrlException
+     *
+     * @return string
+     */
+    protected function getLocAttribute(): string
+    {
+        if (Http::isUrl($this->loc)) {
+            return $this->loc;
+        }
+
+        throw new NotValidUrlException($this->loc);
     }
 }

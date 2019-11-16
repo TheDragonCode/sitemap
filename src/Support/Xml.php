@@ -36,6 +36,11 @@ class Xml implements InitableContract, GetableContract
         return $this->xml->get();
     }
 
+    public function instance(): CoreXml
+    {
+        return $this->xml;
+    }
+
     /**
      * @throws \Helldar\Sitemap\Exceptions\Config\UnknownConfigException
      */
