@@ -338,7 +338,7 @@
         },
         {
             "name": "illuminate/database",
-            "version": "v7.5.1",
+            "version": "v7.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
@@ -400,7 +400,7 @@
         },
         {
             "name": "illuminate/filesystem",
-            "version": "v7.5.1",
+            "version": "v7.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/filesystem.git",
@@ -453,16 +453,16 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v7.5.1",
+            "version": "v7.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "99b3538c63b3ce5374d5f8fad181fac07efaedec"
+                "reference": "b8d805437c075a44bf53737763c3b979932445c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/99b3538c63b3ce5374d5f8fad181fac07efaedec",
-                "reference": "99b3538c63b3ce5374d5f8fad181fac07efaedec",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/b8d805437c075a44bf53737763c3b979932445c7",
+                "reference": "b8d805437c075a44bf53737763c3b979932445c7",
                 "shasum": ""
             },
             "require": {
@@ -511,20 +511,20 @@
             ],
             "description": "The Illuminate Support package.",
             "homepage": "https://laravel.com",
-            "time": "2020-04-06T13:34:26+00:00"
+            "time": "2020-04-08T13:18:06+00:00"
         },
         {
             "name": "illuminate/translation",
-            "version": "v7.5.1",
+            "version": "v7.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/translation.git",
-                "reference": "d0a56445ad419cd7337ad8663122acecd59cfe46"
+                "reference": "514f16362b9e623fa3148cc123ce31a0ee13caeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/translation/zipball/d0a56445ad419cd7337ad8663122acecd59cfe46",
-                "reference": "d0a56445ad419cd7337ad8663122acecd59cfe46",
+                "url": "https://api.github.com/repos/illuminate/translation/zipball/514f16362b9e623fa3148cc123ce31a0ee13caeb",
+                "reference": "514f16362b9e623fa3148cc123ce31a0ee13caeb",
                 "shasum": ""
             },
             "require": {
@@ -557,11 +557,11 @@
             ],
             "description": "The Illuminate Translation package.",
             "homepage": "https://laravel.com",
-            "time": "2020-01-07T13:49:44+00:00"
+            "time": "2020-04-08T15:50:56+00:00"
         },
         {
             "name": "illuminate/validation",
-            "version": "v7.5.1",
+            "version": "v7.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/validation.git",
