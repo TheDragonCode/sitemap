@@ -23,7 +23,7 @@ trait ImagesProcess
 
     public function makeImages(): Images
     {
-        return new Images;
+        return new Images();
     }
 
     /**
@@ -69,11 +69,11 @@ trait ImagesProcess
 
             new ImagesValidator($array);
 
-            (new self)
+            (new self())
                 ->{$method}($images)
                 ->saveOne($path, []);
 
-            $make_item = (new Item)
+            $make_item = (new Item())
                 ->loc($loc)
                 ->lastmod()
                 ->get();

@@ -21,7 +21,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Sitemap
 {
-    use Helpers, BuilderProcess, ManualProcess, ImagesProcess;
+    use Helpers;
+    use BuilderProcess;
+    use ManualProcess;
+    use ImagesProcess;
 
     /** @var \Helldar\Core\Xml\Facades\Xml */
     protected $xml;
@@ -38,7 +41,7 @@ class Sitemap
     /** @var int */
     protected $index = 1;
 
-    /** @var null|string */
+    /** @var string|null */
     protected $url = null;
 
     /**
@@ -48,7 +51,7 @@ class Sitemap
     {
         $this->initXml();
 
-        $this->sitemaps = new Collection;
+        $this->sitemaps = new Collection();
 
         $this->storage_disk = Config::get('sitemap.storage', 'public');
         $this->storage      = Storage::disk($this->storage_disk);
@@ -99,7 +102,7 @@ class Sitemap
     /**
      * Saving data to files.
      *
-     * @param null|string $path
+     * @param string|null $path
      *
      * @return bool
      */
@@ -110,8 +113,8 @@ class Sitemap
 
         $this->clearDirectory($path);
 
-        $images = \sizeof($this->images);
-        $count  = \sizeof($this->builders) + \sizeof($this->manuals);
+        $images = \count($this->images);
+        $count  = \count($this->builders) + \count($this->manuals);
 
         if ($images) {
             $count++;
@@ -128,7 +131,7 @@ class Sitemap
      * Save data to file.
      *
      * @param string $path
-     * @param null|array $except
+     * @param array|null $except
      *
      * @return bool
      */
@@ -174,7 +177,7 @@ class Sitemap
      * @param string $directory
      * @param string $filename
      * @param string $extension
-     * @param null|int $line
+     * @param int|null $line
      */
     protected function processManyItems(string $method, array $items, string $directory, string $filename, string $extension, int $line = null)
     {
@@ -194,11 +197,11 @@ class Sitemap
                 $item = (new ManualValidator($item))->get();
             }
 
-            (new self)
+            (new self())
                 ->{$method}($item)
                 ->save($path, []);
 
-            $make_item = (new Item)
+            $make_item = (new Item())
                 ->loc($loc)
                 ->lastmod()
                 ->get();
