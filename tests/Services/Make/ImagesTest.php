@@ -8,7 +8,7 @@ class ImagesTest extends TestCase
 {
     public function testImage()
     {
-        $service = new Images;
+        $service = new Images();
 
         $this->assertTrue($service->loc('foo') instanceof Images);
         $this->assertTrue($service->image('foo') instanceof Images);

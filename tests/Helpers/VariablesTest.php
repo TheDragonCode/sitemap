@@ -29,7 +29,7 @@ class VariablesTest extends TestCase
     {
         $this->assertIsArray(Variables::getFrequencies());
 
-        $this->assertEquals(7, \sizeof(Variables::getFrequencies()));
+        $this->assertEquals(7, \count(Variables::getFrequencies()));
     }
 
     public function testCorrectFrequency()

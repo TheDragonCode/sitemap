@@ -30,7 +30,7 @@ class Item extends ItemAbstract implements ItemInterface
     /**
      * Set the date when the content was last updated.
      *
-     * @param null|string|int $value
+     * @param int|string|null $value
      *
      * @return \Helldar\Sitemap\Services\Make\Item
      */

@@ -7,21 +7,21 @@ use Helldar\Core\Xml\Helpers\Str;
 
 class Variables
 {
-    const FREQUENCY_ALWAYS  = 'always';
+    public const FREQUENCY_ALWAYS  = 'always';
 
-    const FREQUENCY_DAILY   = 'daily';
+    public const FREQUENCY_DAILY   = 'daily';
 
-    const FREQUENCY_HOURLY  = 'hourly';
+    public const FREQUENCY_HOURLY  = 'hourly';
 
-    const FREQUENCY_MONTHLY = 'monthly';
+    public const FREQUENCY_MONTHLY = 'monthly';
 
-    const FREQUENCY_NEVER   = 'never';
+    public const FREQUENCY_NEVER   = 'never';
 
-    const FREQUENCY_WEEKLY  = 'weekly';
+    public const FREQUENCY_WEEKLY  = 'weekly';
 
-    const FREQUENCY_YEARLY  = 'yearly';
+    public const FREQUENCY_YEARLY  = 'yearly';
 
-    const PRIORITY_DEFAULT  = 0.5;
+    public const PRIORITY_DEFAULT  = 0.5;
 
     public static function getFrequencies(): array
     {

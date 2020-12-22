@@ -18,7 +18,7 @@ trait ManualProcess
 
     public function makeItem(): Item
     {
-        return new Item;
+        return new Item();
     }
 
     /**
