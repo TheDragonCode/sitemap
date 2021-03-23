@@ -20,7 +20,7 @@
         "andrey-helldar/xml-core": "^1.0",
         "illuminate/database": "^5.6|^6.20.14|^7.30.4|^8.24",
         "illuminate/support": "^5.6|^6.20.14|^7.30.4|^8.24",
-        "nesbot/carbon": "^1.25 || ^2.0",
+        "nesbot/carbon": "^1.25|^2.0",
         "symfony/http-foundation": "^4.0|^5.0"
     },
     "require-dev": {
