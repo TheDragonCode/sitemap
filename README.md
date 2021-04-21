@@ -13,20 +13,6 @@ A simple sitemap generator for PHP Framework.
 </p>
 
 
-## Content
-
-* [Installation](#installation)
-* [Upgrade guide](#upgrade-guides)
-* [Configuration](#configuration)
-* [Using](#using)
-    * [Manual](#manual)
-    * [Images](#images)
-    * [Show](#show)
-    * [Save](#save)
-* [SEO](#seo)
-* [License](#license)
-
-
 ## Installation
 
 For the 5.4 and 5.5 version of Laravel Framework, use [version 3](https://github.com/andrey-helldar/sitemap/tree/3.x).
@@ -510,4 +496,11 @@ Enjoy!
 
 ## License
 
-This package is released under the [MIT License](LICENSE).
+This package is licensed under the [MIT License](LICENSE).
+
+
+## For Enterprise
+
+Available as part of the Tidelift Subscription.
+
+The maintainers of `andrey-helldar/sitemap` and thousands of other packages are working with Tidelift to deliver commercial support and maintenance for the open source packages you use to build your applications. Save time, reduce risk, and improve code health, while paying the maintainers of the exact packages you use. [Learn more](https://tidelift.com/subscription/pkg/packagist-andrey-helldar-sitemap?utm_source=packagist-andrey-helldar-sitemap&utm_medium=referral&utm_campaign=readme).
