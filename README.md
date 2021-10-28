@@ -1,8 +1,8 @@
 # Sitemap for Laravel 5.6+
 
-A simple sitemap generator for PHP Framework.
+<img src="https://preview.dragon-code.pro/TheDragonCode/sitemap.svg?brand=laravel" width="100%" height="320" alt="Laravel Sitemap"/>
 
-![sitemap](https://user-images.githubusercontent.com/10347617/40197729-f2a7b7de-5a1c-11e8-985a-9038bb5159bc.png)
+A simple sitemap generator for PHP Framework.
 
 <p align="center">
     <a href="https://styleci.io/repos/75637284"><img src="https://styleci.io/repos/75637284/shield" alt="StyleCI" /></a>
