@@ -1,6 +1,6 @@
 # Sitemap for Laravel 5.6+
 
-<img src="https://preview.dragon-code.pro/TheDragonCode/sitemap.svg?brand=laravel" width="100%" height="320" alt="Laravel Sitemap"/>
+<img src="https://preview.dragon-code.pro/TheDragonCode/sitemap.svg?brand=laravel" alt="Laravel Sitemap"/>
 
 A simple sitemap generator for PHP Framework.
 
