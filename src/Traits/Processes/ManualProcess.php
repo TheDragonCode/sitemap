@@ -7,6 +7,7 @@ use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Services\Make\Item;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
+use function compact;
 
 trait ManualProcess
 {
@@ -49,6 +50,6 @@ trait ManualProcess
         $lastmod    = Variables::getDate($item->get('lastmod'))->toAtomString();
         $priority   = Variables::correctPriority($item->get('priority', Config::get('sitemap.priority', 0.5)));
 
-        $this->xml->addItem(\compact('loc', 'lastmod', 'changefreq', 'priority'), 'url');
+        $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'), 'url');
     }
 }

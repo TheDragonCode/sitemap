@@ -3,6 +3,7 @@
 namespace Helldar\Sitemap;
 
 use Helldar\Sitemap\Services\Sitemap;
+use function config_path;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -19,7 +20,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/config/sitemap.php' => \config_path('sitemap.php'),
+            __DIR__ . '/config/sitemap.php' => config_path('sitemap.php'),
         ]);
     }
 

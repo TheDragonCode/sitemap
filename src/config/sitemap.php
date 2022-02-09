@@ -35,9 +35,7 @@ return [
 
     'separate_files' => env('SITEMAP_SEPARATE', false),
 
-    /*
-     * Nicely formats output with indentation and extra space.
-     */
+    // Nicely formats output with indentation and extra space.
 
     'format_output' => env('SITEMAP_FORMAT_OUTPUT', false),
 
@@ -101,9 +99,7 @@ return [
         // 'baz',
     ],
 
-    /*
-     * Models for searching data.
-     */
+    // Models for searching data.
 
     'models' => [
         //\App\User::class => [

@@ -6,6 +6,9 @@ use Carbon\Carbon;
 use Helldar\Core\Xml\Helpers\Str;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
+use function compact;
+use function get_class;
+use function route;
 
 trait BuilderProcess
 {
@@ -36,7 +39,7 @@ trait BuilderProcess
      */
     protected function processBuilder(Builder $builder)
     {
-        $name = \get_class($builder->getModel());
+        $name = get_class($builder->getModel());
 
         $route      = $this->config($name, 'route', 'index');
         $parameters = $this->config($name, 'route_parameters', ['*']);
@@ -50,9 +53,9 @@ trait BuilderProcess
         foreach ($items as $item) {
             $params  = $this->routeParameters($item, $parameters);
             $lastmod = $this->lastmod($item, $updated);
-            $loc     = Str::e(\route($route, $params));
+            $loc     = Str::e(route($route, $params));
 
-            $this->xml->addItem(\compact('loc', 'lastmod', 'changefreq', 'priority'), 'url');
+            $this->xml->addItem(compact('loc', 'lastmod', 'changefreq', 'priority'), 'url');
         }
     }
 
@@ -70,7 +73,7 @@ trait BuilderProcess
     {
         $value = Config::get("sitemap.models.{$model_name}.{$key}", null);
 
-        if ($value || !$ignore_empty) {
+        if ($value || ! $ignore_empty) {
             return $value;
         }
 

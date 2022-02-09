@@ -6,6 +6,7 @@ use Helldar\Core\Xml\Abstracts\Item as ItemAbstract;
 use Helldar\Core\Xml\Interfaces\ItemInterface;
 use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Traits\Helpers;
+use function trim;
 
 class Item extends ItemAbstract implements ItemInterface
 {
@@ -52,7 +53,7 @@ class Item extends ItemAbstract implements ItemInterface
      */
     public function loc(string $value): self
     {
-        $this->setElement('loc', \trim($value));
+        $this->setElement('loc', trim($value));
 
         return $this;
     }

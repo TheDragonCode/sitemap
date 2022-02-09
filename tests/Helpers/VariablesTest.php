@@ -4,6 +4,7 @@ namespace Helldar\Sitemap\Helpers;
 
 use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
+use function count;
 
 class VariablesTest extends TestCase
 {
@@ -29,7 +30,7 @@ class VariablesTest extends TestCase
     {
         $this->assertIsArray(Variables::getFrequencies());
 
-        $this->assertEquals(7, \count(Variables::getFrequencies()));
+        $this->assertEquals(7, count(Variables::getFrequencies()));
     }
 
     public function testCorrectFrequency()
