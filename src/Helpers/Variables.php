@@ -3,7 +3,7 @@
 namespace Helldar\Sitemap\Helpers;
 
 use Carbon\Carbon;
-use Helldar\Core\Xml\Helpers\Str;
+use DragonCode\Core\Xml\Helpers\Str;
 use function in_array;
 use function is_numeric;
 use function trim;

@@ -2,8 +2,8 @@
 
 namespace Helldar\Sitemap\Services\Make;
 
-use Helldar\Core\Xml\Abstracts\Item as ItemAbstract;
-use Helldar\Core\Xml\Interfaces\ItemInterface;
+use DragonCode\Core\Xml\Abstracts\Item as ItemAbstract;
+use DragonCode\Core\Xml\Interfaces\ItemInterface;
 use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Traits\Helpers;
 use function trim;

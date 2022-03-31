@@ -2,7 +2,7 @@
 
 namespace Helldar\Sitemap\Traits\Processes;
 
-use Helldar\Core\Xml\Helpers\Str;
+use DragonCode\Core\Xml\Helpers\Str;
 use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Services\Make\Item;
 use Illuminate\Support\Collection;
@@ -11,7 +11,7 @@ use function compact;
 
 trait ManualProcess
 {
-    /** @var \Helldar\Core\Xml\Facades\Xml */
+    /** @var \DragonCode\Core\Xml\Facades\Xml */
     protected $xml;
 
     /** @var array */
