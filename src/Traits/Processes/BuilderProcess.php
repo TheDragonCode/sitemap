@@ -3,7 +3,7 @@
 namespace Helldar\Sitemap\Traits\Processes;
 
 use Carbon\Carbon;
-use Helldar\Core\Xml\Helpers\Str;
+use DragonCode\Core\Xml\Helpers\Str;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
 use function compact;
@@ -12,7 +12,7 @@ use function route;
 
 trait BuilderProcess
 {
-    /** @var \Helldar\Core\Xml\Facades\Xml */
+    /** @var \DragonCode\Core\Xml\Facades\Xml */
     protected $xml;
 
     /** @var array */

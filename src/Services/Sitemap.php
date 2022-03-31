@@ -3,10 +3,10 @@
 namespace Helldar\Sitemap\Services;
 
 use Carbon\Carbon;
-use Helldar\Core\Xml\Exceptions\MethodNotFoundException;
-use Helldar\Core\Xml\Facades\Xml;
-use Helldar\Core\Xml\Helpers\Str;
-use Helldar\Core\Xml\Helpers\Url;
+use DragonCode\Core\Xml\Exceptions\MethodNotFoundException;
+use DragonCode\Core\Xml\Facades\Xml;
+use DragonCode\Core\Xml\Helpers\Str;
+use DragonCode\Core\Xml\Helpers\Url;
 use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Services\Make\Item;
 use Helldar\Sitemap\Traits\Helpers;
@@ -35,7 +35,7 @@ class Sitemap
     use ManualProcess;
     use ImagesProcess;
 
-    /** @var \Helldar\Core\Xml\Facades\Xml */
+    /** @var \DragonCode\Core\Xml\Facades\Xml */
     protected $xml;
 
     /** @var string */

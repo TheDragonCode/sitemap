@@ -3,9 +3,9 @@
 namespace Helldar\Sitemap\Traits\Processes;
 
 use DOMElement;
-use Helldar\Core\Xml\Facades\Xml;
-use Helldar\Core\Xml\Helpers\Arr;
-use Helldar\Core\Xml\Helpers\Str;
+use DragonCode\Core\Xml\Facades\Xml;
+use DragonCode\Core\Xml\Helpers\Arr;
+use DragonCode\Core\Xml\Helpers\Str;
 use Helldar\Sitemap\Services\Make\Images;
 use Helldar\Sitemap\Services\Make\Item;
 use Helldar\Sitemap\Validators\ImagesValidator;
@@ -20,7 +20,7 @@ use function sprintf;
 
 trait ImagesProcess
 {
-    /** @var \Helldar\Core\Xml\Facades\Xml */
+    /** @var \DragonCode\Core\Xml\Facades\Xml */
     protected $xml;
 
     /** @var array */

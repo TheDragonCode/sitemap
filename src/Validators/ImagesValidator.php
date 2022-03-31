@@ -2,7 +2,7 @@
 
 namespace Helldar\Sitemap\Validators;
 
-use Helldar\Core\Xml\Abstracts\Validation;
+use DragonCode\Core\Xml\Abstracts\Validation;
 
 class ImagesValidator extends Validation
 {

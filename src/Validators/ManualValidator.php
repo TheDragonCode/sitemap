@@ -2,7 +2,7 @@
 
 namespace Helldar\Sitemap\Validators;
 
-use Helldar\Core\Xml\Abstracts\Validation;
+use DragonCode\Core\Xml\Abstracts\Validation;
 use Helldar\Sitemap\Helpers\Variables;
 use Illuminate\Validation\Rule;
 
