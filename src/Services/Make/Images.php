@@ -5,6 +5,7 @@ namespace Helldar\Sitemap\Services\Make;
 use DragonCode\Core\Xml\Abstracts\Item as ItemAbstract;
 use DragonCode\Core\Xml\Interfaces\ItemInterface;
 use Helldar\Sitemap\Traits\Helpers;
+
 use function array_filter;
 use function compact;
 use function trim;

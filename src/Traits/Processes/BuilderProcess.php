@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use DragonCode\Core\Xml\Helpers\Str;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
+
 use function compact;
 use function get_class;
 use function route;

@@ -4,6 +4,7 @@ namespace Helldar\Sitemap\Traits;
 
 use DragonCode\Core\Xml\Helpers\Str;
 use Illuminate\Support\Arr;
+
 use function array_key_exists;
 use function array_push;
 use function glob;

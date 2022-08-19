@@ -7,6 +7,7 @@ use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Services\Make\Item;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
+
 use function compact;
 
 trait ManualProcess

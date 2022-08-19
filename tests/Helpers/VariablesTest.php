@@ -4,6 +4,7 @@ namespace Helldar\Sitemap\Helpers;
 
 use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
+
 use function count;
 
 class VariablesTest extends TestCase

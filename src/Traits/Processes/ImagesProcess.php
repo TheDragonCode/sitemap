@@ -10,6 +10,7 @@ use Helldar\Sitemap\Services\Make\Images;
 use Helldar\Sitemap\Services\Make\Item;
 use Helldar\Sitemap\Validators\ImagesValidator;
 use Illuminate\Support\Collection;
+
 use function array_chunk;
 use function array_keys;
 use function array_map;

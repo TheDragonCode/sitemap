@@ -6,6 +6,7 @@ use DragonCode\Core\Xml\Abstracts\Item as ItemAbstract;
 use DragonCode\Core\Xml\Interfaces\ItemInterface;
 use Helldar\Sitemap\Helpers\Variables;
 use Helldar\Sitemap\Traits\Helpers;
+
 use function trim;
 
 class Item extends ItemAbstract implements ItemInterface
