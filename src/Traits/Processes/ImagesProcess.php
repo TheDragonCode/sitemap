@@ -44,7 +44,8 @@ trait ImagesProcess
         foreach ($images as $image) {
             if ($image instanceof Images) {
                 $this->pushImage($image);
-            } else {
+            }
+            else {
                 foreach ($image as $item) {
                     $this->pushImage($item);
                 }
