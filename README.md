@@ -12,6 +12,10 @@ A simple sitemap generator for PHP Framework.
     <a href="LICENSE"><img src="https://poser.pugx.org/andrey-helldar/sitemap/license?format=flat-square" alt="License" /></a>
 </p>
 
+> Attention!
+>
+> This package is abandoned and no longer maintained. The author suggests using the [`spatie/laravel-sitemap`](https://github.com/spatie/laravel-sitemap) package instead.
+
 
 ## Installation
 
